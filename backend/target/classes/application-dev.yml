@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}
+    username: ${PGUSER}
+    password: ${PGPASSWORD}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: ${DDLAUTO:update}
+      debug: false
+
+#springdoc:
+#  swagger-ui:
+#    path: /documentation
+#    disable-swagger-default-url: true
+#
+#security:
+#  token:
+#    secret-user: SUPERTICKET@2024
