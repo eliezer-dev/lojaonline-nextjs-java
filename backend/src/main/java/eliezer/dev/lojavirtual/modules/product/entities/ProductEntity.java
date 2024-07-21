@@ -33,10 +33,13 @@ public class ProductEntity {
 
     private String sku;
 
+    @Column(nullable = false, columnDefinition = "numeric(10,2) default '0.00'")
     private double price;
 
+    @Column(nullable = false, columnDefinition = "bigint default 0")
     private Long stock_quantity;
 
+    @Column(nullable = false, columnDefinition = "bigint default 0")
     private Long weight;
 
 
