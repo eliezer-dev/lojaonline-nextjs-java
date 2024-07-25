@@ -17,12 +17,17 @@ public class UserEntity {
     @Schema(example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "id of user")
     private Long id;
 
-    @NotBlank
+    @NotBlank (message = "fullname is not provided")
     @Column(nullable = false)
     @Schema(example = "Jose da Silva", requiredMode = Schema.RequiredMode.REQUIRED, description = "fullname of user")
     private String fullname;
 
-    @NotBlank
+    @NotBlank (message = "email is not provided")
+    @Column(nullable = false)
+    @Schema(example = "jose@email.com", requiredMode = Schema.RequiredMode.REQUIRED, description = "e-mail of user")
+    private String email;
+
+    @NotBlank (message = "password is not provided")
     @Column(nullable = false)
     @Schema(example = "senha1234", requiredMode = Schema.RequiredMode.REQUIRED, description = "password of user")
     private String password;
