@@ -2,6 +2,7 @@ package dev.eliezer.lojaonline.modules.auth.useCases;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import dev.eliezer.lojaonline.exceptions.BusinessException;
 import dev.eliezer.lojaonline.modules.auth.dto.AuthUserRequestDTO;
 import dev.eliezer.lojaonline.modules.auth.dto.AuthUserResponseDTO;
 import dev.eliezer.lojaonline.modules.user.repositories.UserRepository;
@@ -26,6 +27,7 @@ public class AuthUserUseCase{
     private String secretKey;
 
     public AuthUserResponseDTO execute (AuthUserRequestDTO userAuth) {
+
         var user = userRepository.findByEmail(userAuth.getEmail())
                 .orElseThrow(() -> {
                             throw new UsernameNotFoundException("e-mail or password incorrect");
@@ -55,4 +57,8 @@ public class AuthUserUseCase{
 
         return authUserResponse;
     }
+
+
+
 }
+
