@@ -3,12 +3,9 @@ package dev.eliezer.lojaonline.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -43,12 +40,10 @@ public class SecurityConfig {
                     auth
                             .requestMatchers("/users").permitAll()
                             .requestMatchers("/users/auth").permitAll()
-                            .requestMatchers(SWAGGER_LIST).permitAll()
-                            .requestMatchers("/system/status").permitAll();
+                            .requestMatchers(SWAGGER_LIST).permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .addFilterBefore(securityUserFilter, BasicAuthenticationFilter.class);
-        //http.formLogin(withDefaults());
         http.httpBasic(withDefaults());
         return http.build();
 
@@ -62,13 +57,10 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
-        configuration.addAllowedOrigin("https://gestaohelpdesk.eliezer.tec.br");
-        configuration.addAllowedOrigin("https://main.d1765lu4pm17ty.amplifyapp.com");
-        configuration.addAllowedOrigin("http://localhost:5173");
-        configuration.addAllowedOrigin("localhost:5173");
-        configuration.addAllowedOriginPattern("*");
-        configuration.addAllowedHeader("*");
-        configuration.addAllowedMethod("*");
+//        configuration.addAllowedOrigin("localhost:5173");
+//        configuration.addAllowedOriginPattern("*");
+//        configuration.addAllowedHeader("*");
+//        configuration.addAllowedMethod("*");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

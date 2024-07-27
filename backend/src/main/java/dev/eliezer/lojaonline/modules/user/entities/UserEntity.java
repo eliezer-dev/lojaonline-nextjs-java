@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import java.time.LocalDateTime;
 
@@ -23,9 +24,10 @@ public class UserEntity {
     private String fullname;
 
     @NotBlank (message = "email is not provided")
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @Schema(example = "jose@email.com", requiredMode = Schema.RequiredMode.REQUIRED, description = "e-mail of user")
     private String email;
+
 
     @NotBlank (message = "password is not provided")
     @Column(nullable = false)

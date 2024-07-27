@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,8 +27,8 @@ public class AuthUserRestController {
 //            @Content(schema = @Schema(implementation = UserEntity.class))})
 //    @ApiResponse(responseCode = "422", description = "User product data provided", content = {
 //            @Content(schema = @Schema(implementation = Object.class))})
-    @SecurityRequirement(name = "jwt_auth")
-    public AuthUserResponseDTO auth (@Valid @RequestBody AuthUserRequestDTO userAuth) {
-        return authUserUseCase.execute(userAuth);
+    public ResponseEntity<AuthUserResponseDTO> auth (@Valid @RequestBody AuthUserRequestDTO userAuth) {
+        var authenticatedUser = authUserUseCase.execute(userAuth);
+        return ResponseEntity.ok().body(authenticatedUser);
     }
 }

@@ -1,5 +1,6 @@
 package dev.eliezer.lojaonline.modules.user.useCases;
 
+import dev.eliezer.lojaonline.exceptions.UserFoundException;
 import dev.eliezer.lojaonline.modules.user.entities.UserEntity;
 import dev.eliezer.lojaonline.modules.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,12 @@ public class CreateUserUseCase {
     private PasswordEncoder passwordEncoder;
 
     public UserEntity execute (UserEntity user) {
+        userRepository.findByEmail(user.getEmail())
+                .ifPresent(userSaved -> {
+            throw new UserFoundException();
+        });
+
+
         var password = passwordEncoder.encode(user.getPassword());
         user.setPassword(password);
         return userRepository.save(user);

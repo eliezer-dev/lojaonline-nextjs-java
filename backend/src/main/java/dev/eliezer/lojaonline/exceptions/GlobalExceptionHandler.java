@@ -22,6 +22,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
+    @ExceptionHandler(UserFoundException.class)
+    public ResponseEntity<String> handleUserFoundException(UserFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<String> handleNoContentException(NotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
