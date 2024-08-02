@@ -4,6 +4,7 @@ import dev.eliezer.lojaonline.modules.dtos.CreateUserResponseDTO;
 import dev.eliezer.lojaonline.modules.user.entities.UserEntity;
 import dev.eliezer.lojaonline.modules.user.useCases.CreateUserUseCase;
 import dev.eliezer.lojaonline.modules.user.useCases.ListAllUsersUseCase;
+import dev.eliezer.lojaonline.modules.user.useCases.UpdateUserUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,6 +29,9 @@ public class UserRestController {
     @Autowired
     private ListAllUsersUseCase listAllUsersUseCase;
 
+    @Autowired
+    private UpdateUserUseCase updateUserUseCase;
+
     @GetMapping
     @Operation(summary = "Get all users", description = "Retrieve a list of all registered users")
     @ApiResponse(responseCode = "200", description = "Operation sucessfully", content = {
@@ -49,6 +53,18 @@ public class UserRestController {
     @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<CreateUserResponseDTO> create(@Valid @RequestBody UserEntity user) {
         var result = createUserUseCase.execute(user);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PutMapping
+    @Operation(summary = "Update a user", description = "Update a user and return the user data updated")
+    @ApiResponse(responseCode = "201", description = "User updated successfully", content = {
+            @Content(schema = @Schema(implementation = UserEntity.class))})
+    @ApiResponse(responseCode = "422", description = "Invalid user data provided", content = {
+            @Content(schema = @Schema(implementation = Object.class))})
+    @SecurityRequirement(name = "jwt_auth")
+    public ResponseEntity<CreateUserResponseDTO> update(@Valid @RequestBody UserEntity user) {
+        var result = updateUserUseCase.execute(user);
         return ResponseEntity.ok().body(result);
     }
 }
