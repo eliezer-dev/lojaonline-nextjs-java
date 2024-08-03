@@ -34,6 +34,10 @@ public class UserEntity {
     @Schema(example = "senha1234", requiredMode = Schema.RequiredMode.REQUIRED, description = "password of user")
     private String password;
 
+    @JsonIgnore
+    @Column(nullable = false, columnDefinition = "default = true")
+    private Boolean active;
+
     @CreationTimestamp
     @Schema(example = "2024-07-21T22:38:10.514664", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "creation time of user")
     private LocalDateTime createAt;

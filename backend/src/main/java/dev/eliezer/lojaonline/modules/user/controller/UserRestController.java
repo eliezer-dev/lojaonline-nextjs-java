@@ -3,6 +3,7 @@ package dev.eliezer.lojaonline.modules.user.controller;
 import dev.eliezer.lojaonline.modules.dtos.CreateUserResponseDTO;
 import dev.eliezer.lojaonline.modules.user.entities.UserEntity;
 import dev.eliezer.lojaonline.modules.user.useCases.CreateUserUseCase;
+import dev.eliezer.lojaonline.modules.user.useCases.InactivateUserUseCase;
 import dev.eliezer.lojaonline.modules.user.useCases.ListAllUsersUseCase;
 import dev.eliezer.lojaonline.modules.user.useCases.UpdateUserUseCase;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,6 +32,9 @@ public class UserRestController {
 
     @Autowired
     private UpdateUserUseCase updateUserUseCase;
+
+    @Autowired
+    private InactivateUserUseCase inactivateUserUseCase;
 
     @GetMapping
     @Operation(summary = "Get all users", description = "Retrieve a list of all registered users")
@@ -67,4 +71,18 @@ public class UserRestController {
         var result = updateUserUseCase.execute(user);
         return ResponseEntity.ok().body(result);
     }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Delete a user", description = "Delete a user and return the user data deleted")
+    @ApiResponse(responseCode = "200", description = "User deleted successfully", content = {
+            @Content(schema = @Schema(implementation = UserEntity.class))})
+    @ApiResponse(responseCode = "422", description = "Invalid user data provided", content = {
+            @Content(schema = @Schema(implementation = Object.class))})
+    @SecurityRequirement(name = "jwt_auth")
+    public ResponseEntity<String> delete(@PathVariable Long id ) {
+        inactivateUserUseCase.execute(id);
+        return ResponseEntity.ok().body("User with id " + id +  " inactivated successfully.");
+    }
+
+
 }
