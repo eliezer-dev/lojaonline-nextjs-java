@@ -73,13 +73,13 @@ public class UserRestController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete a user", description = "Delete a user and return the user data deleted")
-    @ApiResponse(responseCode = "200", description = "User deleted successfully", content = {
+    @Operation(summary = "Inactivate a user", description = "Inactivate a user")
+    @ApiResponse(responseCode = "200", description = "User inactivated successfully", content = {
             @Content(schema = @Schema(implementation = UserEntity.class))})
     @ApiResponse(responseCode = "422", description = "Invalid user data provided", content = {
             @Content(schema = @Schema(implementation = Object.class))})
     @SecurityRequirement(name = "jwt_auth")
-    public ResponseEntity<String> delete(@PathVariable Long id ) {
+    public ResponseEntity<String> inactivate(@PathVariable Long id ) {
         inactivateUserUseCase.execute(id);
         return ResponseEntity.ok().body("User with id " + id +  " inactivated successfully.");
     }
