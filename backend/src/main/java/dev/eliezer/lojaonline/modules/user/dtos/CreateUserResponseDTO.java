@@ -1,4 +1,4 @@
-package dev.eliezer.lojaonline.modules.dtos;
+package dev.eliezer.lojaonline.modules.user.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -16,7 +16,7 @@ public class CreateUserResponseDTO {
     private Long id;
 
     @NotBlank(message = "fullname is not provided")
-    @Schema(example = "Jose da Silva", requiredMode = Schema.RequiredMode.REQUIRED, description = "fullname of user")
+    @Schema(example = "Jose da Silva", requiredMode = Schema.RequiredMode.REQUIRED, description = "full name of user")
     private String fullname;
 
     @NotBlank (message = "email is not provided")

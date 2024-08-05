@@ -4,14 +4,13 @@ package dev.eliezer.lojaonline.modules.user.useCases;
 import dev.eliezer.lojaonline.exceptions.BusinessException;
 import dev.eliezer.lojaonline.exceptions.EmailFoundException;
 import dev.eliezer.lojaonline.exceptions.NotFoundException;
-import dev.eliezer.lojaonline.modules.dtos.CreateUserResponseDTO;
+import dev.eliezer.lojaonline.modules.user.dtos.CreateUserResponseDTO;
+import dev.eliezer.lojaonline.modules.user.dtos.UserRequestDTO;
 import dev.eliezer.lojaonline.modules.user.entities.UserEntity;
 import dev.eliezer.lojaonline.modules.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class UpdateUserUseCase {
@@ -21,17 +20,14 @@ public class UpdateUserUseCase {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public CreateUserResponseDTO execute (UserEntity user) {
-        if (user.getId() == null) {
-            throw new BusinessException("id is not provided.");
-        }
+    public CreateUserResponseDTO execute (UserRequestDTO user, Long userId) {
 
-        UserEntity userToUpdate = userRepository.findById(user.getId())
-                .orElseThrow(() -> new NotFoundException(user.getId()));
+        UserEntity userToUpdate = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(userId));
 
         if (user.getEmail() != null && !user.getEmail().isBlank()){
             userRepository.findByEmail(user.getEmail()).ifPresent((userFound) -> {
-                if (!userFound.getId().equals(user.getId())) {
+                if (!userFound.getId().equals(userId)) {
                     throw new EmailFoundException(user.getEmail());
                 }
             });
@@ -47,13 +43,13 @@ public class UpdateUserUseCase {
         }
 
         UserEntity userUpdated = userRepository.save(userToUpdate);
-        return formatUserEntityToCreateUserResponseDTO(userUpdated);
+        return formatUserEntityToCreateUserResponseDTO(userUpdated, userId);
     }
 
-    CreateUserResponseDTO formatUserEntityToCreateUserResponseDTO (UserEntity userEntity) {
+    CreateUserResponseDTO formatUserEntityToCreateUserResponseDTO (UserEntity userEntity, Long userId) {
         return CreateUserResponseDTO.builder()
                 .fullname(userEntity.getFullname())
-                .id(userEntity.getId())
+                .id(userId)
                 .email(userEntity.getEmail())
                 .createAt(userEntity.getCreateAt())
                 .updateAt(userEntity.getUpdateAt())
