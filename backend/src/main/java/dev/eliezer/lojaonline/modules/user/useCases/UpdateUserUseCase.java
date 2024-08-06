@@ -1,10 +1,9 @@
 package dev.eliezer.lojaonline.modules.user.useCases;
 
 
-import dev.eliezer.lojaonline.exceptions.BusinessException;
 import dev.eliezer.lojaonline.exceptions.EmailFoundException;
 import dev.eliezer.lojaonline.exceptions.NotFoundException;
-import dev.eliezer.lojaonline.modules.user.dtos.CreateUserResponseDTO;
+import dev.eliezer.lojaonline.modules.user.dtos.UserResponseDTO;
 import dev.eliezer.lojaonline.modules.user.dtos.UserRequestDTO;
 import dev.eliezer.lojaonline.modules.user.entities.UserEntity;
 import dev.eliezer.lojaonline.modules.user.repositories.UserRepository;
@@ -20,7 +19,7 @@ public class UpdateUserUseCase {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public CreateUserResponseDTO execute (UserRequestDTO user, Long userId) {
+    public UserResponseDTO execute (UserRequestDTO user, Long userId) {
 
         UserEntity userToUpdate = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(userId));
@@ -46,8 +45,8 @@ public class UpdateUserUseCase {
         return formatUserEntityToCreateUserResponseDTO(userUpdated, userId);
     }
 
-    CreateUserResponseDTO formatUserEntityToCreateUserResponseDTO (UserEntity userEntity, Long userId) {
-        return CreateUserResponseDTO.builder()
+    UserResponseDTO formatUserEntityToCreateUserResponseDTO (UserEntity userEntity, Long userId) {
+        return UserResponseDTO.builder()
                 .fullname(userEntity.getFullname())
                 .id(userId)
                 .email(userEntity.getEmail())

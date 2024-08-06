@@ -1,8 +1,7 @@
 package dev.eliezer.lojaonline.modules.user.useCases;
 
 import dev.eliezer.lojaonline.exceptions.EmailFoundException;
-import dev.eliezer.lojaonline.exceptions.UserFoundException;
-import dev.eliezer.lojaonline.modules.user.dtos.CreateUserResponseDTO;
+import dev.eliezer.lojaonline.modules.user.dtos.UserResponseDTO;
 import dev.eliezer.lojaonline.modules.user.dtos.UserRequestDTO;
 import dev.eliezer.lojaonline.modules.user.entities.UserEntity;
 import dev.eliezer.lojaonline.modules.user.repositories.UserRepository;
@@ -19,7 +18,7 @@ public class CreateUserUseCase {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public CreateUserResponseDTO execute (UserRequestDTO user) {
+    public UserResponseDTO execute (UserRequestDTO user) {
         userRepository.findByEmail(user.getEmail())
                 .ifPresent(userSaved -> {
             throw new EmailFoundException(user.getEmail());
@@ -33,15 +32,15 @@ public class CreateUserUseCase {
         return formatUserEntityToCreateUserResponseDTO(UserSaved);
     }
 
-    CreateUserResponseDTO formatUserEntityToCreateUserResponseDTO (UserEntity userEntity) {
-        CreateUserResponseDTO createUserResponseDTO = CreateUserResponseDTO.builder()
+    UserResponseDTO formatUserEntityToCreateUserResponseDTO (UserEntity userEntity) {
+        UserResponseDTO userResponseDTO = UserResponseDTO.builder()
                 .fullname(userEntity.getFullname())
                 .id(userEntity.getId())
                 .email(userEntity.getEmail())
                 .createAt(userEntity.getCreateAt())
                 .updateAt(userEntity.getUpdateAt())
                 .build();
-        return createUserResponseDTO;
+        return userResponseDTO;
     }
 
     UserEntity formatUserRequestDTO (UserRequestDTO userRequestDTO) {

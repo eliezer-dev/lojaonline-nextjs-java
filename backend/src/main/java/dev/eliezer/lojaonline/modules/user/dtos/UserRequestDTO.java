@@ -21,17 +21,17 @@ public class UserRequestDTO {
 
     @NotBlank(message = "fullname not provided")
     @Column(nullable = false)
-    @Schema(example = "Jose da Silva", requiredMode = Schema.RequiredMode.REQUIRED, description = "full name of user")
+    @Schema(example = "Jose da Silva", requiredMode = Schema.RequiredMode.REQUIRED, description = "user full name")
     private String fullname;
 
     @NotBlank (message = "email not provided")
     @Column(nullable = false, unique = true)
-    @Schema(example = "jose@email.com", requiredMode = Schema.RequiredMode.REQUIRED, description = "e-mail of user")
+    @Schema(example = "jose@email.com", requiredMode = Schema.RequiredMode.REQUIRED, description = "user email")
     private String email;
 
     @NotBlank (message = "password not provided")
     @Column(nullable = false)
-    @Schema(example = "senha1234", requiredMode = Schema.RequiredMode.REQUIRED, description = "password of user")
+    @Schema(example = "senha1234", requiredMode = Schema.RequiredMode.REQUIRED, description = "user password")
     private String password;
 
 }
