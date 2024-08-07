@@ -29,7 +29,7 @@ public class ListAllUsersUseCase {
                 .fullname(user.getFullname())
                 .createAt(user.getCreateAt())
                 .updateAt(user.getUpdateAt())
+                .active(user.getActive())
                 .build();
-
     }
 }

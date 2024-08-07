@@ -2,7 +2,7 @@ package dev.eliezer.lojaonline.modules.user.useCases;
 
 import dev.eliezer.lojaonline.exceptions.EmailFoundException;
 import dev.eliezer.lojaonline.modules.user.dtos.UserResponseDTO;
-import dev.eliezer.lojaonline.modules.user.dtos.UserRequestDTO;
+import dev.eliezer.lojaonline.modules.user.dtos.CreateUserRequestDTO;
 import dev.eliezer.lojaonline.modules.user.entities.UserEntity;
 import dev.eliezer.lojaonline.modules.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class CreateUserUseCase {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public UserResponseDTO execute (UserRequestDTO user) {
+    public UserResponseDTO execute (CreateUserRequestDTO user) {
         userRepository.findByEmail(user.getEmail())
                 .ifPresent(userSaved -> {
             throw new EmailFoundException(user.getEmail());
@@ -43,11 +43,11 @@ public class CreateUserUseCase {
         return userResponseDTO;
     }
 
-    UserEntity formatUserRequestDTO (UserRequestDTO userRequestDTO) {
+    UserEntity formatUserRequestDTO (CreateUserRequestDTO createUserRequestDTO) {
         UserEntity userEntity = new UserEntity();
-        userEntity.setEmail(userRequestDTO.getEmail());
-        userEntity.setPassword(userRequestDTO.getPassword());
-        userEntity.setFullname(userRequestDTO.getFullname());
+        userEntity.setEmail(createUserRequestDTO.getEmail());
+        userEntity.setPassword(createUserRequestDTO.getPassword());
+        userEntity.setFullname(createUserRequestDTO.getFullname());
         return userEntity;
     }
 }

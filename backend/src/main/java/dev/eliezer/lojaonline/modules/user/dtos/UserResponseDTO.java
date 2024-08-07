@@ -12,20 +12,21 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class UserResponseDTO {
-    @Schema(example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "user id")
+    @Schema(example = "1", description = "user id")
     private Long id;
 
-    @NotBlank(message = "fullname is not provided")
-    @Schema(example = "Jose da Silva", requiredMode = Schema.RequiredMode.REQUIRED, description = "user full name")
+    @Schema(example = "Jose da Silva", description = "user full name")
     private String fullname;
 
-    @NotBlank (message = "email is not provided")
-    @Schema(example = "jose@email.com", requiredMode = Schema.RequiredMode.REQUIRED, description = "user email")
+    @Schema(example = "jose@email.com", description = "user email")
     private String email;
 
-    @Schema(example = "2024-07-21T22:38:10.514664", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "user creation datetime")
+    @Schema(example = "2024-07-21T22:38:10.514664", description = "user creation datetime")
     private LocalDateTime createAt;
 
-    @Schema(example = "2024-07-21T22:38:10.514664", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "user update datetime")
+    @Schema(example = "2024-07-21T22:38:10.514664", description = "user update datetime")
     private LocalDateTime updateAt;
+
+    @Schema(example = "true", description = "user active")
+    private Boolean active;
 }

@@ -33,6 +33,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(EmailNotFoundException.class)
+    public ResponseEntity<String> handleNoContentException(EmailNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(EmailFoundException.class)
     public ResponseEntity<String> handleNoContentException(EmailFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
@@ -46,7 +51,6 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-
     public ResponseEntity<List> handleMethodNoContentException(MethodArgumentNotValidException e) {
 
         List error = new ArrayList();

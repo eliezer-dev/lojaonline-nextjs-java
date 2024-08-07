@@ -1,7 +1,8 @@
 package dev.eliezer.lojaonline.modules.user.controller;
 
+import dev.eliezer.lojaonline.modules.user.dtos.UpdateUserRequestDTO;
 import dev.eliezer.lojaonline.modules.user.dtos.UserResponseDTO;
-import dev.eliezer.lojaonline.modules.user.dtos.UserRequestDTO;
+import dev.eliezer.lojaonline.modules.user.dtos.CreateUserRequestDTO;
 import dev.eliezer.lojaonline.modules.user.entities.UserEntity;
 import dev.eliezer.lojaonline.modules.user.useCases.CreateUserUseCase;
 import dev.eliezer.lojaonline.modules.user.useCases.InactivateUserUseCase;
@@ -49,7 +50,6 @@ public class UserRestController {
         return ResponseEntity.ok().body(result);
     }
 
-
     @PostMapping
     @Operation(summary = "Create a new user", description = "Create a new user and return the created user data")
     @ApiResponse(responseCode = "201", description = "User created successfully", content = {
@@ -70,20 +70,21 @@ public class UserRestController {
             }
     ))
     @SecurityRequirement(name = "jwt_auth")
-    public ResponseEntity<UserResponseDTO> create(@Valid @RequestBody UserRequestDTO user) {
+    public ResponseEntity<UserResponseDTO> create(@Valid @RequestBody CreateUserRequestDTO user) {
         var result = createUserUseCase.execute(user);
         return ResponseEntity.ok().body(result);
     }
 
-
     @PutMapping("/{id}")
     @Operation(summary = "Update a user", description = "Update a user and return the user data updated")
     @ApiResponse(responseCode = "201", description = "User updated successfully", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = UserEntity.class))})
+            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateUserRequestDTO.class))})
+    @ApiResponse(responseCode = "404", description = "user id not found", content = {
+            @Content(mediaType = "text/plain", schema = @Schema(example = "Resource id not found."))})
     @ApiResponse(responseCode = "422", description = "Invalid user data provided", content = {
-            @Content(mediaType = "text/plain", schema = @Schema(example = "e-mail is alright in use."))})
+            @Content(mediaType = "text/plain", schema = @Schema(example = "email is alright in use."))})
     @SecurityRequirement(name = "jwt_auth")
-    public ResponseEntity<UserResponseDTO> update(@Valid @PathVariable Long id, @RequestBody UserRequestDTO user) {
+    public ResponseEntity<UserResponseDTO> update(@PathVariable Long id, @Valid @RequestBody UpdateUserRequestDTO user) {
         var result = updateUserUseCase.execute(user, id);
         return ResponseEntity.ok().body(result);
     }
@@ -92,8 +93,8 @@ public class UserRestController {
     @Operation(summary = "Inactivate a user", description = "Inactivate a user")
     @ApiResponse(responseCode = "200", description = "User inactivated successfully", content = {
             @Content(schema = @Schema(implementation = UserEntity.class))})
-    @ApiResponse(responseCode = "422", description = "Invalid user data provided", content = {
-            @Content(schema = @Schema(implementation = Object.class))})
+    @ApiResponse(responseCode = "404", description = "user id not found", content = {
+            @Content(mediaType = "text/plain", schema = @Schema(example = "Resource id not found."))})
     @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<String> inactivate(@PathVariable Long id ) {
         inactivateUserUseCase.execute(id);

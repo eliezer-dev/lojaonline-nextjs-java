@@ -36,7 +36,8 @@ public class UserEntity {
 
     @JsonIgnore
     @Column(columnDefinition = "boolean default true")
-    private Boolean active;
+    @Schema(example = "true", description = "user active")
+    private Boolean active = true;
 
     @CreationTimestamp
     @Schema(example = "2024-07-21T22:38:10.514664", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "user creation datetime")
