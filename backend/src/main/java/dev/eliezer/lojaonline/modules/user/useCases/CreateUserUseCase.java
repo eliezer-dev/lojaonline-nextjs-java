@@ -27,23 +27,24 @@ public class CreateUserUseCase {
         var password = passwordEncoder.encode(user.getPassword());
         user.setPassword(password);
 
-        var UserSaved = userRepository.save(formatUserRequestDTO(user));
+        UserEntity UserSaved = userRepository.save(formatCreateUserRequestDTOToUserEntity(user));
 
-        return formatUserEntityToCreateUserResponseDTO(UserSaved);
+        return formatUserEntityToUserResponseDTO(UserSaved);
     }
 
-    UserResponseDTO formatUserEntityToCreateUserResponseDTO (UserEntity userEntity) {
+    UserResponseDTO formatUserEntityToUserResponseDTO (UserEntity userEntity) {
         UserResponseDTO userResponseDTO = UserResponseDTO.builder()
                 .fullname(userEntity.getFullname())
                 .id(userEntity.getId())
                 .email(userEntity.getEmail())
                 .createAt(userEntity.getCreateAt())
                 .updateAt(userEntity.getUpdateAt())
+                .active(userEntity.getActive())
                 .build();
         return userResponseDTO;
     }
 
-    UserEntity formatUserRequestDTO (CreateUserRequestDTO createUserRequestDTO) {
+    UserEntity formatCreateUserRequestDTOToUserEntity (CreateUserRequestDTO createUserRequestDTO) {
         UserEntity userEntity = new UserEntity();
         userEntity.setEmail(createUserRequestDTO.getEmail());
         userEntity.setPassword(createUserRequestDTO.getPassword());
