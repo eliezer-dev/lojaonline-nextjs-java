@@ -6,7 +6,7 @@ import dev.eliezer.lojaonline.modules.user.dtos.CreateUserRequestDTO;
 import dev.eliezer.lojaonline.modules.user.entities.UserEntity;
 import dev.eliezer.lojaonline.modules.user.useCases.CreateUserUseCase;
 import dev.eliezer.lojaonline.modules.user.useCases.InactivateUserUseCase;
-import dev.eliezer.lojaonline.modules.user.useCases.ListAllUsersUseCase;
+import dev.eliezer.lojaonline.modules.user.useCases.GetUsersUseCase;
 import dev.eliezer.lojaonline.modules.user.useCases.UpdateUserUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -32,7 +32,7 @@ public class UserRestController {
     private CreateUserUseCase createUserUseCase;
 
     @Autowired
-    private ListAllUsersUseCase listAllUsersUseCase;
+    private GetUsersUseCase getUsersUseCase;
 
     @Autowired
     private UpdateUserUseCase updateUserUseCase;
@@ -45,8 +45,10 @@ public class UserRestController {
     @ApiResponse(responseCode = "200", description = "Operation sucessfully", content = {
             @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = UserEntity.class)))})
     @SecurityRequirement(name = "jwt_auth")
-    public ResponseEntity<List<UserResponseDTO>> index() {
-        var result = listAllUsersUseCase.execute();
+    public ResponseEntity<List<UserResponseDTO>> index(@RequestParam(value = "id", defaultValue = "0") Long id,
+                                                       @RequestParam(value = "email", defaultValue = "") String email,
+                                                       @RequestParam(value = "name", defaultValue = "") String name) {
+        var result = getUsersUseCase.execute(id, email, name);
         return ResponseEntity.ok().body(result);
     }
 

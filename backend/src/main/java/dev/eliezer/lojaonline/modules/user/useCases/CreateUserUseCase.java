@@ -21,8 +21,8 @@ public class CreateUserUseCase {
     public UserResponseDTO execute (CreateUserRequestDTO user) {
         userRepository.findByEmail(user.getEmail())
                 .ifPresent(userSaved -> {
-            throw new EmailFoundException(user.getEmail());
-        });
+                    throw new EmailFoundException(user.getEmail());
+                });
 
         var password = passwordEncoder.encode(user.getPassword());
         user.setPassword(password);
