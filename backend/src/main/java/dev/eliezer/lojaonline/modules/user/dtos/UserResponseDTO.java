@@ -1,5 +1,6 @@
 package dev.eliezer.lojaonline.modules.user.dtos;
 
+import dev.eliezer.lojaonline.modules.user.entities.UserEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -29,4 +30,17 @@ public class UserResponseDTO {
 
     @Schema(example = "true", description = "user active")
     private Boolean active;
-}
+
+    public static UserResponseDTO parseUserResponseDTO (UserEntity userEntity) {
+
+        return UserResponseDTO.builder()
+                .fullname(userEntity.getFullname())
+                .id(userEntity.getId())
+                .email(userEntity.getEmail())
+                .createAt(userEntity.getCreateAt())
+                .updateAt(userEntity.getUpdateAt())
+                .active(userEntity.getActive())
+                .build();
+    }
+
+    }

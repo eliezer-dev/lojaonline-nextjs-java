@@ -44,6 +44,8 @@ public class UserRestController {
     @Operation(summary = "Get all users", description = "Retrieve a list of all registered users")
     @ApiResponse(responseCode = "200", description = "Operation sucessfully", content = {
             @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = UserEntity.class)))})
+    @ApiResponse(responseCode = "422", description = "Invalid user data provided", content = {
+            @Content(mediaType = "text/plain", schema = @Schema(example = "[\n\"Email example@user.com not found.\",\n\"Resource id not found.\"\n]"))})
     @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<List<UserResponseDTO>> index(@RequestParam(value = "id", defaultValue = "0") Long id,
                                                        @RequestParam(value = "email", defaultValue = "") String email,
@@ -60,6 +62,7 @@ public class UserRestController {
     @Content(
             mediaType = "text/plain",
             array = @ArraySchema(schema = @Schema(implementation = Object.class)),
+
             examples = {
                     @ExampleObject(
                             name = "RequiredFieldsMissing",
@@ -81,7 +84,7 @@ public class UserRestController {
     @Operation(summary = "Update a user", description = "Update a user and return the user data updated")
     @ApiResponse(responseCode = "201", description = "User updated successfully", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateUserRequestDTO.class))})
-    @ApiResponse(responseCode = "404", description = "user id not found", content = {
+    @ApiResponse(responseCode = "422", description = "user id not found", content = {
             @Content(mediaType = "text/plain", schema = @Schema(example = "Resource id not found."))})
     @ApiResponse(responseCode = "422", description = "Invalid user data provided", content = {
             @Content(mediaType = "text/plain", schema = @Schema(example = "email is alright in use."))})

@@ -1,6 +1,7 @@
 package dev.eliezer.lojaonline.modules.user.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import dev.eliezer.lojaonline.modules.user.dtos.CreateUserRequestDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -46,5 +47,13 @@ public class UserEntity {
     @UpdateTimestamp
     @Schema(example = "2024-07-21T22:38:10.514664", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "user update datetime")
     private LocalDateTime updateAt;
+
+    public static UserEntity parseUserEntity (CreateUserRequestDTO createUserRequestDTO) {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setEmail(createUserRequestDTO.getEmail());
+        userEntity.setPassword(createUserRequestDTO.getPassword());
+        userEntity.setFullname(createUserRequestDTO.getFullname());
+        return userEntity;
+    }
 
 }

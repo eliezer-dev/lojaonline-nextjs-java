@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import static dev.eliezer.lojaonline.modules.user.dtos.UserResponseDTO.parseUserResponseDTO;
+import static dev.eliezer.lojaonline.modules.user.entities.UserEntity.parseUserEntity;
+
 @Service
 public class CreateUserUseCase {
 
@@ -27,28 +30,12 @@ public class CreateUserUseCase {
         var password = passwordEncoder.encode(user.getPassword());
         user.setPassword(password);
 
-        UserEntity UserSaved = userRepository.save(formatCreateUserRequestDTOToUserEntity(user));
+        UserEntity UserSaved = userRepository.save(parseUserEntity(user));
 
-        return formatUserEntityToUserResponseDTO(UserSaved);
+        return parseUserResponseDTO(UserSaved);
     }
 
-    UserResponseDTO formatUserEntityToUserResponseDTO (UserEntity userEntity) {
-        UserResponseDTO userResponseDTO = UserResponseDTO.builder()
-                .fullname(userEntity.getFullname())
-                .id(userEntity.getId())
-                .email(userEntity.getEmail())
-                .createAt(userEntity.getCreateAt())
-                .updateAt(userEntity.getUpdateAt())
-                .active(userEntity.getActive())
-                .build();
-        return userResponseDTO;
-    }
 
-    UserEntity formatCreateUserRequestDTOToUserEntity (CreateUserRequestDTO createUserRequestDTO) {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setEmail(createUserRequestDTO.getEmail());
-        userEntity.setPassword(createUserRequestDTO.getPassword());
-        userEntity.setFullname(createUserRequestDTO.getFullname());
-        return userEntity;
-    }
+
+
 }
