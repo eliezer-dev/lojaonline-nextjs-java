@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByEmail (String email);
-    List<UserEntity> findByFullnameIgnoreCaseContaining (String name);
+    List<UserEntity> findByFullnameIgnoreCaseContainingOrderByFullname (String name);
 
 //    @Query("select new dev.eliezer.lojaonline.modules.user.dtos.UserResponseDTO(u.id, u.fullname, u.email, u.updateAt, u.createAt) from tb_user u")
 //    List<UserResponseDTO> findAllUsers();

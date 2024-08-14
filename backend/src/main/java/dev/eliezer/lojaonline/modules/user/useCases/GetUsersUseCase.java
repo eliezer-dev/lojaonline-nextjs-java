@@ -20,13 +20,6 @@ public class GetUsersUseCase {
     public List<UserResponseDTO> execute (Long id, String email, String name) {
         List<UserResponseDTO> userResponseDTOs = new ArrayList<>();
 
-        if (id == 0 && email.isBlank() && name.isBlank()) {
-            userRepository.findAll(Sort.by(Sort.Direction.ASC, "id")).forEach((user) -> {
-                userResponseDTOs.add(formatUserEntityToUserResponseDTO(user));
-            });
-            return userResponseDTOs;
-        }
-
         if (id != 0) {
             UserResponseDTO userResponseDTO = formatUserEntityToUserResponseDTO(userRepository.findById(id)
                     .orElseThrow(() -> new NotFoundException(id))
@@ -43,13 +36,17 @@ public class GetUsersUseCase {
             return userResponseDTOs;
         }
 
-//        if (!name.isBlank()) {
-//            UserResponseDTO userResponseDTO = formatUserEntityToUserResponseDTO(userRepository.findByFullnameIgnoreCaseContaining(name)
-//                    .orElseThrow(() -> new EmailNotFoundException(email))
-//            );
-//            userResponseDTOs.add(userResponseDTO);
-//            return userResponseDTOs;
-//        }
+        if (!name.isBlank()) {
+            List<UserEntity> usersList = userRepository.findByFullnameIgnoreCaseContainingOrderByFullname(name);
+            usersList.forEach((user) -> {
+                userResponseDTOs.add(formatUserEntityToUserResponseDTO(user));
+            });
+            return userResponseDTOs;
+        }
+
+        userRepository.findAll(Sort.by(Sort.Direction.ASC, "id")).forEach((user) -> {
+            userResponseDTOs.add(formatUserEntityToUserResponseDTO(user));
+        });
         return userResponseDTOs;
     }
 
