@@ -83,7 +83,7 @@ public class UserRestController {
     @PutMapping("/{id}")
     @Operation(summary = "Update a user", description = "Update a user and return the user data updated")
     @ApiResponse(responseCode = "201", description = "User updated successfully", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateUserRequestDTO.class))})
+            @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDTO.class))})
     @ApiResponse(responseCode = "422", description = "user id not found", content = {
             @Content(mediaType = "text/plain", schema = @Schema(example = "Resource id not found."))})
     @ApiResponse(responseCode = "422", description = "Invalid user data provided", content = {

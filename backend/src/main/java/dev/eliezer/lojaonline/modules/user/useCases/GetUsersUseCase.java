@@ -21,7 +21,7 @@ public class GetUsersUseCase {
         List<UserResponseDTO> userResponseDTOs = new ArrayList<>();
 
         if (id != 0) {
-            UserResponseDTO userResponseDTO = formatUserEntityToUserResponseDTO(userRepository.findById(id)
+            UserResponseDTO userResponseDTO = UserResponseDTO.parseUserResponseDTO(userRepository.findById(id)
                     .orElseThrow(() -> new NotFoundException(id))
             );
             userResponseDTOs.add(userResponseDTO);
@@ -29,7 +29,7 @@ public class GetUsersUseCase {
         }
 
         if (!email.isBlank()) {
-            UserResponseDTO userResponseDTO = formatUserEntityToUserResponseDTO(userRepository.findByEmail(email)
+            UserResponseDTO userResponseDTO = UserResponseDTO.parseUserResponseDTO(userRepository.findByEmail(email)
                     .orElseThrow(() -> new EmailNotFoundException(email))
             );
             userResponseDTOs.add(userResponseDTO);
@@ -39,25 +39,15 @@ public class GetUsersUseCase {
         if (!name.isBlank()) {
             List<UserEntity> usersList = userRepository.findByFullnameIgnoreCaseContainingOrderByFullname(name);
             usersList.forEach((user) -> {
-                userResponseDTOs.add(formatUserEntityToUserResponseDTO(user));
+                userResponseDTOs.add(UserResponseDTO.parseUserResponseDTO(user));
             });
             return userResponseDTOs;
         }
 
         userRepository.findAll(Sort.by(Sort.Direction.ASC, "id")).forEach((user) -> {
-            userResponseDTOs.add(formatUserEntityToUserResponseDTO(user));
+            userResponseDTOs.add(UserResponseDTO.parseUserResponseDTO(user));
         });
         return userResponseDTOs;
     }
 
-    UserResponseDTO formatUserEntityToUserResponseDTO(UserEntity user) {
-        return UserResponseDTO.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .fullname(user.getFullname())
-                .createAt(user.getCreateAt())
-                .updateAt(user.getUpdateAt())
-                .active(user.getActive())
-                .build();
-    }
 }

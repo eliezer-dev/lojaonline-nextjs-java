@@ -9,9 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import static dev.eliezer.lojaonline.modules.user.dtos.UserResponseDTO.parseUserResponseDTO;
-import static dev.eliezer.lojaonline.modules.user.entities.UserEntity.parseUserEntity;
-
 @Service
 public class CreateUserUseCase {
 
@@ -30,9 +27,9 @@ public class CreateUserUseCase {
         var password = passwordEncoder.encode(user.getPassword());
         user.setPassword(password);
 
-        UserEntity UserSaved = userRepository.save(parseUserEntity(user));
+        UserEntity UserSaved = userRepository.save(UserEntity.parseUserEntity(user));
 
-        return parseUserResponseDTO(UserSaved);
+        return UserResponseDTO.parseUserResponseDTO(UserSaved);
     }
 
 

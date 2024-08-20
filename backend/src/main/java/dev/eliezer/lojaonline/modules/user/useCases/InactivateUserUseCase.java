@@ -17,7 +17,7 @@ public class InactivateUserUseCase {
 
     public void execute (Long id) {
         UserEntity userToInactivate = userRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
-        userToInactivate.setActive(true);
+        userToInactivate.setActive(false);
         userRepository.save(userToInactivate);
     }
 

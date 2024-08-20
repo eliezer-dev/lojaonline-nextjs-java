@@ -44,18 +44,7 @@ public class UpdateUserUseCase {
             userToUpdate.setPassword(password);
         }
 
-        return formatUserEntityToCreateUserResponseDTO(userRepository.save(userToUpdate), userId);
-    }
-
-    UserResponseDTO formatUserEntityToCreateUserResponseDTO (UserEntity userEntity, Long userId) {
-        return UserResponseDTO.builder()
-                .fullname(userEntity.getFullname())
-                .id(userId)
-                .email(userEntity.getEmail())
-                .createAt(userEntity.getCreateAt())
-                .updateAt(userEntity.getUpdateAt())
-                .active(userEntity.getActive())
-                .build();
+        return UserResponseDTO.parseUserResponseDTO(userRepository.save(userToUpdate));
     }
 
 }
