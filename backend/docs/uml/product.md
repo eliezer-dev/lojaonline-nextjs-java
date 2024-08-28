@@ -8,12 +8,12 @@ class ProductEntity {
 +Double price
 +Integer stockQuantity
 +String barcode
-+LocalDate createdAt
-+LocalDate updatedAt
++LocalDateTIme createdAt
++LocalDateTIme updatedAt
 +Boolean active
 +Double promotionalPrice
-+LocalDate promotionalDateStart
-+LocalDate promotionalDateEnd
++LocalDateTIme promotionalDateStart
++LocalDateTIme promotionalDateEnd
 +String sku
 +create()
 +update()
@@ -25,8 +25,8 @@ class ProductEntity {
         +Long id
         +String name
         +String description
-        +LocalDate createdAt
-        +LocalDate updatedAt
+        +LocalDateTImeTime createdAt
+        +LocalDateTImeTime updatedAt
         +Long parent
         +create()
         +update()
@@ -38,15 +38,15 @@ class ProductEntity {
         +Long id
         +String url
         +String altText
-        +LocalDate createdAt
-        +LocalDate updatedAt
+        +LocalDateTIme createdAt
+        +LocalDateTIme updatedAt
         +create()
         +update()
         +delete()
         +find()
     }
 
-    CategoryEntity "1" --> "0..*" ProductEntity : contém
+    CategoryEntity "0..1" <--> "0..*" ProductEntity : contém
     ProductEntity "1" --> "0..*" ImageEntity : possui
 
 ```
