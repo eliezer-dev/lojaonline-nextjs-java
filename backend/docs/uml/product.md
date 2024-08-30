@@ -36,8 +36,8 @@ class ProductEntity {
 
     class ImageEntity {
         +Long id
-        +String url
-        +String altText
+        +String filename
+        +String imageType
         +LocalDateTIme createdAt
         +LocalDateTIme updatedAt
         +create()
@@ -47,6 +47,6 @@ class ProductEntity {
     }
 
     CategoryEntity "0..1" <--> "0..*" ProductEntity : contém
-    ProductEntity "1" --> "0..*" ImageEntity : possui
+    ProductEntity "0..1" --> "0..*" ImageEntity : possui
 
 ```

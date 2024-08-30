@@ -80,6 +80,7 @@ public class UserRestController {
         return ResponseEntity.ok().body(result);
     }
 
+
     @PutMapping("/{id}")
     @Operation(summary = "Update a user", description = "Update a user and return the user data updated")
     @ApiResponse(responseCode = "201", description = "User updated successfully", content = {

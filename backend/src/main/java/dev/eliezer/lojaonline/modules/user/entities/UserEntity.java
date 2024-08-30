@@ -1,6 +1,7 @@
 package dev.eliezer.lojaonline.modules.user.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import dev.eliezer.lojaonline.modules.image.entities.ImageEntity;
 import dev.eliezer.lojaonline.modules.user.dtos.CreateUserRequestDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
@@ -48,6 +49,14 @@ public class UserEntity {
     @Schema(example = "2024-07-21T22:38:10.514664", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "user update datetime")
     private LocalDateTime updateAt;
 
+    @Column(name = "id_picture")
+    private Long idPicture;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_image", referencedColumnName = "id", insertable = false, updatable = false)
+    @JsonIgnore
+    private ImageEntity imageEntity;
+    
     public static UserEntity parseUserEntity (CreateUserRequestDTO createUserRequestDTO) {
         UserEntity userEntity = new UserEntity();
         userEntity.setEmail(createUserRequestDTO.getEmail());
