@@ -3,6 +3,7 @@ package dev.eliezer.lojaonline.modules.image.entities;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,7 +33,8 @@ public class ImageEntity {
     private String imageType;
 
     @Lob
-    @Column(name = "imagedata", length = 1000)
+    @NotNull
+    @Column(name = "imagedata", length = 1000, nullable = false)
     private byte[] imageData;
 
     @CreationTimestamp

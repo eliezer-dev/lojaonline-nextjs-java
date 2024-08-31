@@ -49,8 +49,8 @@ public class UserEntity {
     @Schema(example = "2024-07-21T22:38:10.514664", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "user update datetime")
     private LocalDateTime updateAt;
 
-    @Column(name = "id_picture")
-    private Long idPicture;
+    @Column(name = "id_image")
+    private Long idImage;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_image", referencedColumnName = "id", insertable = false, updatable = false)

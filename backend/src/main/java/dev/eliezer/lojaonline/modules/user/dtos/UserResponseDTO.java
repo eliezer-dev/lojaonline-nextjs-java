@@ -1,5 +1,6 @@
 package dev.eliezer.lojaonline.modules.user.dtos;
 
+import dev.eliezer.lojaonline.modules.image.entities.ImageEntity;
 import dev.eliezer.lojaonline.modules.user.entities.UserEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -22,14 +23,18 @@ public class UserResponseDTO {
     @Schema(example = "jose@email.com", description = "user email")
     private String email;
 
+
+    @Schema(example = "true", description = "user active")
+    private Boolean active;
+
+    @Schema(example = "1", description = "user image id")
+    private Long idImage;
+
     @Schema(example = "2024-07-21T22:38:10.514664", description = "user creation datetime")
     private LocalDateTime createAt;
 
     @Schema(example = "2024-07-21T22:38:10.514664", description = "user update datetime")
     private LocalDateTime updateAt;
-
-    @Schema(example = "true", description = "user active")
-    private Boolean active;
 
     public static UserResponseDTO parseUserResponseDTO (UserEntity userEntity) {
 
@@ -40,6 +45,7 @@ public class UserResponseDTO {
                 .createAt(userEntity.getCreateAt())
                 .updateAt(userEntity.getUpdateAt())
                 .active(userEntity.getActive())
+                .idImage(userEntity.getIdImage())
                 .build();
     }
 

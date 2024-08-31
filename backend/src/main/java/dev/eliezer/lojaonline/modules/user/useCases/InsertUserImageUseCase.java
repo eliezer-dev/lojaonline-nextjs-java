@@ -3,6 +3,7 @@ package dev.eliezer.lojaonline.modules.user.useCases;
 import dev.eliezer.lojaonline.exceptions.NotFoundException;
 import dev.eliezer.lojaonline.modules.image.entities.ImageEntity;
 import dev.eliezer.lojaonline.modules.image.repositories.ImageRepository;
+import dev.eliezer.lojaonline.modules.user.dtos.UserResponseDTO;
 import dev.eliezer.lojaonline.modules.user.entities.UserEntity;
 import dev.eliezer.lojaonline.modules.user.repositories.UserRepository;
 import dev.eliezer.lojaonline.providers.ImageUtil;
@@ -22,13 +23,13 @@ public class InsertUserImageUseCase {
     @Autowired
     private ImageRepository imageRepository;
 
-    public String execute (Long id, MultipartFile file) throws IOException {
+    public UserResponseDTO execute (Long id, MultipartFile file) throws IOException {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
 
         Optional<ImageEntity> imageFound = Optional.empty();
 
-        if (userEntity.getIdPicture() != null) {
-            imageFound = imageRepository.findById(userEntity.getIdPicture());
+        if (userEntity.getImageEntity() != null) {
+            imageFound = imageRepository.findById(userEntity.getIdImage());
         }
 
         ImageEntity imageSaved = imageRepository.save(
@@ -38,12 +39,12 @@ public class InsertUserImageUseCase {
                         .imageData(ImageUtil.compressImage(file.getBytes()))
                         .build()
         );
-        userEntity.setIdPicture(imageSaved.getId());
-        userRepository.save(userEntity);
+        userEntity.setIdImage(imageSaved.getId());
 
         imageFound.ifPresent(imageEntity -> imageRepository.delete(imageEntity));
 
-        return Base64.getEncoder().encodeToString(file.getBytes());
+
+        return UserResponseDTO.parseUserResponseDTO(userRepository.save(userEntity));
 
     }
 }
