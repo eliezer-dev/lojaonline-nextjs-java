@@ -7,19 +7,21 @@ class UserEntity {
 +String email
 +Double password
 +Boolean active
++Long idImage;
 +LocalDateTime createdAt
 +LocalDateTime updatedAt
-+Boolean active
 +CreateUserUseCase()
 +GetUsersUseCase()
 +InactivateUserUseCase()
 +UpdateUserUseCase()
 }
 
-    class UserImageEntity {
-        +Long id
-        +String url
+    class ImageEntity {
+        +Integer id
+        +String filename
         +String altText
+        +String imageType
+        +byte[] imageData
         +LocalDateTime createdAt
         +LocalDateTime updatedAt
         +InsertUserImageUseCase()
@@ -30,6 +32,6 @@ class UserEntity {
 
 
 
-    UserEntity "1..1" --> "0..1" UserImageEntity : possui
+    UserEntity "0..1" --> "0..1" ImageEntity : possui
 
 ```
