@@ -22,11 +22,7 @@ public class AuthUserRestController {
     private AuthUserUseCase authUserUseCase;
 
     @PostMapping
-//    @Operation(summary = "Create a new user", description = "Create a new user and return the created user data")
-//    @ApiResponse(responseCode = "201", description = "User created successfully", content = {
-//            @Content(schema = @Schema(implementation = UserEntity.class))})
-//    @ApiResponse(responseCode = "422", description = "User product data provided", content = {
-//            @Content(schema = @Schema(implementation = Object.class))})
+    @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<AuthUserResponseDTO> auth (@Valid @RequestBody AuthUserRequestDTO userAuth) {
         var authenticatedUser = authUserUseCase.execute(userAuth);
         return ResponseEntity.ok().body(authenticatedUser);

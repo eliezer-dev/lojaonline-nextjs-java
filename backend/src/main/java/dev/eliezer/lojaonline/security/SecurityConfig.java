@@ -38,10 +38,6 @@ public class SecurityConfig {
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> {
                     auth
-                            .requestMatchers("/users").permitAll()
-                            .requestMatchers("/users/images").permitAll()
-                            .requestMatchers("/users/images/*").permitAll()
-                            .requestMatchers("/users/*").permitAll()
                             .requestMatchers("/users/auth").permitAll()
                             .requestMatchers(SWAGGER_LIST).permitAll();
                     auth.anyRequest().authenticated();
