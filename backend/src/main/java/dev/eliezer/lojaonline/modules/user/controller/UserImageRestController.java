@@ -1,10 +1,12 @@
 package dev.eliezer.lojaonline.modules.user.controller;
 
+import dev.eliezer.lojaonline.exceptions.BusinessException;
 import dev.eliezer.lojaonline.modules.image.entities.ImageEntity;
 import dev.eliezer.lojaonline.modules.image.useCases.GetImageUseCase;
 import dev.eliezer.lojaonline.modules.user.dtos.CreateUserRequestDTO;
 import dev.eliezer.lojaonline.modules.user.dtos.UserResponseDTO;
 import dev.eliezer.lojaonline.modules.user.entities.UserEntity;
+import dev.eliezer.lojaonline.modules.user.repositories.UserRepository;
 import dev.eliezer.lojaonline.modules.user.useCases.InsertUserImageUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -12,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.*;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -34,7 +37,10 @@ public  class UserImageRestController {
     @Autowired
     private GetImageUseCase getImageUseCase;
 
-    @PostMapping("/{id}")
+    @Autowired
+    private UserRepository userRepository;
+
+    @PostMapping
     @Operation(summary = "Upload user image",
             description = "Uploads an image file for the specified user"
     )
@@ -62,23 +68,26 @@ public  class UserImageRestController {
 //            )
 //    ))
     @SecurityRequirement(name = "jwt_auth")
-    public ResponseEntity<UserResponseDTO> upload(@PathVariable Long id,
-                                                  @RequestParam("userImage") MultipartFile file) throws IOException {
-
-        return ResponseEntity.ok().body(insertUserImageUseCase.execute(id, file));
+    public ResponseEntity<UserResponseDTO> upload(@RequestParam("userImage") MultipartFile file,
+                                                  HttpServletRequest request) throws IOException {
+        Long userid = Long.valueOf(request.getAttribute("user_id").toString());
+        return ResponseEntity.ok().body(insertUserImageUseCase.execute(userid, file));
     }
 
 
-    @GetMapping("/{id}")
+    @GetMapping
     @Operation(summary = "Get a user image", description = "Get a image of user")
     @ApiResponse(responseCode = "200", description = "Operation sucessfully", content = {
             @Content(mediaType = "application/json", schema = @Schema(example = "String Base64"))})
     @ApiResponse(responseCode = "422", description = "Invalid user data provided", content = {
             @Content(mediaType = "text/plain", schema = @Schema(example = "Resource id not found."))})
     @SecurityRequirement(name = "jwt_auth")
-    public ResponseEntity<String> find(@PathVariable Long id) {
+    public ResponseEntity<String> find(HttpServletRequest request) {
+        Long userid = Long.valueOf(request.getAttribute("user_id").toString());
 
-        ImageEntity userImageData = getImageUseCase.execute(id);
+        UserEntity userFound = userRepository.findById(userid).orElseThrow(() -> new BusinessException("token data is invalid."));
+
+        ImageEntity userImageData = getImageUseCase.execute(userFound.getIdImage());
 
         MediaType imageType = MediaType.parseMediaType(userImageData.getImageType());
 

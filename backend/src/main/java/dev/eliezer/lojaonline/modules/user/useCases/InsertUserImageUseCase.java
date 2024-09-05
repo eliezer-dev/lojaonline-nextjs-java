@@ -28,8 +28,9 @@ public class InsertUserImageUseCase {
 
         Optional<ImageEntity> imageFound = Optional.empty();
 
-        if (userEntity.getImageEntity() != null) {
+        if (userEntity.getIdImage() != null) {
             imageFound = imageRepository.findById(userEntity.getIdImage());
+
         }
 
         ImageEntity imageSaved = imageRepository.save(
@@ -41,10 +42,14 @@ public class InsertUserImageUseCase {
         );
         userEntity.setIdImage(imageSaved.getId());
 
-        imageFound.ifPresent(imageEntity -> imageRepository.delete(imageEntity));
+        UserResponseDTO userUpdated =  UserResponseDTO.parseUserResponseDTO(userRepository.save(userEntity));
 
+        imageFound.ifPresent(imageEntity ->
+                imageRepository.delete(imageEntity)
 
-        return UserResponseDTO.parseUserResponseDTO(userRepository.save(userEntity));
+        );
+
+        return userUpdated;
 
     }
 }

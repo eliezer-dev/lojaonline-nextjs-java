@@ -55,6 +55,9 @@ public class SecurityUserFilter extends OncePerRequestFilter {
                     Collections.emptyList());
             SecurityContextHolder.getContext().setAuthentication(auth);
 
+            request.setAttribute("user_id", auth.getPrincipal());
+
+
             /* uso de roles
             request.setAttribute("user_id",auth.getPrincipal());
             request.setAttribute("user_role", roles.get(0));
