@@ -1,12 +1,15 @@
 package dev.eliezer.lojaonline.modules.product.controller;
 
+import dev.eliezer.lojaonline.modules.product.dtos.CreateProductRequestDTO;
 import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;
 import dev.eliezer.lojaonline.modules.product.useCases.CreateProductUseCase;
+import dev.eliezer.lojaonline.modules.user.dtos.CreateUserRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,12 +27,8 @@ public class ProductRestController {
             @Content(schema = @Schema(implementation = ProductEntity.class))})
     @ApiResponse(responseCode = "422", description = "Invalid product data provided", content = {
             @Content(schema = @Schema(implementation = Object.class))})
-    public ResponseEntity<Object> execute(@RequestBody ProductEntity product) {
-        try {
-            var result = createProductUseCase.execute(product);
-            return ResponseEntity.ok().body(result);
-        }catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<Object> execute(@Valid @RequestBody CreateProductRequestDTO product) {
+        ProductEntity productSaved = createProductUseCase.execute(product);
+        return ResponseEntity.ok().body(productSaved);
     }
 }

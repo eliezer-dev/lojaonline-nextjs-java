@@ -1,34 +1,26 @@
-package dev.eliezer.lojaonline.modules.product.entities;
+package dev.eliezer.lojaonline.modules.product.dtos;
 
-import dev.eliezer.lojaonline.modules.product.dtos.CreateProductRequestDTO;
-import dev.eliezer.lojaonline.modules.user.dtos.CreateUserRequestDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Entity;
+import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.groups.Default;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
 @Data
-@Entity(name = "tb_product")
-public class ProductEntity {
+@AllArgsConstructor
+@Builder
+public class CreateProductRequestDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "id of product")
-    private Long id;
-
-    @NotBlank
-    @Column(nullable = false)
+    @NotBlank(message = "[name] is not provided")
     @Schema(example = "SmartWatch X2000", requiredMode = Schema.RequiredMode.REQUIRED, description = "short description of product")
     private String name;
 
@@ -41,18 +33,18 @@ public class ProductEntity {
             requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "complete description of product")
     private String description;
 
+    @NotBlank(message = "[sku] is not provided")
     @Schema(example = "laraj-1234", requiredMode = Schema.RequiredMode.REQUIRED,
             description = "sku of product, sku is an alphanumeric code, used to identify the product for stock control, " +
                     "logistics and inventories. ")
     private String sku;
 
-    @Column(nullable = false, columnDefinition = "numeric(1000,2) default '0.00'")
-    @NotNull
+    //@NotNull(message = "price cannot be null")
+    @NotNull(message = "[price] is not provided")
     @Schema(example = "12.00", requiredMode = Schema.RequiredMode.REQUIRED, description = "price of product")
     private Double price = 0.00;
 
-    @Column(nullable = false, columnDefinition = "bigint default 0")
-    @NotNull
+    @NotNull(message = "[stock_quantity] is not provided")
     @Schema(example = "1000", requiredMode = Schema.RequiredMode.REQUIRED, description = "stock quantity of product")
     private Long stock_quantity = 0L;
 
@@ -60,25 +52,4 @@ public class ProductEntity {
     @Schema(example = "0.00", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "weight in KG of product")
     private Double weight = 0.00;
 
-
-    @CreationTimestamp
-    @Schema(example = "2024-07-21T22:38:10.514664", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "creation time of product")
-    private LocalDateTime createAt;
-
-    @UpdateTimestamp
-    @Schema(example = "2024-07-21T22:38:10.514664", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "update time of product")
-    private LocalDateTime updateAt;
-
-
-    public static ProductEntity parseProductEntity (CreateProductRequestDTO product){
-        ProductEntity productEntity = new ProductEntity();
-        productEntity.setSku(product.getSku());
-        productEntity.setName(product.getName());
-        productEntity.setPrice(product.getPrice());
-        productEntity.setDescription(product.getDescription());
-        productEntity.setStock_quantity(product.getStock_quantity());
-        productEntity.setWeight(productEntity.getWeight());
-
-        return productEntity;
-    }
 }
