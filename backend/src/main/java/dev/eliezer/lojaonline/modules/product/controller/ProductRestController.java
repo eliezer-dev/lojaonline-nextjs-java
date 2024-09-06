@@ -27,7 +27,7 @@ public class ProductRestController {
             @Content(schema = @Schema(implementation = ProductEntity.class))})
     @ApiResponse(responseCode = "422", description = "Invalid product data provided", content = {
             @Content(schema = @Schema(implementation = Object.class))})
-    public ResponseEntity<Object> execute(@Valid @RequestBody CreateProductRequestDTO product) {
+    public ResponseEntity<ProductEntity> execute(@Valid @RequestBody CreateProductRequestDTO product) {
         ProductEntity productSaved = createProductUseCase.execute(product);
         return ResponseEntity.ok().body(productSaved);
     }
