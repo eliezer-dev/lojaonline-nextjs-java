@@ -66,14 +66,6 @@ public class ProductEntity {
     @Schema(example = "2024-07-21T22:38:10.514664", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "update time of product")
     private LocalDateTime updateAt;
 
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
     public static ProductEntity parseProductEntity (CreateProductRequestDTO product){
         ProductEntity productEntity = new ProductEntity();
         productEntity.setSku(product.getSku());
@@ -81,7 +73,7 @@ public class ProductEntity {
         productEntity.setPrice(BigDecimal.valueOf(product.getPrice()));
         productEntity.setDescription(product.getDescription());
         productEntity.setStock_quantity(product.getStock_quantity());
-        productEntity.setWeight(BigDecimal.valueOf(product.getWeight()));
+        productEntity.setWeight(BigDecimal.valueOf(product.getWeight() != null ? product.getWeight() : 0));
 
         return productEntity;
     }
