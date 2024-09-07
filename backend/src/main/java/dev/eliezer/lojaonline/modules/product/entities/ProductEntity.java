@@ -1,6 +1,8 @@
 package dev.eliezer.lojaonline.modules.product.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.eliezer.lojaonline.modules.product.dtos.CreateProductRequestDTO;
+import dev.eliezer.lojaonline.modules.product.dtos.UpdateProductRequestDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -66,16 +68,21 @@ public class ProductEntity {
     @Schema(example = "2024-07-21T22:38:10.514664", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "update time of product")
     private LocalDateTime updateAt;
 
+    @Column(columnDefinition = "boolean default true")
+    @Schema(example = "true", description = "product active")
+    private Boolean active = true;
+
     public static ProductEntity parseProductEntity (CreateProductRequestDTO product){
         ProductEntity productEntity = new ProductEntity();
         productEntity.setSku(product.getSku());
         productEntity.setName(product.getName());
-        productEntity.setPrice(BigDecimal.valueOf(product.getPrice()));
+        productEntity.setPrice(product.getPrice());
         productEntity.setDescription(product.getDescription());
         productEntity.setStock_quantity(product.getStock_quantity());
-        productEntity.setWeight(BigDecimal.valueOf(product.getWeight() != null ? product.getWeight() : 0));
+        productEntity.setWeight(product.getWeight() != null ? product.getWeight() : BigDecimal.valueOf(0));
 
         return productEntity;
     }
+
 
 }
