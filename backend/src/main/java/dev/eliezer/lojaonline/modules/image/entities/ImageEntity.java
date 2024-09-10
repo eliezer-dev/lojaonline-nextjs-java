@@ -1,5 +1,6 @@
 package dev.eliezer.lojaonline.modules.image.entities;
 
+import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -40,5 +41,9 @@ public class ImageEntity {
     @CreationTimestamp
     @Schema(example = "2024-07-21T22:38:10.514664", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "creation time of image")
     private LocalDateTime createAt;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private ProductEntity product;
 
 }

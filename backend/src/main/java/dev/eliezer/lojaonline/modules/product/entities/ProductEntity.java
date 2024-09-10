@@ -1,23 +1,24 @@
 package dev.eliezer.lojaonline.modules.product.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import dev.eliezer.lojaonline.modules.image.entities.ImageEntity;
 import dev.eliezer.lojaonline.modules.product.dtos.CreateProductRequestDTO;
 import dev.eliezer.lojaonline.modules.product.dtos.UpdateProductRequestDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Column;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.ManyToAny;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity(name = "tb_product")
@@ -47,7 +48,7 @@ public class ProductEntity {
                     "logistics and inventories. ")
     private String sku;
 
-    @Column(nullable = false, columnDefinition = "numeric(1000,2) default '0.00'")
+    @Column(nullable = false, columnDefinition = "numeric(1000,2)")
     @NotNull
     private BigDecimal price = BigDecimal.valueOf(0.00);
 
@@ -56,7 +57,7 @@ public class ProductEntity {
     @Schema(example = "1000", requiredMode = Schema.RequiredMode.REQUIRED, description = "stock quantity of product")
     private Long stock_quantity = 0L;
 
-    @Column(nullable = false, columnDefinition = "numeric(1000,3) default '0.000'")
+    @Column(nullable = false, columnDefinition = "numeric(1000,3)")
     @Schema(example = "0.000", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "weight in KG of product")
     private BigDecimal weight = BigDecimal.valueOf(0.00);
 
@@ -71,6 +72,9 @@ public class ProductEntity {
     @Column(columnDefinition = "boolean default true")
     @Schema(example = "true", description = "product active")
     private Boolean active = true;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ImageEntity> imageEntity = new HashSet<>();
 
     public static ProductEntity parseProductEntity (CreateProductRequestDTO product){
         ProductEntity productEntity = new ProductEntity();

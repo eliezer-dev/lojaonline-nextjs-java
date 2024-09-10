@@ -46,7 +46,7 @@ class ProductEntity {
         +find()
     }
 
-    CategoryEntity "0..1" <--> "0..*" ProductEntity : contém
+    ProductEntity "0..*" --> "0..1" CategoryEntity : possui
     ProductEntity "0..1" --> "0..*" ImageEntity : possui
 
 ```
