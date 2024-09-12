@@ -73,8 +73,8 @@ public class ProductEntity {
     @Schema(example = "true", description = "product active")
     private Boolean active = true;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ImageEntity> imageEntity = new HashSet<>();
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private Set<ImageEntity> imageEntity;
 
     public static ProductEntity parseProductEntity (CreateProductRequestDTO product){
         ProductEntity productEntity = new ProductEntity();

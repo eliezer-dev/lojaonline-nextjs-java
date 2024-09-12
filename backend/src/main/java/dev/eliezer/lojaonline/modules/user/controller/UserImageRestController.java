@@ -3,36 +3,31 @@ package dev.eliezer.lojaonline.modules.user.controller;
 import dev.eliezer.lojaonline.exceptions.BusinessException;
 import dev.eliezer.lojaonline.modules.image.entities.ImageEntity;
 import dev.eliezer.lojaonline.modules.image.useCases.GetImageUseCase;
-import dev.eliezer.lojaonline.modules.user.dtos.CreateUserRequestDTO;
 import dev.eliezer.lojaonline.modules.user.dtos.UserResponseDTO;
 import dev.eliezer.lojaonline.modules.user.entities.UserEntity;
 import dev.eliezer.lojaonline.modules.user.repositories.UserRepository;
-import dev.eliezer.lojaonline.modules.user.useCases.InsertUserImageUseCase;
+import dev.eliezer.lojaonline.modules.user.useCases.UploadUserImageUseCase;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.*;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 import java.io.IOException;
 import java.util.Base64;
-import java.util.List;
 
 @RestController
 @RequestMapping("/users/images")
 @Tag(name = "User Image Profile", description = "RESTful API for managing image of user profile.")
 public  class UserImageRestController {
     @Autowired
-    private InsertUserImageUseCase insertUserImageUseCase;
+    private UploadUserImageUseCase uploadUserImageUseCase;
 
     @Autowired
     private GetImageUseCase getImageUseCase;
@@ -71,7 +66,7 @@ public  class UserImageRestController {
     public ResponseEntity<UserResponseDTO> upload(@RequestParam("userImage") MultipartFile file,
                                                   HttpServletRequest request) throws IOException {
         Long userid = Long.valueOf(request.getAttribute("user_id").toString());
-        return ResponseEntity.ok().body(insertUserImageUseCase.execute(userid, file));
+        return ResponseEntity.ok().body(uploadUserImageUseCase.execute(userid, file));
     }
 
 
