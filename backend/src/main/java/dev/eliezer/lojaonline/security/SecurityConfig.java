@@ -39,6 +39,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     auth
                             .requestMatchers("/users/auth").permitAll()
+                            .requestMatchers("/images/*").permitAll()
                             .requestMatchers(SWAGGER_LIST).permitAll();
                     auth.anyRequest().authenticated();
                 })

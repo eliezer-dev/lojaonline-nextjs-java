@@ -3,22 +3,19 @@ package dev.eliezer.lojaonline.modules.product.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.eliezer.lojaonline.modules.image.entities.ImageEntity;
 import dev.eliezer.lojaonline.modules.product.dtos.CreateProductRequestDTO;
-import dev.eliezer.lojaonline.modules.product.dtos.UpdateProductRequestDTO;
+import dev.eliezer.lojaonline.modules.product.dtos.ImageLinkDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.ManyToAny;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Entity(name = "tb_product")
@@ -74,7 +71,11 @@ public class ProductEntity {
     private Boolean active = true;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private Set<ImageEntity> imageEntity;
+    @JsonIgnore
+    private List<ImageEntity> imageEntity = new ArrayList<>();
+
+    @Transient
+    private List<ImageLinkDTO> images = new ArrayList<>();
 
     public static ProductEntity parseProductEntity (CreateProductRequestDTO product){
         ProductEntity productEntity = new ProductEntity();
@@ -87,6 +88,7 @@ public class ProductEntity {
 
         return productEntity;
     }
+
 
 
 }
