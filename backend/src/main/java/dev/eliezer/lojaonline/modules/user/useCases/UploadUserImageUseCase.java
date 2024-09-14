@@ -36,7 +36,7 @@ public class UploadUserImageUseCase {
                 ImageEntity.builder()
                         .imageType(file.getContentType())
                         .filename(file.getOriginalFilename())
-                        .imageData(ImageUtil.compressImage(file.getBytes()))
+                        .imageData(file.getBytes())
                         .build()
         );
         userEntity.setIdImage(imageSaved.getId());

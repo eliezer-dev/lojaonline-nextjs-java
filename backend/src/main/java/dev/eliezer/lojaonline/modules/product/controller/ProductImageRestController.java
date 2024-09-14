@@ -16,14 +16,14 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/products/images/{id}")
+@RequestMapping("/products/images")
 @Tag(name = "Products Images", description = "RESTful API for managing products images.")
-public class ProductImageController {
+public class ProductImageRestController {
     @Autowired
     private UploadProductImageUseCase uploadProductImageUseCase;
 
 
-    @PostMapping
+    @PostMapping("/{id}")
     @Operation(summary = "Create a new product", description = "Create a new product and return the created product data")
     @ApiResponse(responseCode = "201", description = "Product created successfully", content = {
             @Content(schema = @Schema(implementation = ProductEntity.class))})

@@ -86,7 +86,7 @@ public  class UserImageRestController {
 
         MediaType imageType = MediaType.parseMediaType(userImageData.getImageType());
 
-        String userImage = Base64.getEncoder().encodeToString(userImageData.getImageData());
+        String userImage = userImageData.getImageData();
 
         return ResponseEntity.ok().contentType(imageType).body(userImage);
     }

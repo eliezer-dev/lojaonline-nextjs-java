@@ -20,7 +20,7 @@ public class GetImageUseCase {
         ImageEntity imageFound = imageRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
 
         if (imageFound.getImageData() == null || imageFound.getImageData().toString().isEmpty()) {
-            throw new BusinessException("The user image is corrupted.");
+            throw new BusinessException("The image is corrupted.");
         }
 
         return imageFound;

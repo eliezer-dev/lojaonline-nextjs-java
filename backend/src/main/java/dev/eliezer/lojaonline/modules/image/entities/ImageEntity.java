@@ -1,6 +1,8 @@
 package dev.eliezer.lojaonline.modules.image.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;
+import dev.eliezer.lojaonline.providers.ImageUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -12,6 +14,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Base64;
 
 @Data
 @Entity(name = "tb_image")
@@ -44,6 +47,15 @@ public class ImageEntity {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @JsonIgnore
     private ProductEntity product;
+
+    public String getImageData() {
+        return Base64.getEncoder().encodeToString(ImageUtil.decompressImage(imageData));
+    }
+
+    public void setImageData(@NotNull byte[] bytes) {
+        this.imageData = ImageUtil.compressImage(bytes);
+    }
 
 }

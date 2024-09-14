@@ -18,11 +18,19 @@ public class ImageLinkDTO {
         private String filename;
         private String link;
 
+        public void setLink(String link) {
+        }
+
+        public String getLink() {
+                return "http://localhost:8080/images/" + this.id ;
+        }
+
+
+
         public static ImageLinkDTO parseImagesLinkDTO(ImageEntity imageEntity){
                 ImageLinkDTO imageLinkDTO = ImageLinkDTO.builder()
                                 .id(imageEntity.getId())
                                 .filename(imageEntity.getFilename())
-                                .link("")
                                 .build();
 
                 return imageLinkDTO;
