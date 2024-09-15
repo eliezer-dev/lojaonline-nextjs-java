@@ -3,7 +3,7 @@ package dev.eliezer.lojaonline.modules.product.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.eliezer.lojaonline.modules.image.entities.ImageEntity;
 import dev.eliezer.lojaonline.modules.product.dtos.CreateProductRequestDTO;
-import dev.eliezer.lojaonline.modules.product.dtos.ImageLinkDTO;
+import dev.eliezer.lojaonline.modules.image.dtos.ImageLinkDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -72,10 +72,27 @@ public class ProductEntity {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonIgnore
-    private List<ImageEntity> imageEntity = new ArrayList<>();
+    private List<ImageEntity> imageEntities = new ArrayList<>();
+
+
 
     @Transient
     private List<ImageLinkDTO> images = new ArrayList<>();
+
+
+    public List<ImageLinkDTO> getImages() {
+        if (imageEntities.size() > 0) {
+            imageEntities.forEach(imageEntity -> {
+                images.add(ImageLinkDTO.parseImagesLinkDTO(imageEntity));
+            });
+        }
+
+        return images;
+    }
+
+    public void setImages(List<ImageLinkDTO> images) {
+
+    }
 
     public static ProductEntity parseProductEntity (CreateProductRequestDTO product){
         ProductEntity productEntity = new ProductEntity();

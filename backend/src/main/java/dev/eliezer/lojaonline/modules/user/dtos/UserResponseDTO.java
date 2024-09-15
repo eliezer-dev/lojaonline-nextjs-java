@@ -1,13 +1,14 @@
 package dev.eliezer.lojaonline.modules.user.dtos;
 
-import dev.eliezer.lojaonline.modules.image.entities.ImageEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import dev.eliezer.lojaonline.modules.image.dtos.ImageLinkDTO;
 import dev.eliezer.lojaonline.modules.user.entities.UserEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.awt.*;
 import java.time.LocalDateTime;
 
 @Data
@@ -28,6 +29,7 @@ public class UserResponseDTO {
     private Boolean active;
 
     @Schema(example = "1", description = "user image id")
+    @JsonIgnore
     private Long idImage;
 
     @Schema(example = "2024-07-21T22:38:10.514664", description = "user creation datetime")
@@ -35,6 +37,22 @@ public class UserResponseDTO {
 
     @Schema(example = "2024-07-21T22:38:10.514664", description = "user update datetime")
     private LocalDateTime updateAt;
+
+    private ImageLinkDTO image;
+
+    public Object getImage() {
+        if (idImage != null) {
+            ImageLinkDTO image = ImageLinkDTO.builder().id(idImage).build();
+            return image;
+        }
+        return null;
+    }
+
+    public void setImage(ImageLinkDTO image) {
+
+    }
+
+
 
     public static UserResponseDTO parseUserResponseDTO (UserEntity userEntity) {
 

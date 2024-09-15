@@ -4,7 +4,7 @@ import dev.eliezer.lojaonline.exceptions.BusinessException;
 import dev.eliezer.lojaonline.exceptions.NotFoundException;
 import dev.eliezer.lojaonline.modules.image.entities.ImageEntity;
 import dev.eliezer.lojaonline.modules.image.repositories.ImageRepository;
-import dev.eliezer.lojaonline.modules.product.dtos.ImageLinkDTO;
+import dev.eliezer.lojaonline.modules.image.dtos.ImageLinkDTO;
 import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;
 import dev.eliezer.lojaonline.modules.product.repositories.ProductRepository;
 import dev.eliezer.lojaonline.providers.ImageUtil;
@@ -29,7 +29,7 @@ public class UploadProductImageUseCase {
 
         ProductEntity productEntity = productRepository.findById(productId).orElseThrow(() -> new NotFoundException(productId));
 
-        if (productEntity.getImageEntity().size() >= 5) {
+        if (productEntity.getImageEntities().size() >= 5) {
             throw new BusinessException("The maximum number of images has been exceeded.");
         }
 
@@ -42,13 +42,7 @@ public class UploadProductImageUseCase {
                         .build()
         );
 
-        productEntity.getImageEntity().add(imageSaved);
-
-        productEntity.getImageEntity().forEach(imageEntity -> {
-                    imagesLinkDTO.add(ImageLinkDTO.parseImagesLinkDTO(imageEntity));
-                });
-
-        productEntity.setImages(imagesLinkDTO);
+        productEntity.getImageEntities().add(imageSaved);
 
         return productEntity;
 

@@ -79,6 +79,10 @@ public class UserRestController {
         var result = createUserUseCase.execute(user);
         return ResponseEntity.ok().body(result);
     }
+//    public ResponseEntity<UserResponseDTO> create(@Valid @RequestBody CreateUserRequestDTO user) {
+//        var result = createUserUseCase.execute(user);
+//        return ResponseEntity.ok().body(result);
+//    }
 
 
     @PutMapping("/{id}")
