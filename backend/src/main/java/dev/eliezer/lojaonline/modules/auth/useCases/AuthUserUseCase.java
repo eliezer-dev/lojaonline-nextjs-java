@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.Collections;
 
 @Service
 public class AuthUserUseCase{
@@ -46,7 +48,7 @@ public class AuthUserUseCase{
         var token = JWT.create()
                 .withIssuer("LojaOnline")
                 .withSubject(user.getId().toString())
-                //.withClaim("roles", Arrays.asList(user.getUserRole()))
+                .withClaim("roles", Collections.singletonList(user.getUserRole()))
                 .withExpiresAt(expiresIn)
                 .sign(algorithm);
 

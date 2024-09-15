@@ -6,6 +6,7 @@ import dev.eliezer.lojaonline.modules.user.dtos.CreateUserRequestDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -56,6 +57,15 @@ public class UserEntity {
     @JoinColumn(name = "id_image", referencedColumnName = "id", insertable = false, updatable = false)
     @JsonIgnore
     private ImageEntity imageEntity;
+
+    @Column(name = "user_role", columnDefinition = "bigint default 0")
+    @NotNull(message = "[userRole] is not provided.")
+    @Schema(example = "1", requiredMode = Schema.RequiredMode.REQUIRED, description =
+            """
+            0 - user admin.
+            1 - client.
+            """)
+    private Long userRole;
     
     public static UserEntity parseUserEntity (CreateUserRequestDTO createUserRequestDTO) {
         UserEntity userEntity = new UserEntity();

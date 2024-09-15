@@ -47,22 +47,16 @@ public class SecurityUserFilter extends OncePerRequestFilter {
                 response.getOutputStream().print("O token fornecido expirou.");
                 return;
             }
-            /* uso de roles
+
             var roles = token.getClaim("roles").asList(Object.class);
-            */
+
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(token.getSubject(),
                     null,
                     Collections.emptyList());
             SecurityContextHolder.getContext().setAuthentication(auth);
 
             request.setAttribute("user_id", auth.getPrincipal());
-
-
-            /* uso de roles
-            request.setAttribute("user_id",auth.getPrincipal());
-            request.setAttribute("user_role", roles.get(0));
-
-             */
+            request.setAttribute("user_role", roles.getFirst());
         }
 
         filterChain.doFilter(request,response);
