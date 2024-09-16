@@ -58,14 +58,14 @@ public class UserEntity {
     @JsonIgnore
     private ImageEntity imageEntity;
 
-    @Column(name = "user_role", columnDefinition = "bigint default 0")
-    @NotNull(message = "[userRole] is not provided.")
-    @Schema(example = "1", requiredMode = Schema.RequiredMode.REQUIRED, description =
+    @Column(name = "user_role", columnDefinition = "bigint default 1")
+    @Schema(example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description =
             """
             0 - user admin.
             1 - client.
+            2 - normal user.
             """)
-    private Long userRole;
+    private Long userRole = 1L;
     
     public static UserEntity parseUserEntity (CreateUserRequestDTO createUserRequestDTO) {
         UserEntity userEntity = new UserEntity();

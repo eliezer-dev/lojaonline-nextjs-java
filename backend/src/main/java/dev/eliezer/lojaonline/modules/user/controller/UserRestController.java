@@ -1,5 +1,6 @@
 package dev.eliezer.lojaonline.modules.user.controller;
 
+import dev.eliezer.lojaonline.exceptions.UnauthorizedAccessException;
 import dev.eliezer.lojaonline.modules.user.dtos.UpdateUserRequestDTO;
 import dev.eliezer.lojaonline.modules.user.dtos.UserResponseDTO;
 import dev.eliezer.lojaonline.modules.user.dtos.CreateUserRequestDTO;
@@ -16,6 +17,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -75,7 +77,14 @@ public class UserRestController {
             }
     ))
     @SecurityRequirement(name = "jwt_auth")
-    public ResponseEntity<UserResponseDTO> create(@Valid @RequestBody CreateUserRequestDTO user) {
+    public ResponseEntity<UserResponseDTO> create(@Valid @RequestBody CreateUserRequestDTO user, HttpServletRequest request) {
+        Long userRoles = Long.valueOf(request.getAttribute("user_role").toString());
+        Long userId = Long.valueOf(request.getAttribute("user_id").toString());
+
+        if (userRoles != 0 && user.getUserRole() != 1) {
+            throw new UnauthorizedAccessException(userId);
+        }
+
         var result = createUserUseCase.execute(user);
         return ResponseEntity.ok().body(result);
     }

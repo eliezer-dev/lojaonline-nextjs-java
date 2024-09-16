@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,5 +28,14 @@ public class CreateUserRequestDTO {
     @NotBlank (message = "password not provided")
     @Schema(example = "senha1234", requiredMode = Schema.RequiredMode.REQUIRED, description = "user password")
     private String password;
+
+    @Schema(example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description =
+            """
+            0 - user admin.
+            1 - client.
+            2 - normal user.
+            """)
+    private Long userRole = 1L;
+
 
 }

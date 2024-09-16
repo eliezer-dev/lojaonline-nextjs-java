@@ -40,6 +40,8 @@ public class UserResponseDTO {
 
     private ImageLinkDTO image;
 
+    private Long userRole;
+
     public Object getImage() {
         if (idImage != null) {
             ImageLinkDTO image = ImageLinkDTO.builder().id(idImage).build();
@@ -64,6 +66,7 @@ public class UserResponseDTO {
                 .updateAt(userEntity.getUpdateAt())
                 .active(userEntity.getActive())
                 .idImage(userEntity.getIdImage())
+                .userRole(userEntity.getUserRole())
                 .build();
     }
 

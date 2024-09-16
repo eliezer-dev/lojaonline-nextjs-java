@@ -76,4 +76,10 @@ public class GlobalExceptionHandler {
         e.printStackTrace();
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(UnauthorizedAccessException.class)
+    public ResponseEntity<Void> handleUnauthorizedAccessException(UnauthorizedAccessException e) {
+        e.printStackTrace();
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
 }
