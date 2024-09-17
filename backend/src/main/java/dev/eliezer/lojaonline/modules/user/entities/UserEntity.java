@@ -1,10 +1,12 @@
 package dev.eliezer.lojaonline.modules.user.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import dev.eliezer.lojaonline.exceptions.UnauthorizedAccessException;
 import dev.eliezer.lojaonline.modules.image.entities.ImageEntity;
 import dev.eliezer.lojaonline.modules.user.dtos.CreateUserRequestDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -75,5 +77,12 @@ public class UserEntity {
         return userEntity;
     }
 
+    public static Boolean isUserAdmin (HttpServletRequest request) {
+        Long userRoles = Long.valueOf(request.getAttribute("user_role").toString());
+
+        if (userRoles == 0) return true;
+
+        return false;
+    }
 
 }

@@ -51,7 +51,14 @@ public class UserRestController {
     @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<List<UserResponseDTO>> index(@RequestParam(value = "id", defaultValue = "0") Long id,
                                                        @RequestParam(value = "email", defaultValue = "") String email,
-                                                       @RequestParam(value = "name", defaultValue = "") String name) {
+                                                       @RequestParam(value = "name", defaultValue = "") String name,
+                                                       HttpServletRequest request){
+
+          if ( !UserEntity.isUserAdmin(request)) {
+            throw new UnauthorizedAccessException();
+        }
+
+
         var result = getUsersUseCase.execute(id, email, name);
         return ResponseEntity.ok().body(result);
     }
@@ -78,11 +85,9 @@ public class UserRestController {
     ))
     @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<UserResponseDTO> create(@Valid @RequestBody CreateUserRequestDTO user, HttpServletRequest request) {
-        Long userRoles = Long.valueOf(request.getAttribute("user_role").toString());
-        Long userId = Long.valueOf(request.getAttribute("user_id").toString());
 
-        if (userRoles != 0 && user.getUserRole() != 1) {
-            throw new UnauthorizedAccessException(userId);
+        if (UserEntity.isUserAdmin(request) && user.getUserRole() != 1) {
+            throw new UnauthorizedAccessException();
         }
 
         var result = createUserUseCase.execute(user);
@@ -114,6 +119,7 @@ public class UserRestController {
         inactivateUserUseCase.execute(id);
         return ResponseEntity.ok().body("User with id " + id +  " inactivated successfully.");
     }
+
 
 
 }
