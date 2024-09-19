@@ -103,7 +103,10 @@ public class UserRestController {
     @ApiResponse(responseCode = "422", description = "Invalid user data provided", content = {
             @Content(mediaType = "text/plain", schema = @Schema(example = "email is alright in use."))})
     @SecurityRequirement(name = "jwt_auth")
-    public ResponseEntity<UserResponseDTO> update(@PathVariable Long id, @Valid @RequestBody UpdateUserRequestDTO user) {
+    public ResponseEntity<UserResponseDTO> update(@PathVariable Long id, HttpServletRequest request, @Valid @RequestBody UpdateUserRequestDTO user) {
+        if (!UserEntity.isUserAdmin(request) && !Long.valueOf(request.getAttribute("user_id").toString()).equals(id)) {
+            throw new UnauthorizedAccessException();
+        }
         var result = updateUserUseCase.execute(user, id);
         return ResponseEntity.ok().body(result);
     }
