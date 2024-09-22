@@ -2,8 +2,6 @@ package dev.eliezer.lojaonline.modules.product.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.eliezer.lojaonline.modules.image.entities.ImageEntity;
-import dev.eliezer.lojaonline.modules.product.dtos.CreateProductRequestDTO;
-import dev.eliezer.lojaonline.modules.image.dtos.ImageLinkDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -18,9 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Entity(name = "tb_product")
-public class ProductEntity {
-
+@Entity(name = "bundled_product")
+public class BundledProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "id of product")
@@ -70,44 +67,14 @@ public class ProductEntity {
     @Schema(example = "true", description = "product active")
     private Boolean active = true;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+//    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany()
+    @JoinTable(
+            name = "bundled_product_items",
+            joinColumns = @JoinColumn(name = "bundled_product_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+
     @JsonIgnore
-    private List<ImageEntity> imageEntities = new ArrayList<>();
-
-    @ManyToMany(mappedBy = "productEntities")
-    @JsonIgnore
-    private List<BundledProductEntity> bundledProductEntities= new ArrayList<>();
-
-    @Transient
-    private List<ImageLinkDTO> images = new ArrayList<>();
-
-
-    public List<ImageLinkDTO> getImages() {
-        if (imageEntities.size() > 0) {
-            imageEntities.forEach(imageEntity -> {
-                images.add(ImageLinkDTO.parseImagesLinkDTO(imageEntity));
-            });
-        }
-
-        return images;
-    }
-
-    public void setImages(List<ImageLinkDTO> images) {
-
-    }
-
-    public static ProductEntity parseProductEntity (CreateProductRequestDTO product){
-        ProductEntity productEntity = new ProductEntity();
-        productEntity.setSku(product.getSku());
-        productEntity.setName(product.getName());
-        productEntity.setPrice(product.getPrice());
-        productEntity.setDescription(product.getDescription());
-        productEntity.setStock_quantity(product.getStock_quantity());
-        productEntity.setWeight(product.getWeight() != null ? product.getWeight() : BigDecimal.valueOf(0));
-
-        return productEntity;
-    }
-
-
-
+    private List<ProductEntity> productEntities = new ArrayList<>();
 }
