@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity(name = "bundled_product_items")
-public class BundledProductItems {
+public class BundledProductItemsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
