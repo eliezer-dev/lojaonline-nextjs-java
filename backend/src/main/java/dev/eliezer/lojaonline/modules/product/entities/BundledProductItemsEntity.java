@@ -3,7 +3,10 @@ package dev.eliezer.lojaonline.modules.product.entities;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -12,6 +15,9 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity(name = "bundled_product_items")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class BundledProductItemsEntity {
 
     @Id
@@ -28,12 +34,12 @@ public class BundledProductItemsEntity {
     private ProductEntity product;
 
     @Column(nullable = false, columnDefinition = "bigint default 0")
-    @NotNull
+    @NotNull(message = "[stock_quantity] is not provided")
     @Schema(example = "1000", requiredMode = Schema.RequiredMode.REQUIRED, description = "stock quantity of product")
     private Long stock_quantity = 0L;
 
     @Column(nullable = false, columnDefinition = "numeric(1000,2)")
-    @NotNull
+    @NotNull(message = "[price] is not provided")
     private BigDecimal price = BigDecimal.valueOf(0.00);
 
     @CreationTimestamp
