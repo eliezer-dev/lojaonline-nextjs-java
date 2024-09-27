@@ -74,7 +74,7 @@ public class ProductEntity {
     @JsonIgnore
     private List<ImageEntity> imageEntities = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "productEntities")
+    @ManyToMany(mappedBy = "products")
     @JsonIgnore
     private List<BundledProductEntity> bundledProductEntities= new ArrayList<>();
 

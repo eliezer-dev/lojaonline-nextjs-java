@@ -40,6 +40,7 @@ class BundledProductEntity {
         +delete()
         +find()
     }
+    
 
     BundledProductEntity "0..*" --> "0..*" ProductEntity : possui
 

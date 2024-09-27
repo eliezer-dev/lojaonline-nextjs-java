@@ -1,12 +1,14 @@
 package dev.eliezer.lojaonline.modules.product.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import dev.eliezer.lojaonline.modules.image.entities.ImageEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -17,7 +19,11 @@ import java.util.List;
 
 @Data
 @Entity(name = "bundled_product")
+@AllArgsConstructor
+@NoArgsConstructor
+@SuperBuilder
 public class BundledProductEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "id of product")
@@ -74,7 +80,7 @@ public class BundledProductEntity {
             joinColumns = @JoinColumn(name = "bundled_product_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-
     @JsonIgnore
-    private List<ProductEntity> productEntities = new ArrayList<>();
+    private List<ProductEntity> products = new ArrayList<>();
+
 }

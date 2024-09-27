@@ -1,9 +1,9 @@
 package dev.eliezer.lojaonline.modules.product.controller;
 
 import dev.eliezer.lojaonline.exceptions.UnauthorizedAccessException;
+import dev.eliezer.lojaonline.modules.product.dtos.BundledProductWithItemsResponseDTO;
 import dev.eliezer.lojaonline.modules.product.dtos.CreateBundledProductItemDTO;
 import dev.eliezer.lojaonline.modules.product.entities.BundledProductEntity;
-import dev.eliezer.lojaonline.modules.product.entities.BundledProductItemsEntity;
 import dev.eliezer.lojaonline.modules.product.useCases.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -49,13 +49,13 @@ public class BundledProductRestController {
             @Content(schema = @Schema(implementation = BundledProductEntity.class))})
     @ApiResponse(responseCode = "422", description = "Invalid bundled product data provided", content = {
             @Content(schema = @Schema(implementation = Object.class))})
-    public ResponseEntity<BundledProductItemsEntity> createBundledProductItem (@Valid @RequestBody CreateBundledProductItemDTO bundledProductItem, @PathVariable Long id, HttpServletRequest request) {
+    public ResponseEntity<BundledProductWithItemsResponseDTO> createBundledProductItem (@Valid @RequestBody CreateBundledProductItemDTO bundledProductItem, @PathVariable Long id, HttpServletRequest request) {
 
         if (Long.valueOf(request.getAttribute("user_role").toString()) != 0) {
             throw  new UnauthorizedAccessException();
         }
 
-        BundledProductItemsEntity bundledProductItemSaved = createBundledProductItemUseCase.execute(bundledProductItem, id);
+        BundledProductWithItemsResponseDTO bundledProductItemSaved = createBundledProductItemUseCase.execute(bundledProductItem, id);
 
         return ResponseEntity.ok().body(bundledProductItemSaved);
     }

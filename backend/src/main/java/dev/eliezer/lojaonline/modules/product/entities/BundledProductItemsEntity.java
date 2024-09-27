@@ -1,5 +1,7 @@
 package dev.eliezer.lojaonline.modules.product.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -23,15 +25,21 @@ public class BundledProductItemsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "id of product")
+    @JsonIgnore
     private Long id;
 
     @ManyToOne
     @JoinColumn(name="bundled_product_id")
+    @JsonIgnore
     private BundledProductEntity bundledProductEntity;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @JsonIgnore
     private ProductEntity product;
+
+    @Transient
+    private Long productId;
 
     @Column(nullable = false, columnDefinition = "bigint default 0")
     @NotNull(message = "[stock_quantity] is not provided")
@@ -49,5 +57,12 @@ public class BundledProductItemsEntity {
     @UpdateTimestamp
     @Schema(example = "2024-07-21T22:38:10.514664", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "update time of product")
     private LocalDateTime updateAt;
+
+    public void setProductId(Long productId) {
+    }
+
+    public Long getProductId() {
+        return product.getId();
+    }
 
 }
