@@ -1,7 +1,7 @@
-package dev.eliezer.lojaonline.modules.product.useCases;
+package dev.eliezer.lojaonline.modules.bundledProduct.useCases;
 
-import dev.eliezer.lojaonline.modules.product.entities.BundledProductEntity;
-import dev.eliezer.lojaonline.modules.product.repositories.BundledProductRepository;
+import dev.eliezer.lojaonline.modules.bundledProduct.entities.BundledProductEntity;
+import dev.eliezer.lojaonline.modules.bundledProduct.repositories.BundledProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

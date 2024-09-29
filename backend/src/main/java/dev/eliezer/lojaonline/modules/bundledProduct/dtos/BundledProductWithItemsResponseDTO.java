@@ -1,7 +1,7 @@
-package dev.eliezer.lojaonline.modules.product.dtos;
+package dev.eliezer.lojaonline.modules.bundledProduct.dtos;
 
-import dev.eliezer.lojaonline.modules.product.entities.BundledProductEntity;
-import dev.eliezer.lojaonline.modules.product.entities.BundledProductItemsEntity;
+import dev.eliezer.lojaonline.modules.bundledProduct.entities.BundledProductEntity;
+import dev.eliezer.lojaonline.modules.bundledProduct.entities.BundledProductItemsEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 

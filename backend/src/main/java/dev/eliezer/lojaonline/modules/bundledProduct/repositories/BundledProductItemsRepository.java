@@ -1,7 +1,6 @@
-package dev.eliezer.lojaonline.modules.product.repositories;
+package dev.eliezer.lojaonline.modules.bundledProduct.repositories;
 
-import dev.eliezer.lojaonline.modules.product.entities.BundledProductEntity;
-import dev.eliezer.lojaonline.modules.product.entities.BundledProductItemsEntity;
+import dev.eliezer.lojaonline.modules.bundledProduct.entities.BundledProductItemsEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,7 @@
-package dev.eliezer.lojaonline.modules.product.entities;
+package dev.eliezer.lojaonline.modules.bundledProduct.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
