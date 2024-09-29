@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.InvocationTargetException;
+
 @RestController
 @RequestMapping("/products/bundled")
 @Tag(name = "Bundled Products", description = "RESTful API for managing bundled product.")
@@ -55,7 +57,7 @@ public class BundledProductRestController {
             @Content(schema = @Schema(implementation = BundledProductEntity.class))})
     @ApiResponse(responseCode = "422", description = "Invalid bundled product data provided", content = {
             @Content(schema = @Schema(implementation = Object.class))})
-    public ResponseEntity<BundledProductEntity> updateBundledProduct(@Valid @RequestBody BundledProductEntity bundledProduct, HttpServletRequest request, @PathVariable Long id) {
+    public ResponseEntity<BundledProductEntity> updateBundledProduct(@Valid @RequestBody BundledProductEntity bundledProduct, HttpServletRequest request, @PathVariable Long id) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
 
         if (Long.valueOf(request.getAttribute("user_role").toString()) != 0) {
             throw  new UnauthorizedAccessException();

@@ -84,4 +84,5 @@ public class BundledProductEntity {
     @JsonIgnore
     private List<ProductEntity> products = new ArrayList<>();
 
+
 }
