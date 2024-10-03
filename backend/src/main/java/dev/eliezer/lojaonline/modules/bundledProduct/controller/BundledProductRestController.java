@@ -4,13 +4,14 @@ import dev.eliezer.lojaonline.exceptions.UnauthorizedAccessException;
 import dev.eliezer.lojaonline.modules.bundledProduct.dtos.BundledProductWithItemsResponseDTO;
 import dev.eliezer.lojaonline.modules.bundledProduct.dtos.CreateBundledProductItemDTO;
 import dev.eliezer.lojaonline.modules.bundledProduct.entities.BundledProductEntity;
-import dev.eliezer.lojaonline.modules.bundledProduct.useCases.CreateBundledProductItemUseCase;
-import dev.eliezer.lojaonline.modules.bundledProduct.useCases.CreateBundledProductUseCase;
-import dev.eliezer.lojaonline.modules.bundledProduct.useCases.UpdateBundledProductUseCase;
+import dev.eliezer.lojaonline.modules.bundledProduct.useCases.*;
+import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -19,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/products/bundled")
@@ -30,9 +32,27 @@ public class BundledProductRestController {
     @Autowired
     private CreateBundledProductUseCase createBundledProductUseCase;
 
-
     @Autowired
     private CreateBundledProductItemUseCase createBundledProductItemUseCase;
+    
+    @Autowired
+    private InactivateBundledProductUseCase inactivateBundledProductUseCase;
+    
+    @Autowired
+    private GetBundledProductUseCase getBundledProductUseCase;
+
+    @GetMapping
+    @Operation(summary = "Get all products", description = "Retrieve a list of all products")
+    @ApiResponse(responseCode = "200", description = "Operation sucessfully", content = {
+            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ProductEntity.class)))})
+    @ApiResponse(responseCode = "422", description = "Invalid product data provided", content = {
+            @Content(mediaType = "text/plain", schema = @Schema(example = "Resource id not found."))})
+    @SecurityRequirement(name = "jwt_auth")
+    public ResponseEntity<List<BundledProductWithItemsResponseDTO>> index() {
+        var result = getBundledProductUseCase.execute();
+        return ResponseEntity.ok().body(result);
+    }
+
 
     @PostMapping
     @Operation(summary = "Create a new bundled product", description = "Create a new bundled product and return the created bundled product data")
@@ -84,6 +104,18 @@ public class BundledProductRestController {
         BundledProductWithItemsResponseDTO bundledProductItemSaved = createBundledProductItemUseCase.execute(bundledProductItem, id);
 
         return ResponseEntity.ok().body(bundledProductItemSaved);
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Inactivate a bundled product by id", description = "Inactivate product specified by id")
+    @ApiResponse(responseCode = "200", description = "Operation sucessfully", content = {
+            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ProductEntity.class)))})
+    @ApiResponse(responseCode = "422", description = "Invalid product data provided", content = {
+            @Content(mediaType = "text/plain", schema = @Schema(example = "Resource id not found."))})
+    @SecurityRequirement(name = "jwt_auth")
+    public ResponseEntity<BundledProductEntity> inactivate(@PathVariable Long id) {
+        var result = inactivateBundledProductUseCase.execute(id);
+        return ResponseEntity.ok().body(result);
     }
 
 
