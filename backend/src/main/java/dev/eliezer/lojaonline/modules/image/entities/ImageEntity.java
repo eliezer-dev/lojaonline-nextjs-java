@@ -46,7 +46,7 @@ public class ImageEntity {
     private LocalDateTime createAt;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
     @JsonIgnore
     private ProductEntity product;
 

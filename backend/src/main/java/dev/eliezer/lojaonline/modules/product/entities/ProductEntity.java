@@ -2,6 +2,7 @@ package dev.eliezer.lojaonline.modules.product.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.eliezer.lojaonline.modules.bundledProduct.entities.BundledProductEntity;
+import dev.eliezer.lojaonline.modules.bundledProduct.entities.CompositeProduct;
 import dev.eliezer.lojaonline.modules.image.entities.ImageEntity;
 import dev.eliezer.lojaonline.modules.product.dtos.CreateProductRequestDTO;
 import dev.eliezer.lojaonline.modules.image.dtos.ImageLinkDTO;
@@ -81,6 +82,10 @@ public class ProductEntity {
 
     @Transient
     private List<ImageLinkDTO> images = new ArrayList<>();
+
+    @OneToMany(mappedBy = "compositeProduct", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<CompositeProduct> compositeProducts;
 
 
     public List<ImageLinkDTO> getImages() {
