@@ -1,13 +1,14 @@
 package dev.eliezer.lojaonline.modules.bundledProduct.repositories;
 
-import dev.eliezer.lojaonline.modules.bundledProduct.entities.BundledProductItemsEntity;
-import dev.eliezer.lojaonline.modules.bundledProduct.entities.CompositeProduct;
+import dev.eliezer.lojaonline.modules.bundledProduct.entities.CompositeProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface CompositeProductRepository extends JpaRepository<CompositeProduct,Long> {
-    List<CompositeProduct> findAllByCompositeProduct_Id (Long id);
+public interface CompositeProductRepository extends JpaRepository<CompositeProductEntity,Long> {
+    List<CompositeProductEntity> findAllByCompositeProduct_Id (Long id);
+    Optional<CompositeProductEntity> findByCompositeProduct_IdAndItemProduct_Id(Long compositeProduct_Id, Long compositeItemId);
 }

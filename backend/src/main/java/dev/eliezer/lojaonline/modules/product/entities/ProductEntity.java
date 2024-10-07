@@ -2,7 +2,7 @@ package dev.eliezer.lojaonline.modules.product.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.eliezer.lojaonline.modules.bundledProduct.entities.BundledProductEntity;
-import dev.eliezer.lojaonline.modules.bundledProduct.entities.CompositeProduct;
+import dev.eliezer.lojaonline.modules.bundledProduct.entities.CompositeProductEntity;
 import dev.eliezer.lojaonline.modules.image.entities.ImageEntity;
 import dev.eliezer.lojaonline.modules.product.dtos.CreateProductRequestDTO;
 import dev.eliezer.lojaonline.modules.image.dtos.ImageLinkDTO;
@@ -84,12 +84,15 @@ public class ProductEntity {
     private List<ImageLinkDTO> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "compositeProduct", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JsonIgnore
-    private List<CompositeProduct> compositeProducts;
+    private List<CompositeProductEntity> compositeItems;
+
+    @Transient
+    @Schema(example = "simple, composite", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "product type")
+    private String productType;
 
 
     public List<ImageLinkDTO> getImages() {
-        if (imageEntities.size() > 0) {
+        if (!imageEntities.isEmpty()) {
             imageEntities.forEach(imageEntity -> {
                 images.add(ImageLinkDTO.parseImagesLinkDTO(imageEntity));
             });
@@ -99,6 +102,18 @@ public class ProductEntity {
     }
 
     public void setImages(List<ImageLinkDTO> images) {
+
+    }
+
+    public String getProductType() {
+        if (!compositeItems.isEmpty()) {
+            return "composite";
+        }
+
+        return "simple";
+    }
+
+    public void setProductType(String productType) {
 
     }
 

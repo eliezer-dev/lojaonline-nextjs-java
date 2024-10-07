@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CompositeProduct {
+public class CompositeProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,15 +29,24 @@ public class CompositeProduct {
 
     @ManyToOne
     @JoinColumn(name = "composite_product_id", referencedColumnName = "id")
+    @JsonIgnore
     private ProductEntity compositeProduct;
 
     @ManyToOne
     @JoinColumn(name = "composite_item_id", referencedColumnName = "id")
+    @JsonIgnore
     private ProductEntity itemProduct;
+
+    @Transient
+    private Long compositeItemId;
 
     @Column(nullable = false, columnDefinition = "numeric(1000,2)")
     @NotNull(message = "[price] is not provided")
     private BigDecimal price = BigDecimal.valueOf(0.00);
+
+    @Column(columnDefinition = "bigint default 0")
+    @NotNull(message = "[quantity] is not provided")
+    private Long quantity = 0L;
 
     @CreationTimestamp
     @Schema(example = "2024-07-21T22:38:10.514664", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "creation time of product")
@@ -47,4 +56,11 @@ public class CompositeProduct {
     @Schema(example = "2024-07-21T22:38:10.514664", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "update time of product")
     private LocalDateTime updateAt;
 
+    public Long getCompositeItemId() {
+        return itemProduct.getId();
+    }
+
+    public void setCompositeItemId(Long compositeItemId) {
+
+    }
 }
