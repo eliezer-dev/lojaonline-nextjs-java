@@ -1,13 +1,11 @@
-package dev.eliezer.lojaonline.modules.bundledProduct.useCases;
+package dev.eliezer.lojaonline.modules.compositeProduct.useCases;
 
 import dev.eliezer.lojaonline.exceptions.NotFoundException;
-import dev.eliezer.lojaonline.modules.bundledProduct.entities.BundledProductEntity;
-import dev.eliezer.lojaonline.modules.bundledProduct.repositories.BundledProductRepository;
+import dev.eliezer.lojaonline.modules.compositeProduct.entities.BundledProductEntity;
+import dev.eliezer.lojaonline.modules.compositeProduct.repositories.BundledProductRepository;
 import dev.eliezer.lojaonline.providers.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.lang.reflect.InvocationTargetException;
 
 @Service
 public class UpdateBundledProductUseCase {

@@ -1,14 +1,10 @@
-package dev.eliezer.lojaonline.modules.bundledProduct.useCases;
+package dev.eliezer.lojaonline.modules.compositeProduct.useCases;
 
-import dev.eliezer.lojaonline.modules.bundledProduct.dtos.CompositeProductResponseDTO;
-import dev.eliezer.lojaonline.modules.bundledProduct.entities.BundledProductItemsEntity;
-import dev.eliezer.lojaonline.modules.bundledProduct.repositories.BundledProductItemsRepository;
-import dev.eliezer.lojaonline.modules.bundledProduct.repositories.BundledProductRepository;
+import dev.eliezer.lojaonline.modules.compositeProduct.dtos.CompositeProductResponseDTO;
+import dev.eliezer.lojaonline.modules.compositeProduct.repositories.BundledProductItemsRepository;
+import dev.eliezer.lojaonline.modules.compositeProduct.repositories.BundledProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class GetBundledProductUseCase {

@@ -1,26 +1,20 @@
-package dev.eliezer.lojaonline.modules.bundledProduct.controller;
+package dev.eliezer.lojaonline.modules.compositeProduct.controller;
 
 import dev.eliezer.lojaonline.exceptions.UnauthorizedAccessException;
-import dev.eliezer.lojaonline.modules.bundledProduct.dtos.CompositeProductResponseDTO;
-import dev.eliezer.lojaonline.modules.bundledProduct.dtos.ProductItemToCompositeProductDTO;
-import dev.eliezer.lojaonline.modules.bundledProduct.entities.BundledProductEntity;
-import dev.eliezer.lojaonline.modules.bundledProduct.useCases.*;
+import dev.eliezer.lojaonline.modules.compositeProduct.dtos.ProductItemToCompositeProductDTO;
+import dev.eliezer.lojaonline.modules.compositeProduct.entities.BundledProductEntity;
+import dev.eliezer.lojaonline.modules.compositeProduct.useCases.*;
 import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 
 @RestController
 @RequestMapping("/products/composite")

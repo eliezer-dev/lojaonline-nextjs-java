@@ -1,4 +1,4 @@
-package dev.eliezer.lojaonline.modules.bundledProduct.dtos;
+package dev.eliezer.lojaonline.modules.compositeProduct.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;

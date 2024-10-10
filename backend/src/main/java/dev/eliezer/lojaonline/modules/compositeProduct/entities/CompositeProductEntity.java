@@ -1,6 +1,7 @@
-package dev.eliezer.lojaonline.modules.bundledProduct.entities;
+package dev.eliezer.lojaonline.modules.compositeProduct.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import dev.eliezer.lojaonline.modules.compositeProduct.dtos.ProductItemToCompositeProductDTO;
 import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
@@ -62,5 +63,15 @@ public class CompositeProductEntity {
 
     public void setCompositeItemId(Long compositeItemId) {
 
+    }
+
+    public static CompositeProductEntity parseCompositeProduct(ProductEntity compositeProduct, ProductEntity compositeProductItem, ProductItemToCompositeProductDTO productItemToCompositeProductDTO) {
+
+        return CompositeProductEntity.builder()
+                .compositeProduct(compositeProduct)
+                .itemProduct(compositeProductItem)
+                .price(productItemToCompositeProductDTO.getPrice())
+                .quantity(productItemToCompositeProductDTO.getQuantity())
+                .build();
     }
 }

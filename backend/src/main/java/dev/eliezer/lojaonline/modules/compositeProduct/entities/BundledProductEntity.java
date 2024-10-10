@@ -1,4 +1,4 @@
-package dev.eliezer.lojaonline.modules.bundledProduct.entities;
+package dev.eliezer.lojaonline.modules.compositeProduct.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;

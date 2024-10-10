@@ -1,10 +1,10 @@
-package dev.eliezer.lojaonline.modules.bundledProduct.useCases;
+package dev.eliezer.lojaonline.modules.compositeProduct.useCases;
 
 import dev.eliezer.lojaonline.exceptions.BusinessException;
 import dev.eliezer.lojaonline.exceptions.NotFoundException;
-import dev.eliezer.lojaonline.modules.bundledProduct.dtos.ProductItemToCompositeProductDTO;
-import dev.eliezer.lojaonline.modules.bundledProduct.entities.CompositeProductEntity;
-import dev.eliezer.lojaonline.modules.bundledProduct.repositories.CompositeProductRepository;
+import dev.eliezer.lojaonline.modules.compositeProduct.dtos.ProductItemToCompositeProductDTO;
+import dev.eliezer.lojaonline.modules.compositeProduct.entities.CompositeProductEntity;
+import dev.eliezer.lojaonline.modules.compositeProduct.repositories.CompositeProductRepository;
 import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;
 import dev.eliezer.lojaonline.modules.product.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +22,12 @@ public class InsertItemsCompositeProductUseCase {
 
         ProductEntity compositeproductFound = productRepository.findById(idCompositeProduct)
                 .orElseThrow(() -> new NotFoundException(idCompositeProduct));
-        ProductEntity productItemFound = productRepository.findById(compositeProductItemRequest.getId())
+
+
+
+        ProductEntity compositeProductItemFound = productRepository.findById(compositeProductItemRequest.getId())
                 .orElseThrow(() -> new NotFoundException(compositeProductItemRequest.getId()));
+
 
         compositeProductRepository.findByCompositeProduct_IdAndItemProduct_Id(idCompositeProduct, compositeProductItemRequest.getId())
                 .ifPresent(
@@ -32,16 +36,9 @@ public class InsertItemsCompositeProductUseCase {
                        });
 
 
-        CompositeProductEntity compositeProductItemToSave = CompositeProductEntity.builder()
-                .compositeProduct(compositeproductFound)
-                .itemProduct(productItemFound)
-                .price(compositeProductItemRequest.getPrice())
-                .quantity(compositeProductItemRequest.getQuantity())
-                .build();
-
-        CompositeProductEntity compositeProductSaved = compositeProductRepository.save(compositeProductItemToSave);
-
-        compositeproductFound.getCompositeItems().add(compositeProductSaved);
+        compositeproductFound.getCompositeItems()
+                .add(compositeProductRepository.save(CompositeProductEntity
+                        .parseCompositeProduct(compositeproductFound, compositeProductItemFound, compositeProductItemRequest)));
 
         return compositeproductFound;
 
