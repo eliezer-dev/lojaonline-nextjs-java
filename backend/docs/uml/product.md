@@ -45,6 +45,16 @@ class ProductEntity {
         +delete()
         +find()
     }
+    
+    class CompositeProductEntity {
+        +Long productId
+        +Long orderList;
+        +Long item_id;
+        +BigDecimal quantity;
+        +BigDecimal price;
+        +LocalDateTime createdAt;
+        +LocalDateTime updateAt;
+    }
 
     ProductEntity "0..*" --> "0..1" CategoryEntity : possui
     ProductEntity "0..1" --> "0..*" ImageEntity : possui

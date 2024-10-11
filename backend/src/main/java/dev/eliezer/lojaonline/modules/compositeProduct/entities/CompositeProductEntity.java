@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
@@ -28,18 +29,24 @@ public class CompositeProductEntity {
     @JsonIgnore
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "composite_product_id", referencedColumnName = "id")
     @JsonIgnore
     private ProductEntity compositeProduct;
 
-    @ManyToOne
+    @Transient
+    private String compositeProductName;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "composite_item_id", referencedColumnName = "id")
     @JsonIgnore
     private ProductEntity itemProduct;
 
     @Transient
     private Long compositeItemId;
+
+    @Transient
+    private String compositeItemName;
 
     @Column(nullable = false, columnDefinition = "numeric(1000,2)")
     @NotNull(message = "[price] is not provided")
@@ -73,5 +80,20 @@ public class CompositeProductEntity {
                 .price(productItemToCompositeProductDTO.getPrice())
                 .quantity(productItemToCompositeProductDTO.getQuantity())
                 .build();
+    }
+
+    public String getCompositeProductName() {
+        return compositeProduct.getName();
+    }
+
+    public void setCompositeProductDescription(String compositeProductDescription) {
+
+    }
+
+    public String getCompositeItemName() {
+        return itemProduct.getName();
+    }
+
+    public void setCompositeItemDesciption(String compositeItemDesciption) {
     }
 }

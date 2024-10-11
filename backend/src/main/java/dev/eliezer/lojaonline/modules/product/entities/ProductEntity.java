@@ -1,7 +1,6 @@
 package dev.eliezer.lojaonline.modules.product.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import dev.eliezer.lojaonline.modules.compositeProduct.entities.BundledProductEntity;
 import dev.eliezer.lojaonline.modules.compositeProduct.entities.CompositeProductEntity;
 import dev.eliezer.lojaonline.modules.image.entities.ImageEntity;
 import dev.eliezer.lojaonline.modules.product.dtos.CreateProductRequestDTO;
@@ -75,10 +74,6 @@ public class ProductEntity {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonIgnore
     private List<ImageEntity> imageEntities = new ArrayList<>();
-
-    @ManyToMany(mappedBy = "products")
-    @JsonIgnore
-    private List<BundledProductEntity> bundledProductEntities= new ArrayList<>();
 
     @Transient
     private List<ImageLinkDTO> images = new ArrayList<>();
