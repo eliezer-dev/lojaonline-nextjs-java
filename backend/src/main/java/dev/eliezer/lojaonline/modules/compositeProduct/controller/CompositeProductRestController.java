@@ -1,7 +1,9 @@
 package dev.eliezer.lojaonline.modules.compositeProduct.controller;
 
 import dev.eliezer.lojaonline.exceptions.UnauthorizedAccessException;
+import dev.eliezer.lojaonline.modules.compositeProduct.dtos.CompositeProductUpdateDTO;
 import dev.eliezer.lojaonline.modules.compositeProduct.dtos.ProductItemToCompositeProductDTO;
+import dev.eliezer.lojaonline.modules.compositeProduct.entities.CompositeProductEntity;
 import dev.eliezer.lojaonline.modules.compositeProduct.useCases.*;
 import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,7 +26,7 @@ import java.util.List;
 @Tag(name = "Bundled Products", description = "RESTful API for managing bundled product.")
 public class CompositeProductRestController {
     @Autowired
-    private UpdateBundledProductUseCase updateBundledProductUseCase;
+    private UpdateCompositeProductUseCase updateCompositeProductUseCase;
 
     @Autowired
     private InsertItemsCompositeProductUseCase insertItemsCompositeProductUseCase;
@@ -34,6 +36,7 @@ public class CompositeProductRestController {
     
     @Autowired
     private GetCompositeProductUseCase getCompositeProductUseCase;
+
 
     @GetMapping
     @Operation(summary = "Get all composite products", description = "Retrieve a list of all composite products")
@@ -50,40 +53,22 @@ public class CompositeProductRestController {
         return ResponseEntity.ok().body(result);
     }
 
+    @PutMapping("/{compositeProductId}")
+    @Operation(summary = "Update a composite product", description = "Update composite product specified by id and return product data")
+    @ApiResponse(responseCode = "201", description = "composite product updated successfully", content = {
+            @Content(schema = @Schema(implementation = CompositeProductEntity.class))})
+    @ApiResponse(responseCode = "422", description = "Invalid composite product data provided", content = {
+            @Content(schema = @Schema(implementation = Object.class))})
+    public ResponseEntity<CompositeProductEntity> updateCompositeProduct(@Valid @RequestBody CompositeProductUpdateDTO compositeProductUpdateDTO, HttpServletRequest request, @PathVariable Long compositeProductId) {
 
-//    @PostMapping
-//    @Operation(summary = "Create a new bundled product", description = "Create a new bundled product and return the created bundled product data")
-//    @ApiResponse(responseCode = "201", description = "Bundled product created successfully", content = {
-//            @Content(schema = @Schema(implementation = BundledProductEntity.class))})
-//    @ApiResponse(responseCode = "422", description = "Invalid bundled product data provided", content = {
-//            @Content(schema = @Schema(implementation = Object.class))})
-//    public ResponseEntity<BundledProductEntity> createBundledProduct(@Valid @RequestBody BundledProductEntity bundledProduct, HttpServletRequest request) {
-//
-//        if (Long.valueOf(request.getAttribute("user_role").toString()) != 0) {
-//            throw  new UnauthorizedAccessException();
-//        }
-//
-//        BundledProductEntity bundledProductSaved = createBundledProductUseCase.execute(bundledProduct);
-//
-//        return ResponseEntity.ok().body(bundledProductSaved);
-//    }
-//
-//    @PutMapping("/{id}")
-//    @Operation(summary = "Update a bundled product", description = "Update bundled product specified by id and return product data")
-//    @ApiResponse(responseCode = "201", description = "Bundled product updated successfully", content = {
-//            @Content(schema = @Schema(implementation = BundledProductEntity.class))})
-//    @ApiResponse(responseCode = "422", description = "Invalid bundled product data provided", content = {
-//            @Content(schema = @Schema(implementation = Object.class))})
-//    public ResponseEntity<BundledProductEntity> updateBundledProduct(@Valid @RequestBody BundledProductEntity bundledProduct, HttpServletRequest request, @PathVariable Long id) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
-//
-//        if (Long.valueOf(request.getAttribute("user_role").toString()) != 0) {
-//            throw  new UnauthorizedAccessException();
-//        }
-//
-//        BundledProductEntity bundledProductSaved = updateBundledProductUseCase.execute(bundledProduct, id);
-//
-//        return ResponseEntity.ok().body(bundledProductSaved);
-//    }
+        if (Long.valueOf(request.getAttribute("user_role").toString()) != 0) {
+            throw  new UnauthorizedAccessException();
+        }
+
+        CompositeProductEntity compositeProductUpdated = updateCompositeProductUseCase.execute(compositeProductId, compositeProductUpdateDTO);
+
+        return ResponseEntity.ok().body(compositeProductUpdated);
+    }
 
 
     @PostMapping("/items/{id}")

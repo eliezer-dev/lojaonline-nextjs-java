@@ -82,8 +82,12 @@ public class CompositeProductEntity {
                 .build();
     }
 
+
     public String getCompositeProductName() {
-        return compositeProduct.getName();
+        if (compositeProduct != null && compositeProduct.getName() != null) {
+            return compositeProduct.getName();
+        }
+        return null;
     }
 
     public void setCompositeProductDescription(String compositeProductDescription) {
@@ -91,7 +95,10 @@ public class CompositeProductEntity {
     }
 
     public String getCompositeItemName() {
-        return itemProduct.getName();
+        if (itemProduct != null && itemProduct.getName() != null) {
+            return itemProduct.getName();
+        }
+        return null;
     }
 
     public void setCompositeItemDesciption(String compositeItemDesciption) {
