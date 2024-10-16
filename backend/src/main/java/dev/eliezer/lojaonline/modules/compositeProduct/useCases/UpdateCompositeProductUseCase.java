@@ -41,8 +41,8 @@ public class UpdateCompositeProductUseCase {
 
         CompositeProductEntity compositeProductEntity = CompositeProductEntity.builder()
                 .itemProduct(compositeProductItemFound)
-                .price(compositeProductUpdateDTO.getPrice() != null ? compositeProductUpdateDTO.getPrice() : compositeProductItemFound.getPrice())
-                .quantity(compositeProductUpdateDTO.getQuantity() != null ? compositeProductUpdateDTO.getQuantity() : compositeProductItemFound.getStock_quantity())
+                .price(compositeProductUpdateDTO.getPrice())
+                .quantity(compositeProductUpdateDTO.getQuantity())
                 .build();
 
         return compositeProductEntity;
