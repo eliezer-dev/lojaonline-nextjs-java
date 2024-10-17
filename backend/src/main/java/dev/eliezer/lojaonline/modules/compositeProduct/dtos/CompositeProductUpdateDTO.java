@@ -41,16 +41,6 @@ public class CompositeProductUpdateDTO {
     @Schema(example = "2024-07-21T22:38:10.514664", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "update time of composite item")
     private LocalDateTime updateAt;
 
-/*    public static CompositeProductEntity parseCompositeProduct(ProductEntity compositeProduct, ProductEntity compositeProductItem, ProductItemToCompositeProductDTO productItemToCompositeProductDTO) {
-
-        return CompositeProductEntity.builder()
-                .compositeProduct(compositeProduct)
-                .itemProduct(compositeProductItem)
-                .price(productItemToCompositeProductDTO.getPrice())
-                .quantity(productItemToCompositeProductDTO.getQuantity())
-                .build();
-    }*/
-
 }
 
 

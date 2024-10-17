@@ -1,6 +1,7 @@
 package dev.eliezer.lojaonline.modules.product.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import dev.eliezer.lojaonline.modules.compositeProduct.dtos.CompositeItemDTO;
 import dev.eliezer.lojaonline.modules.compositeProduct.entities.CompositeProductEntity;
 import dev.eliezer.lojaonline.modules.image.entities.ImageEntity;
 import dev.eliezer.lojaonline.modules.product.dtos.CreateProductRequestDTO;
@@ -78,12 +79,18 @@ public class ProductEntity {
     @Transient
     private List<ImageLinkDTO> images = new ArrayList<>();
 
-    @OneToMany(mappedBy = "compositeProduct", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<CompositeProductEntity> compositeItems;
-
     @Transient
     @Schema(example = "simple, composite", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "product type")
     private String productType;
+
+    @OneToMany(mappedBy = "compositeProductId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<CompositeProductEntity> compositeProductEntities;
+
+    @Transient
+    private List<CompositeItemDTO> compositeItems = new ArrayList<>();
+
+
 
 
     public List<ImageLinkDTO> getImages() {
@@ -101,7 +108,7 @@ public class ProductEntity {
     }
 
     public String getProductType() {
-        if (!compositeItems.isEmpty()) {
+        if (!compositeProductEntities.isEmpty()) {
             return "composite";
         }
 
@@ -109,6 +116,18 @@ public class ProductEntity {
     }
 
     public void setProductType(String productType) {
+
+    }
+
+    public List<CompositeItemDTO> getCompositeItems() {
+        List<CompositeItemDTO> compositeItemsFormated = new ArrayList<>();
+        compositeProductEntities.forEach(compositeItemEntity -> {
+            compositeItemsFormated.add(CompositeItemDTO.parseCompositeItemDTO(compositeItemEntity, name));
+        });
+        return compositeItemsFormated;
+    }
+
+    public void setCompositeItems(List<CompositeProductEntity> compositeItems) {
 
     }
 

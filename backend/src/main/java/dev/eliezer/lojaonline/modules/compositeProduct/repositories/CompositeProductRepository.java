@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface CompositeProductRepository extends JpaRepository<CompositeProductEntity,Long> {
-    List<CompositeProductEntity> findAllByCompositeProduct_Id (Long id);
-    Optional<CompositeProductEntity> findByCompositeProduct_IdAndItemProduct_Id(Long compositeProduct_Id, Long compositeItemId);
+    List<CompositeProductEntity> findAllByCompositeProductId (Long id);
+    Optional<CompositeProductEntity> findByCompositeProductIdAndCompositeItemId(Long compositeProductId, Long compositeItemId);
 }

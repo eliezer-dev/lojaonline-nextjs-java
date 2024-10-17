@@ -25,7 +25,7 @@ public class InsertItemsCompositeProductUseCase {
 
 
 
-        ProductEntity compositeProductItemFound = productRepository.findById(compositeProductItemRequest.getId())
+/*        ProductEntity compositeProductItemFound = productRepository.findById(compositeProductItemRequest.getId())
                 .orElseThrow(() -> new NotFoundException(compositeProductItemRequest.getId()));
 
 
@@ -38,7 +38,7 @@ public class InsertItemsCompositeProductUseCase {
 
         compositeproductFound.getCompositeItems()
                 .add(compositeProductRepository.save(CompositeProductEntity
-                        .parseCompositeProduct(compositeproductFound, compositeProductItemFound, compositeProductItemRequest)));
+                        .parseCompositeProduct(compositeproductFound, compositeProductItemFound, compositeProductItemRequest)));*/
 
         return compositeproductFound;
 

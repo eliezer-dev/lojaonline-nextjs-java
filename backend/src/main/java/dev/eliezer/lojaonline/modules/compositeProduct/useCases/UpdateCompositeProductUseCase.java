@@ -24,7 +24,7 @@ public class UpdateCompositeProductUseCase {
     public CompositeProductEntity execute (Long compositeProductId, CompositeProductUpdateDTO CompositeProductSource) {
 
         CompositeProductEntity compositeProductTarget = compositeProductRepository
-                .findByCompositeProduct_IdAndItemProduct_Id(compositeProductId, CompositeProductSource.getCompositeItemId())
+                .findByCompositeProductIdAndCompositeItemId(compositeProductId, CompositeProductSource.getCompositeItemId())
                 .orElseThrow((() -> new BusinessException("composite item is not found.")));
 
         CompositeProductEntity compositeProductEntitySource = parseCompositeProductEntity(compositeProductId, CompositeProductSource);
@@ -40,7 +40,7 @@ public class UpdateCompositeProductUseCase {
                 .orElseThrow(() -> new NotFoundException(compositeProductUpdateDTO.getCompositeItemId()));
 
         CompositeProductEntity compositeProductEntity = CompositeProductEntity.builder()
-                .itemProduct(compositeProductItemFound)
+                .compositeProductId(compositeProductItemFound.getId())
                 .price(compositeProductUpdateDTO.getPrice())
                 .quantity(compositeProductUpdateDTO.getQuantity())
                 .build();

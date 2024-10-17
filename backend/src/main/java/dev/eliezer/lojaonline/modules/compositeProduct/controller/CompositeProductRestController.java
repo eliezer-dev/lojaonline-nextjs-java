@@ -6,6 +6,7 @@ import dev.eliezer.lojaonline.modules.compositeProduct.dtos.ProductItemToComposi
 import dev.eliezer.lojaonline.modules.compositeProduct.entities.CompositeProductEntity;
 import dev.eliezer.lojaonline.modules.compositeProduct.useCases.*;
 import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;
+import dev.eliezer.lojaonline.security.SecurityUserFilter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -21,10 +22,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static dev.eliezer.lojaonline.security.SecurityUserFilter.isNormalUser;
+import static dev.eliezer.lojaonline.security.SecurityUserFilter.isUserAdmin;
+
 @RestController
 @RequestMapping("/products/composite")
 @Tag(name = "Bundled Products", description = "RESTful API for managing bundled product.")
 public class CompositeProductRestController {
+
     @Autowired
     private UpdateCompositeProductUseCase updateCompositeProductUseCase;
 
@@ -46,9 +51,11 @@ public class CompositeProductRestController {
             @Content(mediaType = "text/plain", schema = @Schema(example = "Resource id not found."))})
     @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<List<ProductEntity>> index(@Valid HttpServletRequest request) {
-        if (Long.valueOf(request.getAttribute("user_role").toString()) != 0) {
+
+        if (!isUserAdmin(request)) {
             throw  new UnauthorizedAccessException();
         }
+
         var result = getCompositeProductUseCase.execute();
         return ResponseEntity.ok().body(result);
     }
@@ -59,9 +66,10 @@ public class CompositeProductRestController {
             @Content(schema = @Schema(implementation = CompositeProductEntity.class))})
     @ApiResponse(responseCode = "422", description = "Invalid composite product data provided", content = {
             @Content(schema = @Schema(implementation = Object.class))})
+    @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<CompositeProductEntity> updateCompositeProduct(@Valid @RequestBody CompositeProductUpdateDTO compositeProductUpdateDTO, HttpServletRequest request, @PathVariable Long compositeProductId) {
 
-        if (Long.valueOf(request.getAttribute("user_role").toString()) != 0) {
+        if (!isUserAdmin(request)) {
             throw  new UnauthorizedAccessException();
         }
 
@@ -80,7 +88,7 @@ public class CompositeProductRestController {
     @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<ProductEntity> createBundledProductItem (@Valid @RequestBody ProductItemToCompositeProductDTO compositeProductItem, @PathVariable Long id, HttpServletRequest request) {
 
-        if (Long.valueOf(request.getAttribute("user_role").toString()) != 0) {
+        if (!isUserAdmin(request)) {
             throw  new UnauthorizedAccessException();
         }
 
@@ -96,7 +104,11 @@ public class CompositeProductRestController {
     @ApiResponse(responseCode = "422", description = "Invalid product data provided", content = {
             @Content(mediaType = "text/plain", schema = @Schema(example = "Resource id not found."))})
     @SecurityRequirement(name = "jwt_auth")
-    public ResponseEntity<String> remove(@PathVariable Long compositeProductId, @PathVariable Long compositeItemId) {
+    public ResponseEntity<String> remove(@PathVariable Long compositeProductId, @PathVariable Long compositeItemId, HttpServletRequest request) {
+        if (!isUserAdmin(request)){
+            throw  new UnauthorizedAccessException();
+        }
+
         var result = removeItemsCompositeProductUseCase.execute(compositeProductId, compositeItemId);
         return ResponseEntity.ok().body(result);
     }

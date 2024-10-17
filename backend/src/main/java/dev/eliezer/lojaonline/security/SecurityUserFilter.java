@@ -3,6 +3,7 @@ package dev.eliezer.lojaonline.security;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import dev.eliezer.lojaonline.exceptions.UnauthorizedAccessException;
 import dev.eliezer.lojaonline.providers.JWTUserProvider;
 import dev.eliezer.lojaonline.exceptions.BusinessException;
 import dev.eliezer.lojaonline.exceptions.NotFoundException;
@@ -61,5 +62,30 @@ public class SecurityUserFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request,response);
     }
+
+    public static Boolean isNormalUser(HttpServletRequest request) {
+        if (Long.valueOf(request.getAttribute("user_role").toString()) == 2) {
+            return true;
+        }
+        return false;
+    }
+
+    public static Boolean isClientUser(HttpServletRequest request) {
+        if (Long.valueOf(request.getAttribute("user_role").toString()) == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public static Boolean isUserAdmin(HttpServletRequest request) {
+        if (Long.valueOf(request.getAttribute("user_role").toString()) == 0) {
+            return true;
+        }
+        return false;
+    }
+
+
+
+
 }
 

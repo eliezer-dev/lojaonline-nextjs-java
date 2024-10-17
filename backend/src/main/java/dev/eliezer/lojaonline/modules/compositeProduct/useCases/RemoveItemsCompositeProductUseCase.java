@@ -16,16 +16,16 @@ public class RemoveItemsCompositeProductUseCase {
     ProductRepository productRepository;
 
     public String execute (Long compositeProductId, Long compositeItemId) {
-        CompositeProductEntity compositeProductToRemove = compositeProductRepository.findByCompositeProduct_IdAndItemProduct_Id(compositeProductId, compositeItemId)
+        CompositeProductEntity compositeProductToRemove = compositeProductRepository.findByCompositeProductIdAndCompositeItemId(compositeProductId, compositeItemId)
                 .orElseThrow(() -> new BusinessException("Composite Product is not found"));
 
 
         compositeProductRepository.delete(compositeProductToRemove);
 
-        String response = "The composite item " + compositeProductToRemove.getCompositeProductName() +
+/*        String response = "The composite item " + compositeProductToRemove.getCompositeProductName() +
                 " of composite product" + compositeProductToRemove.getCompositeItemName() +
-                " is successfully deleted.";
+                " is successfully deleted.";*/
 
-        return response;
+        return "successfully";
     }
 }
