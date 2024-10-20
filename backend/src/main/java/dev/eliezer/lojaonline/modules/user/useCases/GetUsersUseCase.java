@@ -13,7 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class GetUsersUseCase {
+public class
+GetUsersUseCase {
     @Autowired
     private UserRepository userRepository;
 

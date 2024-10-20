@@ -1,5 +1,6 @@
 package dev.eliezer.lojaonline.modules.user.dtos;
 
+import dev.eliezer.lojaonline.exceptions.BusinessException;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
@@ -36,6 +37,18 @@ public class CreateUserRequestDTO {
             2 - normal user.
             """)
     private Long userRole = 1L;
+
+    public String getUserRoleDescription () {
+
+        int role = userRole.intValue();
+
+        return switch (role) {
+            case 0 -> "userAdmin";
+            case 1 -> "client";
+            case 2 -> "normalUser";
+            default -> throw new BusinessException("User role is invalid");
+        };
+    }
 
 
 }

@@ -1,4 +1,4 @@
-package dev.eliezer.lojaonline.providers;
+package dev.eliezer.lojaonline.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

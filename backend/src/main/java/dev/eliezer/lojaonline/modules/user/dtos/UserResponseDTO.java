@@ -1,6 +1,7 @@
 package dev.eliezer.lojaonline.modules.user.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import dev.eliezer.lojaonline.exceptions.BusinessException;
 import dev.eliezer.lojaonline.modules.image.dtos.ImageLinkDTO;
 import dev.eliezer.lojaonline.modules.user.entities.UserEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,10 +25,6 @@ public class UserResponseDTO {
     @Schema(example = "jose@email.com", description = "user email")
     private String email;
 
-
-    @Schema(example = "true", description = "user active")
-    private Boolean active;
-
     @Schema(example = "1", description = "user image id")
     @JsonIgnore
     private Long idImage;
@@ -40,7 +37,16 @@ public class UserResponseDTO {
 
     private ImageLinkDTO image;
 
-    private Long userRole;
+    @Schema(example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description =
+            """
+            userAdmin,
+            client,
+            normalUser.
+            """)
+    private String userRoleDescription;
+
+    @Schema(example = "true", description = "user active")
+    private Boolean active;
 
     public Object getImage() {
         if (idImage != null) {
@@ -54,8 +60,6 @@ public class UserResponseDTO {
 
     }
 
-
-
     public static UserResponseDTO parseUserResponseDTO (UserEntity userEntity) {
 
         return UserResponseDTO.builder()
@@ -66,7 +70,7 @@ public class UserResponseDTO {
                 .updateAt(userEntity.getUpdateAt())
                 .active(userEntity.getActive())
                 .idImage(userEntity.getIdImage())
-                .userRole(userEntity.getUserRole())
+                .userRoleDescription(userEntity.getUserRoleDescription())
                 .build();
     }
 

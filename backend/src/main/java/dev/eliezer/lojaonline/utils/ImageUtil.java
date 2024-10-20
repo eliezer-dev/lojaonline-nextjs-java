@@ -1,4 +1,4 @@
-package dev.eliezer.lojaonline.providers;
+package dev.eliezer.lojaonline.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.util.zip.Deflater;

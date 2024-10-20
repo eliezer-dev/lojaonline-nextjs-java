@@ -6,7 +6,6 @@ import dev.eliezer.lojaonline.modules.compositeProduct.dtos.ProductItemToComposi
 import dev.eliezer.lojaonline.modules.compositeProduct.entities.CompositeProductEntity;
 import dev.eliezer.lojaonline.modules.compositeProduct.useCases.*;
 import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;
-import dev.eliezer.lojaonline.security.SecurityUserFilter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -19,11 +18,10 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
-import static dev.eliezer.lojaonline.security.SecurityUserFilter.isNormalUser;
-import static dev.eliezer.lojaonline.security.SecurityUserFilter.isUserAdmin;
+import static dev.eliezer.lojaonline.utils.RequestUtils.isUserAdmin;
+
 
 @RestController
 @RequestMapping("/products/composite")

@@ -1,9 +1,7 @@
 package dev.eliezer.lojaonline.modules.user.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UpdateUserRequestDTO {
 
+
     @Schema(example = "Jose da Silva", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "user full name")
     private String fullname;
 
@@ -24,4 +23,8 @@ public class UpdateUserRequestDTO {
 
     @Schema(example = "senha1234", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "user password")
     private String password;
+
+    @Schema(example = "true", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "status of user")
+    private Boolean active;
+
 }

@@ -2,13 +2,12 @@ package dev.eliezer.lojaonline.modules.auth.useCases;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import dev.eliezer.lojaonline.exceptions.BusinessException;
+import dev.eliezer.lojaonline.exceptions.UsernameNotFoundException;
 import dev.eliezer.lojaonline.modules.auth.dto.AuthUserRequestDTO;
 import dev.eliezer.lojaonline.modules.auth.dto.AuthUserResponseDTO;
 import dev.eliezer.lojaonline.modules.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +31,7 @@ public class AuthUserUseCase{
 
         var user = userRepository.findByEmail(userAuth.getEmail())
                 .orElseThrow(() -> {
-                            throw new UsernameNotFoundException("e-mail or password incorrect");
+                            throw new UsernameNotFoundException();
                         }
 
                 );
@@ -40,7 +39,7 @@ public class AuthUserUseCase{
         var passwordMatches = passwordEncoder.matches(userAuth.getPassword(), user.getPassword());
 
         if (!passwordMatches) {
-            throw new UsernameNotFoundException("e-mail ou password incorrect");
+            throw new UsernameNotFoundException();
         }
 
         Algorithm algorithm = Algorithm.HMAC256(secretKey);

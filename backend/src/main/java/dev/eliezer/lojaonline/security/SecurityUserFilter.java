@@ -4,6 +4,8 @@ package dev.eliezer.lojaonline.security;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import dev.eliezer.lojaonline.exceptions.UnauthorizedAccessException;
+import dev.eliezer.lojaonline.modules.user.entities.UserEntity;
+import dev.eliezer.lojaonline.modules.user.repositories.UserRepository;
 import dev.eliezer.lojaonline.providers.JWTUserProvider;
 import dev.eliezer.lojaonline.exceptions.BusinessException;
 import dev.eliezer.lojaonline.exceptions.NotFoundException;
@@ -11,6 +13,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,6 +35,11 @@ import static java.time.LocalDateTime.now;
 public class SecurityUserFilter extends OncePerRequestFilter {
     @Autowired
     private JWTUserProvider jwtUserProvider;
+
+    @Autowired
+    private UserRepository userRepository;
+
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
@@ -56,34 +64,28 @@ public class SecurityUserFilter extends OncePerRequestFilter {
                     Collections.emptyList());
             SecurityContextHolder.getContext().setAuthentication(auth);
 
+
+            Optional<UserEntity> user = userRepository.findById(Long.valueOf(auth.getPrincipal().toString()));
+
+            if (!user.isPresent()) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getOutputStream().print("this token is invalid");
+                return;
+            }
+
+
+            if (!user.get().getActive()) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getOutputStream().print("The user is inactive");
+                return;
+            }
+
             request.setAttribute("user_id", auth.getPrincipal());
             request.setAttribute("user_role", roles.getFirst());
         }
 
         filterChain.doFilter(request,response);
     }
-
-    public static Boolean isNormalUser(HttpServletRequest request) {
-        if (Long.valueOf(request.getAttribute("user_role").toString()) == 2) {
-            return true;
-        }
-        return false;
-    }
-
-    public static Boolean isClientUser(HttpServletRequest request) {
-        if (Long.valueOf(request.getAttribute("user_role").toString()) == 1) {
-            return true;
-        }
-        return false;
-    }
-
-    public static Boolean isUserAdmin(HttpServletRequest request) {
-        if (Long.valueOf(request.getAttribute("user_role").toString()) == 0) {
-            return true;
-        }
-        return false;
-    }
-
 
 
 

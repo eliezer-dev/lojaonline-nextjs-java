@@ -7,7 +7,7 @@ import dev.eliezer.lojaonline.modules.image.repositories.ImageRepository;
 import dev.eliezer.lojaonline.modules.image.dtos.ImageLinkDTO;
 import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;
 import dev.eliezer.lojaonline.modules.product.repositories.ProductRepository;
-import dev.eliezer.lojaonline.providers.ImageUtil;
+import dev.eliezer.lojaonline.utils.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

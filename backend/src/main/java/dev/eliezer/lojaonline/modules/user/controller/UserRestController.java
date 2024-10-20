@@ -22,8 +22,11 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+
+import static dev.eliezer.lojaonline.utils.RequestUtils.isUserAdmin;
+import static dev.eliezer.lojaonline.utils.RequestUtils.extractUserIdOfRequest;
+
 
 @RestController
 @RequestMapping("/users")
@@ -54,7 +57,7 @@ public class UserRestController {
                                                        @RequestParam(value = "name", defaultValue = "") String name,
                                                        HttpServletRequest request){
 
-          if ( !UserEntity.isUserAdmin(request)) {
+          if (!isUserAdmin(request)) {
             throw new UnauthorizedAccessException();
         }
 
@@ -84,17 +87,18 @@ public class UserRestController {
             }
     ))
     @SecurityRequirement(name = "jwt_auth")
-    public ResponseEntity<UserResponseDTO> create(@Valid @RequestBody CreateUserRequestDTO user, HttpServletRequest request) {
+    public ResponseEntity<UserResponseDTO> create(@Valid @RequestBody CreateUserRequestDTO createUserData, HttpServletRequest request) {
 
-        if (UserEntity.isUserAdmin(request) && user.getUserRole() != 1) {
+        /* usuários do tipo cliente podem ser criados por qualquer pessoa, usuários normais e administradores só podem ser criados por admins */
+        if (!isUserAdmin(request) && !createUserData.getUserRoleDescription().equals("client")) {
             throw new UnauthorizedAccessException();
         }
 
-        var result = createUserUseCase.execute(user);
+        var result = createUserUseCase.execute(createUserData);
         return ResponseEntity.ok().body(result);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{userId}")
     @Operation(summary = "Update a user", description = "Update a user and return the user data updated")
     @ApiResponse(responseCode = "201", description = "User updated successfully", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDTO.class))})
@@ -103,24 +107,33 @@ public class UserRestController {
     @ApiResponse(responseCode = "422", description = "Invalid user data provided", content = {
             @Content(mediaType = "text/plain", schema = @Schema(example = "email is alright in use."))})
     @SecurityRequirement(name = "jwt_auth")
-    public ResponseEntity<UserResponseDTO> update(@PathVariable Long id, HttpServletRequest request, @Valid @RequestBody UpdateUserRequestDTO user) {
-        if (!UserEntity.isUserAdmin(request) && !Long.valueOf(request.getAttribute("user_id").toString()).equals(id)) {
+    public ResponseEntity<UserResponseDTO> update(@PathVariable Long userId, HttpServletRequest request,
+                                                  @Valid @RequestBody UpdateUserRequestDTO userDataUpdate) {
+
+        /* Qualquer usuário pode alterar informações dele mesmo e apenas usuários administradores podem alterar informações
+        de outros usuários */
+        if (!isUserAdmin(request) && !extractUserIdOfRequest(request).equals(userId)){
             throw new UnauthorizedAccessException();
         }
-        var result = updateUserUseCase.execute(user, id);
+
+        var result = updateUserUseCase.execute(userDataUpdate, userId);
         return ResponseEntity.ok().body(result);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{userId}")
     @Operation(summary = "Inactivate a user", description = "Inactivate a user")
     @ApiResponse(responseCode = "200", description = "User inactivated successfully", content = {
             @Content(schema = @Schema(implementation = UserEntity.class))})
     @ApiResponse(responseCode = "404", description = "user id not found", content = {
             @Content(mediaType = "text/plain", schema = @Schema(example = "Resource id not found."))})
     @SecurityRequirement(name = "jwt_auth")
-    public ResponseEntity<String> inactivate(@PathVariable Long id ) {
-        inactivateUserUseCase.execute(id);
-        return ResponseEntity.ok().body("User with id " + id +  " inactivated successfully.");
+    public ResponseEntity<String> inactivate(@PathVariable Long userId, HttpServletRequest request) {
+
+        if (!isUserAdmin(request)) throw new UnauthorizedAccessException();
+
+        inactivateUserUseCase.execute(userId);
+
+        return ResponseEntity.ok().body("User with id " + userId +  " inactivated successfully.");
     }
 
 

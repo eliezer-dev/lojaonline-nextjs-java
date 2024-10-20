@@ -2,7 +2,7 @@ package dev.eliezer.lojaonline.modules.image.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;
-import dev.eliezer.lojaonline.providers.ImageUtil;
+import dev.eliezer.lojaonline.utils.ImageUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

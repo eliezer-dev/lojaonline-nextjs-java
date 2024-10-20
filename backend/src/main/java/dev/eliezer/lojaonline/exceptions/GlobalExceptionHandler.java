@@ -78,8 +78,14 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UnauthorizedAccessException.class)
-    public ResponseEntity<Void> handleUnauthorizedAccessException(UnauthorizedAccessException e) {
+    public ResponseEntity<String> handleUnauthorizedAccessException(UnauthorizedAccessException e) {
         e.printStackTrace();
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<String> handleUnauthorizedAccessException(UsernameNotFoundException e) {
+        e.printStackTrace();
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 }

@@ -7,7 +7,7 @@ import dev.eliezer.lojaonline.modules.compositeProduct.entities.CompositeProduct
 import dev.eliezer.lojaonline.modules.compositeProduct.repositories.CompositeProductRepository;
 import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;
 import dev.eliezer.lojaonline.modules.product.repositories.ProductRepository;
-import dev.eliezer.lojaonline.providers.ObjectUtils;
+import dev.eliezer.lojaonline.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
