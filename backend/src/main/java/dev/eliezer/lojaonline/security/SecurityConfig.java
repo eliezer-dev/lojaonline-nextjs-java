@@ -40,7 +40,8 @@ public class SecurityConfig {
                     auth
                             .requestMatchers("/users/auth").permitAll()
                             .requestMatchers("/images/*").permitAll()
-                            .requestMatchers(SWAGGER_LIST).permitAll();
+                            .requestMatchers(SWAGGER_LIST).permitAll()
+                            .requestMatchers("/clients/create").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .addFilterBefore(securityUserFilter, BasicAuthenticationFilter.class);

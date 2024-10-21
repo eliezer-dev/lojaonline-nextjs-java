@@ -73,7 +73,7 @@ public class UserRestController {
     @ApiResponse(responseCode = "422", description = "Invalid user data provided", content =
     @Content(
             mediaType = "text/plain",
-            array = @ArraySchema(schema = @Schema(implementation = Object.class)),
+            array = @ArraySchema(schema = @Schema(implementation = CreateUserRequestDTO.class)),
 
             examples = {
                     @ExampleObject(
@@ -89,14 +89,15 @@ public class UserRestController {
     @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<UserResponseDTO> create(@Valid @RequestBody CreateUserRequestDTO createUserData, HttpServletRequest request) {
 
-        /* usuários do tipo cliente podem ser criados por qualquer pessoa, usuários normais e administradores só podem ser criados por admins */
-        if (!isUserAdmin(request) && !createUserData.getUserRoleDescription().equals("client")) {
+        if (!isUserAdmin(request)) {
             throw new UnauthorizedAccessException();
         }
 
         var result = createUserUseCase.execute(createUserData);
         return ResponseEntity.ok().body(result);
     }
+
+
 
     @PutMapping("/{userId}")
     @Operation(summary = "Update a user", description = "Update a user and return the user data updated")
@@ -110,9 +111,16 @@ public class UserRestController {
     public ResponseEntity<UserResponseDTO> update(@PathVariable Long userId, HttpServletRequest request,
                                                   @Valid @RequestBody UpdateUserRequestDTO userDataUpdate) {
 
+        Boolean isUserAdminResult = isUserAdmin(request);
+
         /* Qualquer usuário pode alterar informações dele mesmo e apenas usuários administradores podem alterar informações
         de outros usuários */
-        if (!isUserAdmin(request) && !extractUserIdOfRequest(request).equals(userId)){
+        if (!isUserAdminResult && !extractUserIdOfRequest(request).equals(userId)){
+            throw new UnauthorizedAccessException();
+        }
+
+        /* Apenas usuários admin podem alterar a role de um usuário */
+        if (!isUserAdminResult && userDataUpdate.getUserRole() != null) {
             throw new UnauthorizedAccessException();
         }
 
