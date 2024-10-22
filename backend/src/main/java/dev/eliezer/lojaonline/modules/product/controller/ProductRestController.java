@@ -55,8 +55,14 @@ public class ProductRestController {
     @ApiResponse(responseCode = "422", description = "Invalid product data provided", content = {
             @Content(mediaType = "text/plain", schema = @Schema(example = "Resource id not found."))})
     @SecurityRequirement(name = "jwt_auth")
-    public ResponseEntity<List<ProductEntity>> index() {
-        var result = getProductUseCase.execute();
+    public ResponseEntity<List<ProductEntity>> index(@RequestParam(value = "id", defaultValue = "0") Long productId,
+                                                     @RequestParam(value = "name", defaultValue = "") String productName,
+                                                     @RequestParam(value = "productSku", defaultValue = "") String productSku,
+                                                     @RequestParam(value = "productType", defaultValue = "") String productType,
+                                                     @RequestParam(value = "compositeItemId", defaultValue = "0") Long compositeItemId,
+                                                     @RequestParam(value = "order", defaultValue = "asc") String productOrder
+                                                     ) {
+        var result = getProductUseCase.execute(productId, productName, productSku, productType, compositeItemId, productOrder);
         return ResponseEntity.ok().body(result);
     }
 

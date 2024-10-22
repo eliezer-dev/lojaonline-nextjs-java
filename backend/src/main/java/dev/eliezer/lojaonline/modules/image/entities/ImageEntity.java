@@ -5,6 +5,7 @@ import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;
 import dev.eliezer.lojaonline.utils.ImageUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -54,6 +55,7 @@ public class ImageEntity {
         return Base64.getEncoder().encodeToString(ImageUtil.decompressImage(imageData));
     }
 
+    @Transactional
     public void setImageData(@NotNull byte[] bytes) {
         this.imageData = ImageUtil.compressImage(bytes);
     }
