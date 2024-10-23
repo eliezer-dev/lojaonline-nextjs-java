@@ -72,7 +72,7 @@ public class ProductEntity {
     @Schema(example = "true", description = "product active")
     private Boolean active = true;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "productId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonIgnore
     private List<ImageEntity> imageEntities = new ArrayList<>();
 
