@@ -14,6 +14,11 @@ public interface ProductRepository extends JpaRepository<ProductEntity,Long> {
     @Query("SELECT p FROM tb_product p WHERE SIZE(p.compositeProductEntities) > 0")
     public List<ProductEntity> findAllCompositeProducts ();
 
+    @Query("SELECT p FROM tb_product p WHERE SIZE(p.compositeProductEntities) = 0")
+    public List<ProductEntity> findAllSimpleProducts ();
+
     public List<ProductEntity> findAllByNameContainingIgnoreCase(String productName);
+
+    public List<ProductEntity> findAllBySku(String productSku);
 
 }

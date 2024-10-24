@@ -42,7 +42,7 @@ public class ProductEntity {
             requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "complete description of product")
     private String description;
 
-    @Schema(example = "laraj-1234", requiredMode = Schema.RequiredMode.REQUIRED,
+    @Schema(example = "laraj-1234", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
             description = "sku of product, sku is an alphanumeric code, used to identify the product for stock control, " +
                     "logistics and inventories. ")
     private String sku;
@@ -85,7 +85,7 @@ public class ProductEntity {
 
     @OneToMany(mappedBy = "compositeProductId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonIgnore
-    private List<CompositeProductEntity> compositeProductEntities;
+    private List<CompositeProductEntity> compositeProductEntities = new ArrayList<>();
 
     @Transient
     private List<CompositeItemDTO> compositeItems = new ArrayList<>();
