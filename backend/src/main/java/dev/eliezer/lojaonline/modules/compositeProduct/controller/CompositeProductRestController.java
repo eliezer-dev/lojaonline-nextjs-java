@@ -18,14 +18,13 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 import static dev.eliezer.lojaonline.utils.RequestUtils.isUserAdmin;
 
 
 @RestController
 @RequestMapping("/products/composite")
-@Tag(name = "Bundled Products", description = "RESTful API for managing bundled product.")
+@Tag(name = "Composite Products", description = "RESTful API for managing composite product.")
 public class CompositeProductRestController {
 
     @Autowired
@@ -36,27 +35,7 @@ public class CompositeProductRestController {
     
     @Autowired
     private RemoveItemsCompositeProductUseCase removeItemsCompositeProductUseCase;
-    
-    @Autowired
-    private GetCompositeProductUseCase getCompositeProductUseCase;
 
-
-    @GetMapping
-    @Operation(summary = "Get all composite products", description = "Retrieve a list of all composite products")
-    @ApiResponse(responseCode = "200", description = "Operation sucessfully", content = {
-            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ProductItemToCompositeProductDTO.class)))})
-    @ApiResponse(responseCode = "422", description = "Invalid product data provided", content = {
-            @Content(mediaType = "text/plain", schema = @Schema(example = "Resource id not found."))})
-    @SecurityRequirement(name = "jwt_auth")
-    public ResponseEntity<List<ProductEntity>> index(@Valid HttpServletRequest request) {
-
-        if (!isUserAdmin(request)) {
-            throw  new UnauthorizedAccessException();
-        }
-
-        var result = getCompositeProductUseCase.execute();
-        return ResponseEntity.ok().body(result);
-    }
 
     @PutMapping("/{compositeProductId}")
     @Operation(summary = "Update a composite product", description = "Update composite product specified by id and return product data")

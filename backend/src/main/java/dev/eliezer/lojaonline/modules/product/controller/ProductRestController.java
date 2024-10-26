@@ -59,9 +59,10 @@ public class ProductRestController {
                                                      @RequestParam(value = "name", defaultValue = "") String productName,
                                                      @RequestParam(value = "sku", defaultValue = "") String productSku,
                                                      @RequestParam(value = "type", defaultValue = "") String productType,
-                                                     @RequestParam(value = "order", defaultValue = "asc") String productOrder
+                                                     @RequestParam(value = "orderBy", defaultValue = "id") String fieldOrder,
+                                                     @RequestParam(value = "sort", defaultValue = "asc") String sortDirection
                                                      ) {
-        var result = getProductUseCase.execute(productId, productName, productSku, productType, productOrder);
+        var result = getProductUseCase.execute(productId, productName, productSku, productType, fieldOrder, sortDirection);
         return ResponseEntity.ok().body(result);
     }
 
