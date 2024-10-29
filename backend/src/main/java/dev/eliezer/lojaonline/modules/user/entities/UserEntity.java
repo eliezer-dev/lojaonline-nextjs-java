@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.eliezer.lojaonline.exceptions.BusinessException;
 import dev.eliezer.lojaonline.modules.client.dtos.CreateUserClientTypeDTO;
 import dev.eliezer.lojaonline.modules.image.entities.ImageEntity;
+import dev.eliezer.lojaonline.modules.order.entities.OrderEntity;
 import dev.eliezer.lojaonline.modules.user.dtos.CreateUserRequestDTO;
 import dev.eliezer.lojaonline.modules.user.dtos.UpdateUserRequestDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,6 +15,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity(name = "tb_user")
@@ -66,6 +69,9 @@ public class UserEntity {
             2 - normal user.
             """)
     private Long userRole = 1L;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<OrderEntity> orders = new ArrayList<>();
 
     @JsonIgnore
     @Column(columnDefinition = "boolean default true")

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.eliezer.lojaonline.modules.compositeProduct.dtos.CompositeItemDTO;
 import dev.eliezer.lojaonline.modules.compositeProduct.entities.CompositeProductEntity;
 import dev.eliezer.lojaonline.modules.image.entities.ImageEntity;
+import dev.eliezer.lojaonline.modules.order.entities.OrderEntity;
 import dev.eliezer.lojaonline.modules.product.dtos.CreateProductRequestDTO;
 import dev.eliezer.lojaonline.modules.image.dtos.ImageLinkDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,6 +19,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity(name = "tb_product")
@@ -89,6 +91,9 @@ public class ProductEntity {
 
     @Transient
     private List<CompositeItemDTO> compositeItems = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "products")
+    private Set<OrderEntity> orders;
 
 
 

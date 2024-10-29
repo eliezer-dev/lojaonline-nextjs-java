@@ -1,7 +1,6 @@
 package dev.eliezer.lojaonline.modules.product.useCases;
 
 import dev.eliezer.lojaonline.exceptions.BusinessException;
-import dev.eliezer.lojaonline.modules.product.dtos.CreateProductRequestDTO;
 import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;
 import dev.eliezer.lojaonline.modules.product.repositories.ProductRepository;
 import jakarta.transaction.Transactional;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class GetProductUseCase {
