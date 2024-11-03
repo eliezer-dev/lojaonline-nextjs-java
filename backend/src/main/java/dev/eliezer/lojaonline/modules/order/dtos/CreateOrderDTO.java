@@ -24,5 +24,4 @@ public class CreateOrderDTO {
     @NotNull(message = "[orderInstallments] is not provided")
     private List<CreateOrderInstallmentsDTO> orderInstallments = new ArrayList<>();
 
-
 }

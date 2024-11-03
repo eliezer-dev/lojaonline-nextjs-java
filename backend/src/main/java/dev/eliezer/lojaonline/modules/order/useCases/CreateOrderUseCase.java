@@ -1,5 +1,6 @@
 package dev.eliezer.lojaonline.modules.order.useCases;
 
+import dev.eliezer.lojaonline.exceptions.BusinessException;
 import dev.eliezer.lojaonline.exceptions.NotFoundException;
 import dev.eliezer.lojaonline.modules.order.dtos.*;
 import dev.eliezer.lojaonline.modules.order.entities.*;
@@ -11,6 +12,7 @@ import dev.eliezer.lojaonline.modules.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,8 +49,9 @@ public class CreateOrderUseCase {
     public OrderResponseDTO execute (CreateOrderDTO dataReq) {
 
         this.createOrderDTO = dataReq;
-
         this.user = userRepository.findById(dataReq.getUserId()).orElseThrow(() -> new NotFoundException(createOrderDTO.getUserId()));
+
+        orderValidator ();
 
         saveOrder ();
 
@@ -91,6 +94,19 @@ public class CreateOrderUseCase {
         });
     }
 
+    public void orderValidator () {
+        BigDecimal sumTotalValue = BigDecimal.valueOf(0.00);
+
+        for (CreateOrderItemDTO orderItem : createOrderDTO.getOrderItems()) {
+            BigDecimal totalValueItem = orderItem.getPrice().multiply(BigDecimal.valueOf(orderItem.getQuantity()));
+            sumTotalValue = sumTotalValue.add(totalValueItem);
+
+        }
+
+        if (sumTotalValue.compareTo(createOrderDTO.getTotalValue()) != 0) {
+            throw new BusinessException("Total Value different from the sum of items");
+        }
+    }
 
 
 }
