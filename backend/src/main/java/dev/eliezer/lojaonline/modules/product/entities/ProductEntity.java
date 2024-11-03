@@ -92,7 +92,7 @@ public class ProductEntity {
     @Transient
     private List<CompositeItemDTO> compositeItems = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "products")
+    @ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
     private Set<OrderEntity> orders;
 
 

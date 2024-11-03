@@ -70,7 +70,7 @@ public class UserEntity {
             """)
     private Long userRole = 1L;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<OrderEntity> orders = new ArrayList<>();
 
     @JsonIgnore
