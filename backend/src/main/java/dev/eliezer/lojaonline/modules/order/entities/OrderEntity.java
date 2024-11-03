@@ -23,9 +23,7 @@ import java.util.Set;
 
 @Data
 @Entity(name = "tb_order")
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,6 +62,10 @@ public class OrderEntity {
     @Schema(example = "2024-07-21T22:38:10.514664", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "order update datetime")
     private LocalDateTime updateAt;
 
-
+    public OrderEntity (UserEntity user, CreateOrderDTO createOrderDTO) {
+        this.user = user;
+        this.invoiceNumber = createOrderDTO.getInvoiceNumber();
+        this.totalValue = createOrderDTO.getTotalValue();
+    }
 
 }

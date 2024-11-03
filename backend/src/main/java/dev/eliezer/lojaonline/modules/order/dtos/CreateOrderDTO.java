@@ -1,19 +1,13 @@
 package dev.eliezer.lojaonline.modules.order.dtos;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class CreateOrderDTO {
 
     @NotNull(message = "[userId] is not provided.")

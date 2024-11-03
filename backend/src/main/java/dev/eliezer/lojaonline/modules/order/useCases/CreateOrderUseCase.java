@@ -1,17 +1,9 @@
 package dev.eliezer.lojaonline.modules.order.useCases;
 
-import dev.eliezer.lojaonline.exceptions.BusinessException;
 import dev.eliezer.lojaonline.exceptions.NotFoundException;
-import dev.eliezer.lojaonline.modules.order.dtos.CreateOrderDTO;
-import dev.eliezer.lojaonline.modules.order.dtos.OrderInstallmentsResponseDTO;
-import dev.eliezer.lojaonline.modules.order.dtos.OrderItemResponseDTO;
-import dev.eliezer.lojaonline.modules.order.dtos.OrderResponseDTO;
-import dev.eliezer.lojaonline.modules.order.entities.OrderEntity;
-import dev.eliezer.lojaonline.modules.order.entities.OrderInstallmentsEntity;
-import dev.eliezer.lojaonline.modules.order.entities.OrderItemEntity;
-import dev.eliezer.lojaonline.modules.order.repositories.OrderInstallmentsRepository;
-import dev.eliezer.lojaonline.modules.order.repositories.OrderItemRepository;
-import dev.eliezer.lojaonline.modules.order.repositories.OrderRepository;
+import dev.eliezer.lojaonline.modules.order.dtos.*;
+import dev.eliezer.lojaonline.modules.order.entities.*;
+import dev.eliezer.lojaonline.modules.order.repositories.*;
 import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;
 import dev.eliezer.lojaonline.modules.product.repositories.ProductRepository;
 import dev.eliezer.lojaonline.modules.user.entities.UserEntity;
@@ -40,22 +32,23 @@ public class CreateOrderUseCase {
     @Autowired
     private UserRepository userRepository;
 
+
     private UserEntity user;
 
     private CreateOrderDTO createOrderDTO;
 
     private OrderEntity orderEntity;
 
-    private List<OrderItemResponseDTO> orderItemEntityList = new ArrayList<>();
+    private List<OrderItemResponseDTO> orderItemResponseDTOList;
 
-    private List<OrderInstallmentsResponseDTO> orderInstallmentsEntityList = new ArrayList<>();
+    private List<OrderInstallmentsResponseDTO> orderInstallmentsResponseDTOList;
 
 
     public OrderResponseDTO execute (CreateOrderDTO dataReq) {
 
-        this.user = userRepository.findById(dataReq.getUserId()).orElseThrow(() -> new NotFoundException(dataReq.getUserId()));
-
         this.createOrderDTO = dataReq;
+
+        this.user = userRepository.findById(dataReq.getUserId()).orElseThrow(() -> new NotFoundException(createOrderDTO.getUserId()));
 
         saveOrder ();
 
@@ -63,77 +56,38 @@ public class CreateOrderUseCase {
 
         saveOrderInstallments ();
 
-        OrderResponseDTO orderResponseDTO = OrderResponseDTO.builder()
-                .id(orderEntity.getId())
-                .userId(orderEntity.getUser().getId())
-                .orderItems(orderItemEntityList)
-                .orderInstallments(orderInstallmentsEntityList)
-                .invoiceNumber(orderEntity.getInvoiceNumber())
-                .createAt(orderEntity.getCreateAt())
-                .updateAt(orderEntity.getUpdateAt())
-                .totalValue(orderEntity.getTotalValue())
-                .build();
-
-
-        return orderResponseDTO;
+        return new OrderResponseDTO(orderEntity, orderItemResponseDTOList, orderInstallmentsResponseDTOList);
 
     }
 
     public void saveOrder () {
-           orderEntity = orderRepository.save(OrderEntity.builder()
-                .user(user)
-                .invoiceNumber(createOrderDTO.getInvoiceNumber())
-                .totalValue(createOrderDTO.getTotalValue())
-                .build());
+           orderEntity = orderRepository.save(new OrderEntity(user, createOrderDTO));
     }
 
     public void saveOrderItem() {
+        orderItemResponseDTOList = new ArrayList<>();
 
         createOrderDTO.getOrderItems().forEach(item -> {
+
             ProductEntity productEntity = productRepository.findById(item.getProductId())
                     .orElseThrow(() -> new NotFoundException(item.getProductId()));
 
-            OrderItemEntity orderItem = OrderItemEntity.builder()
-                    .order(orderEntity)
-                    .price(item.getPrice())
-                    .quantity(item.getQuantity())
-                    .product(productEntity)
-                    .build();
+            OrderItemEntity orderItemSaved = orderItemRepository
+                    .save(new OrderItemEntity(orderEntity, item, productEntity));
 
-            OrderItemEntity orderItemSaved = orderItemRepository.save(orderItem);
-            OrderItemResponseDTO orderItemResponseDTO = OrderItemResponseDTO.builder()
-                    .id(orderItemSaved.getId())
-                    .productId(orderItemSaved.getProduct().getId())
-                    .price(orderItemSaved.getPrice())
-                    .quantity(orderItemSaved.getQuantity())
-                    .createAt(orderItemSaved.getCreateAt())
-                    .updateAt(orderItemSaved.getUpdateAt())
-                    .build();
-
-            orderItemEntityList.add(orderItemResponseDTO);
+            orderItemResponseDTOList.add(new OrderItemResponseDTO(orderItemSaved));
         });
     }
 
     public void saveOrderInstallments () {
+        orderInstallmentsResponseDTOList = new ArrayList<>();
 
-        createOrderDTO.getOrderInstallments().forEach(orderInstallmentsDTO -> {
-            OrderInstallmentsEntity orderInstallmentsEntity = OrderInstallmentsEntity.builder()
-                    .order(orderEntity)
-                    .installment(orderInstallmentsDTO.getInstallment())
-                    .numberOfInstallments(orderInstallmentsDTO.getNumberOfInstallments())
-                    .paymentMethod(orderInstallmentsDTO.getPaymentMethod())
-                    .build();
+        createOrderDTO.getOrderInstallments().forEach(createOrderInstallmentsDTO -> {
 
-            OrderInstallmentsEntity orderInstallmentsSaved = orderInstallmentsRepository.save(orderInstallmentsEntity);
+            OrderInstallmentsEntity orderInstallmentsSaved = orderInstallmentsRepository
+                    .save(new OrderInstallmentsEntity(orderEntity, createOrderInstallmentsDTO));
 
-            OrderInstallmentsResponseDTO orderInstallmentsResponseDTO = OrderInstallmentsResponseDTO.builder()
-                    .id(orderInstallmentsSaved.getId())
-                    .installment(orderInstallmentsSaved.getInstallment())
-                    .numberOfInstallments(orderInstallmentsSaved.getNumberOfInstallments())
-                    .paymentMethod(orderInstallmentsSaved.getPaymentMethod())
-                    .build();
-
-            orderInstallmentsEntityList.add(orderInstallmentsResponseDTO);
+            orderInstallmentsResponseDTOList.add(new OrderInstallmentsResponseDTO(orderInstallmentsSaved));
         });
     }
 

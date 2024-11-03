@@ -1,15 +1,9 @@
 package dev.eliezer.lojaonline.modules.order.dtos;
 
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import dev.eliezer.lojaonline.modules.order.entities.OrderInstallmentsEntity;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class OrderInstallmentsResponseDTO {
 
     private Long id;
@@ -19,4 +13,12 @@ public class OrderInstallmentsResponseDTO {
     private Long installment;
 
     private Long numberOfInstallments;
+
+    public OrderInstallmentsResponseDTO (OrderInstallmentsEntity orderInstallmentsEntity) {
+        this.id = orderInstallmentsEntity.getId();
+        this.paymentMethod = orderInstallmentsEntity.getPaymentMethod();
+        this.installment = orderInstallmentsEntity.getInstallment();
+        this.numberOfInstallments = orderInstallmentsEntity.getNumberOfInstallments();
+
+    }
 }

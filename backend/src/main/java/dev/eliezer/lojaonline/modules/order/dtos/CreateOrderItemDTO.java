@@ -9,9 +9,6 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class CreateOrderItemDTO {
 
     @NotNull(message = "[productId] is not provided")

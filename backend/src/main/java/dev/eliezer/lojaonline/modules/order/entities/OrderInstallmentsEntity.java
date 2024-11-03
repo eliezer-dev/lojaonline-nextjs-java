@@ -1,6 +1,7 @@
 package dev.eliezer.lojaonline.modules.order.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import dev.eliezer.lojaonline.modules.order.dtos.CreateOrderInstallmentsDTO;
 import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
@@ -10,11 +11,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
 @Entity(name = "tb_order_installments")
+@NoArgsConstructor
 public class OrderInstallmentsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,5 +34,13 @@ public class OrderInstallmentsEntity {
 
     @NotNull(message = "[numberOfInstallments] is not provided")
     private Long numberOfInstallments;
+
+    public OrderInstallmentsEntity (OrderEntity order, CreateOrderInstallmentsDTO createOrderInstallmentsDTO) {
+        this.order = order;
+        this.installment = createOrderInstallmentsDTO.getInstallment();
+        this.numberOfInstallments = createOrderInstallmentsDTO.getNumberOfInstallments();
+        this.paymentMethod = createOrderInstallmentsDTO.getPaymentMethod();
+
+    }
 
 }
