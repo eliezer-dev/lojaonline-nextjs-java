@@ -29,16 +29,32 @@ public class OrderResponseDTO {
     @Schema(example = "2024-07-21T22:38:10.514664", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "order update datetime")
     private LocalDateTime updateAt;
 
+    private Boolean canceled;
+
+    private Long canceledBy;
+
+    private LocalDateTime canceledAt;
+
+    private String cancellationReason;
+
     public OrderResponseDTO (OrderEntity orderEntity, List<OrderItemResponseDTO> orderItemResponseDTOList,
                              List<OrderInstallmentsResponseDTO> orderInstallmentsResponseDTOList) {
 
         this.id = orderEntity.getId();
-        this.userId = orderEntity.getUser().getId();
-        this.orderItems = orderItemResponseDTOList;
+
+        if (orderEntity.getUser() != null && orderEntity.getUser().getId() != null ) {
+            this.userId = orderEntity.getUser().getId();
+        }
+
+        this.orderItems = orderItemResponseDTOList ;
         this.invoiceNumber = orderEntity.getInvoiceNumber();
         this.createAt = orderEntity.getCreateAt();
         this.updateAt = orderEntity.getUpdateAt();
         this.totalValue = orderEntity.getTotalValue();
+        this.canceled = orderEntity.getCanceled();
+        this.canceledAt = orderEntity.getCanceledAt();
+        this.canceledBy = orderEntity.getCanceledBy();
+        this.cancellationReason = orderEntity.getCancellationReason();
         this.orderInstallments = orderInstallmentsResponseDTOList;
 
 
