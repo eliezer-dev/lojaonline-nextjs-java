@@ -77,7 +77,7 @@ public  class UserImageRestController {
     @ApiResponse(responseCode = "422", description = "Invalid user data provided", content = {
             @Content(mediaType = "text/plain", schema = @Schema(example = "Resource id not found."))})
     @SecurityRequirement(name = "jwt_auth")
-    public ResponseEntity<String> find(HttpServletRequest request) {
+    public ResponseEntity<byte[]> find(HttpServletRequest request) {
         Long userid = Long.valueOf(request.getAttribute("user_id").toString());
 
         UserEntity userFound = userRepository.findById(userid).orElseThrow(() -> new BusinessException("token data is invalid."));
@@ -86,7 +86,7 @@ public  class UserImageRestController {
 
         MediaType imageType = MediaType.parseMediaType(userImageData.getImageType());
 
-        String userImage = userImageData.getImageData();
+        byte[] userImage = userImageData.getImageData();
 
         return ResponseEntity.ok().contentType(imageType).body(userImage);
     }

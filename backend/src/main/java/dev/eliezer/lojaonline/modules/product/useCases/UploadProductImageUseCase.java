@@ -38,7 +38,7 @@ public class UploadProductImageUseCase {
                         .imageType(file.getContentType())
                         .filename(file.getOriginalFilename())
                         .imageData(ImageUtil.compressImage(file.getBytes()))
-                        .productId(productEntity.getId())
+                        .product(productEntity)
                         .build()
         );
 

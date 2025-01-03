@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,12 +33,12 @@ public class ImageRestController {
     @ApiResponse(responseCode = "422", description = "Invalid image data provided", content = {
             @Content(schema = @Schema(implementation = Object.class))})
     @SecurityRequirement(name = "jwt_auth")
-    public ResponseEntity<String> execute(@PathVariable Long id) throws IOException {
-        ImageEntity imageEntity = getImageUseCase.execute(id);
+    public ResponseEntity<byte[]> getImage(@PathVariable Long id) {
+        ImageEntity image = getImageUseCase.execute(id);
 
-        return ResponseEntity
-                .ok()
-                .contentType(MediaType.valueOf(imageEntity.getImageType()))
-                .body(imageEntity.getImageData());
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(image.getImageType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + image.getFilename() + "\"")
+                .body(image.getImageData());
     }
 }

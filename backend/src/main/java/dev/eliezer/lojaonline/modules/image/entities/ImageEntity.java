@@ -46,15 +46,30 @@ public class ImageEntity {
     @Schema(example = "2024-07-21T22:38:10.514664", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "creation time of image")
     private LocalDateTime createAt;
 
-    @Column(name = "product_id", insertable = false, updatable = false)
+    @ManyToOne
+    @JoinColumn(name = "product_id", referencedColumnName = "id", nullable = true)
+    @JsonIgnore
+    private ProductEntity product;
+
+    @Transient
     private Long productId;
 
-    public String getImageData() {
-        return Base64.getEncoder().encodeToString(ImageUtil.decompressImage(imageData));
+    public byte[] getImageData() {
+        return ImageUtil.decompressImage(imageData);
     }
 
     public void setImageData(@NotNull byte[] bytes) {
         this.imageData = ImageUtil.compressImage(bytes);
     }
 
+    public Long getProductId() {
+        if (product.getId() != null) {
+            return product.getId();
+        }
+        return null;
+    }
+
+    public void setProductId(Long productId) {
+
+    }
 }
