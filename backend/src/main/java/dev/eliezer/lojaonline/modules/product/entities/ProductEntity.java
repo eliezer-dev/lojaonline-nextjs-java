@@ -74,7 +74,7 @@ public class ProductEntity {
     @Schema(example = "true", description = "product active")
     private Boolean active = true;
 
-    @OneToMany(mappedBy = "productId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonIgnore
     private List<ImageEntity> imageEntities = new ArrayList<>();
 
@@ -93,9 +93,12 @@ public class ProductEntity {
     private List<CompositeItemDTO> compositeItems = new ArrayList<>();
 
     @ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<OrderEntity> orders;
 
-
+    @ManyToOne()
+    @JoinColumn(name = "category_id", nullable = true)
+    private CategoryEntity category;
 
 
     public List<ImageLinkDTO> getImages() {
