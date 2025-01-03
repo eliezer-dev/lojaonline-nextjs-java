@@ -89,9 +89,9 @@ public class UserRestController {
     @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<UserResponseDTO> create(@Valid @RequestBody CreateUserRequestDTO createUserData, HttpServletRequest request) {
 
-        if (!isUserAdmin(request)) {
-            throw new UnauthorizedAccessException();
-        }
+//        if (!isUserAdmin(request)) {
+//            throw new UnauthorizedAccessException();
+//        }
 
         var result = createUserUseCase.execute(createUserData);
         return ResponseEntity.ok().body(result);

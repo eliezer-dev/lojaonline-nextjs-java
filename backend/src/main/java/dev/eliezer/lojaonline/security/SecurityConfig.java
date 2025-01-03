@@ -38,7 +38,11 @@ public class SecurityConfig {
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> {
                     auth
+                            .requestMatchers("/users").permitAll()
                             .requestMatchers("/users/auth").permitAll()
+
+                            .requestMatchers("/products").permitAll()
+                            .requestMatchers("/products/*").permitAll()
                             .requestMatchers("/images/*").permitAll()
                             .requestMatchers(SWAGGER_LIST).permitAll()
                             .requestMatchers("/clients/create").permitAll();
