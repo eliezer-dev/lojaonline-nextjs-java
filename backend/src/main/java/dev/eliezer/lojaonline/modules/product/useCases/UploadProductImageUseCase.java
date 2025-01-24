@@ -5,7 +5,9 @@ import dev.eliezer.lojaonline.exceptions.NotFoundException;
 import dev.eliezer.lojaonline.modules.image.entities.ImageEntity;
 import dev.eliezer.lojaonline.modules.image.repositories.ImageRepository;
 import dev.eliezer.lojaonline.modules.image.dtos.ImageLinkDTO;
+import dev.eliezer.lojaonline.modules.product.dtos.ProductResponseDTO;
 import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;
+import dev.eliezer.lojaonline.modules.product.mappers.ProductMapper;
 import dev.eliezer.lojaonline.modules.product.repositories.ProductRepository;
 import dev.eliezer.lojaonline.utils.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,7 @@ public class UploadProductImageUseCase {
     @Autowired
     private ImageRepository imageRepository;
 
-    public ProductEntity execute (MultipartFile file, Long productId) throws IOException {
+    public ProductResponseDTO execute (MultipartFile file, Long productId) throws IOException {
         List<ImageLinkDTO> imagesLinkDTO = new ArrayList<>();
 
         ProductEntity productEntity = productRepository.findById(productId).orElseThrow(() -> new NotFoundException(productId));
@@ -44,7 +46,7 @@ public class UploadProductImageUseCase {
 
         productEntity.getImageEntities().add(imageSaved);
 
-        return productEntity;
+        return ProductMapper.toProductResponseDTO(productEntity);
 
     }
 }

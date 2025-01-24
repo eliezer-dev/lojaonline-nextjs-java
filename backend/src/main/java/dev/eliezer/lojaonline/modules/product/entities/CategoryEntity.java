@@ -24,15 +24,21 @@ public class CategoryEntity {
     @Schema(example = "Hortifruti", requiredMode = Schema.RequiredMode.REQUIRED, description = "description of category")
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_category_id")
     private CategoryEntity parentCategory;
 
-    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
-    private List<CategoryEntity> subcategories = new ArrayList<>();
+//    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
+//    private List<CategoryEntity> subcategories = new ArrayList<>();
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductEntity> products = new ArrayList<>();
+
+
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private Boolean visibleHome = false;
+
+    private Long orderHomePage;
 
     @CreationTimestamp
     @Schema(example = "2024-07-21T22:38:10.514664", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "creation time of category")

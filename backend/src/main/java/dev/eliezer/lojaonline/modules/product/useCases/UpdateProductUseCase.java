@@ -1,14 +1,16 @@
 package dev.eliezer.lojaonline.modules.product.useCases;
 
 import dev.eliezer.lojaonline.exceptions.NotFoundException;
-import dev.eliezer.lojaonline.modules.product.dtos.UpdateProductRequestDTO;
+import dev.eliezer.lojaonline.modules.product.dtos.ProductResponseDTO;
+import dev.eliezer.lojaonline.modules.product.dtos.ProductUpdateRequestDTO;
+import dev.eliezer.lojaonline.modules.product.entities.CategoryEntity;
 import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;
+import dev.eliezer.lojaonline.modules.product.mappers.ProductMapper;
+import dev.eliezer.lojaonline.modules.product.repositories.CategoryRepository;
 import dev.eliezer.lojaonline.modules.product.repositories.ProductRepository;
+import dev.eliezer.lojaonline.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UpdateProductUseCase {
@@ -16,18 +18,23 @@ public class UpdateProductUseCase {
     @Autowired
     private ProductRepository productRepository;
 
-    public ProductEntity execute(Long id, UpdateProductRequestDTO request) {
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    public ProductResponseDTO execute(Long id, ProductUpdateRequestDTO productUpdateRequestDTO) {
 
         ProductEntity productToUpdate = productRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
 
-        productToUpdate.setName(request.getName() != null ? request.getName() : productToUpdate.getName());
-        productToUpdate.setDescription(request.getDescription() != null ? request.getDescription() : productToUpdate.getDescription());
-        productToUpdate.setSku(request.getSku() != null ? request.getSku() : productToUpdate.getSku());
-        productToUpdate.setStock_quantity(request.getStock_quantity() != null ? request.getStock_quantity() : productToUpdate.getStock_quantity());
-        productToUpdate.setPrice(request.getPrice() != null ? request.getPrice() : productToUpdate.getPrice());
-        productToUpdate.setWeight(request.getWeight() != null ? request.getWeight() : productToUpdate.getWeight());
 
-        return productRepository.save(productToUpdate);
+        if (productUpdateRequestDTO.getCategoryId() != null) {
+            CategoryEntity categoryEntity = categoryRepository.findById(productUpdateRequestDTO.getCategoryId())
+                    .orElseThrow(() -> new NotFoundException(productUpdateRequestDTO.getCategoryId()));
+            productToUpdate.setCategory(categoryEntity);
+        }
+
+        ObjectUtils.objectUpdate(productToUpdate, productUpdateRequestDTO);
+
+            return ProductMapper.toProductResponseDTO(productRepository.save(productToUpdate));
 
 
     }

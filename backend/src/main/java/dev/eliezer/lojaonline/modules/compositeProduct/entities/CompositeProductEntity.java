@@ -32,7 +32,6 @@ public class CompositeProductEntity {
     @JsonIgnore
     private Long id;
 
-
     @Column(name = "composite_product_id", nullable = false, insertable = false, updatable = false)
     private Long compositeProductId;
 

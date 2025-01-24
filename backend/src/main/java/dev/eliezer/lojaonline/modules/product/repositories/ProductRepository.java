@@ -22,4 +22,10 @@ public interface ProductRepository extends JpaRepository<ProductEntity,Long> {
 
     public List<ProductEntity> findAllBySku(String productSku, Sort sort);
 
+    @Query("SELECT p FROM tb_product p WHERE p.category.id = :categoryId")
+    public List<ProductEntity> findAllByCategoryId(Long categoryId, Sort sort);
+
+    @Query("SELECT p from tb_product p WHERE  p.category.visibleHome = false")
+    public List<ProductEntity> findAllProductWithCategoryNotVisibleHome(Sort sort);
+
 }

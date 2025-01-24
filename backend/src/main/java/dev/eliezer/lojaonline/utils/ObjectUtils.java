@@ -18,7 +18,7 @@ public class ObjectUtils {
                     Field field = actual.getClass().getDeclaredField(entry.getKey());
                     field.setAccessible(true);
                     field.set(actual, entry.getValue());
-                } catch (NoSuchFieldException | IllegalAccessException e) {
+                } catch (IllegalAccessException | NoSuchFieldException e) {
                     e.printStackTrace();
                 }
             }

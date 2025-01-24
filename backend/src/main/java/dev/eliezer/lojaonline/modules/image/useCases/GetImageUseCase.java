@@ -2,7 +2,9 @@ package dev.eliezer.lojaonline.modules.image.useCases;
 
 import dev.eliezer.lojaonline.exceptions.BusinessException;
 import dev.eliezer.lojaonline.exceptions.NotFoundException;
+import dev.eliezer.lojaonline.modules.image.dtos.ImageLinkDTO;
 import dev.eliezer.lojaonline.modules.image.entities.ImageEntity;
+import dev.eliezer.lojaonline.modules.image.mappers.ImageMapper;
 import dev.eliezer.lojaonline.modules.image.repositories.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -21,13 +21,12 @@ public class ImageLinkDTO {
                 return "http://localhost:8080/images/" + this.id ;
         }
 
+//        public static ImageLinkDTO parseImagesLinkDTO(ImageEntity imageEntity){
+//                ImageLinkDTO imageLinkDTO = ImageLinkDTO.builder()
+//                                .id(imageEntity.getId())
+//                                .build();
+//
+//                return imageLinkDTO;
+//        }
 
-
-        public static ImageLinkDTO parseImagesLinkDTO(ImageEntity imageEntity){
-                ImageLinkDTO imageLinkDTO = ImageLinkDTO.builder()
-                                .id(imageEntity.getId())
-                                .build();
-
-                return imageLinkDTO;
-        }
 }

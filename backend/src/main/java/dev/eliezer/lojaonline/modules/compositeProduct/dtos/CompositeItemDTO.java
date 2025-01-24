@@ -23,7 +23,7 @@ public class CompositeItemDTO {
     @Schema(example = "1", requiredMode = Schema.RequiredMode.REQUIRED, description = "id of composite item")
     private Long id;
 
-    @NotNull(message = "[Kit de Ferramentas XPTO] cannot be null")
+    @NotNull(message = "[Chave de Fenda XPTO] cannot be null")
     @Schema(example = "", requiredMode = Schema.RequiredMode.REQUIRED, description = "id of composite item")
     private String name;
 
@@ -36,18 +36,6 @@ public class CompositeItemDTO {
     @Schema(example = "1000", requiredMode = Schema.RequiredMode.REQUIRED, description = "quantity of composite item for each sell")
     private Long quantity = 1L;
 
-    public static CompositeItemDTO parseCompositeItemDTO(CompositeProductEntity compositeProductEntity, String name) {
 
-
-
-        CompositeItemDTO compositeItemDTO = CompositeItemDTO.builder()
-                .id(compositeProductEntity.getCompositeItemId())
-                .name(name)
-                .price(compositeProductEntity.getPrice())
-                .quantity(compositeProductEntity.getQuantity())
-                .build();
-
-        return compositeItemDTO;
-    }
 
 }

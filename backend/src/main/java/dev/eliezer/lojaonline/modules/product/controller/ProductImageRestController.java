@@ -1,5 +1,6 @@
 package dev.eliezer.lojaonline.modules.product.controller;
 
+import dev.eliezer.lojaonline.modules.product.dtos.ProductResponseDTO;
 import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;
 import dev.eliezer.lojaonline.modules.product.useCases.UploadProductImageUseCase;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,8 +31,8 @@ public class ProductImageRestController {
     @ApiResponse(responseCode = "422", description = "Invalid product data provided", content = {
             @Content(schema = @Schema(implementation = Object.class))})
     @SecurityRequirement(name = "jwt_auth")
-    public ResponseEntity<ProductEntity> execute(@RequestParam("image") MultipartFile file, @PathVariable Long id) throws IOException {
-        ProductEntity productEntity = uploadProductImageUseCase.execute(file,id);
+    public ResponseEntity<ProductResponseDTO> execute(@RequestParam("image") MultipartFile file, @PathVariable Long id) throws IOException {
+        ProductResponseDTO productEntity = uploadProductImageUseCase.execute(file,id);
 
 
         return ResponseEntity.ok(productEntity);

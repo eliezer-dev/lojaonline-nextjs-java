@@ -2,23 +2,23 @@ package dev.eliezer.lojaonline.modules.product.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreateProductRequestDTO {
+public class ProductUpdateRequestDTO {
 
-    @NotBlank(message = "[name] is not provided")
-    @Schema(example = "SmartWatch X2000", requiredMode = Schema.RequiredMode.REQUIRED, description = "short description of product")
+
+    @Schema(example = "SmartWatch X2000", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "short description of product")
     private String name;
+
 
     @Schema(example = " SmartWatch X2000 combina estilo e funcionalidade avançada. " +
             "Com tela HD touchscreen de 1.5 polegadas, monitoramento de saúde em tempo real e conectividade Bluetooth 5.0, " +
@@ -28,23 +28,22 @@ public class CreateProductRequestDTO {
             requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "complete description of product")
     private String description;
 
-    @NotBlank(message = "[sku] is not provided")
-    @Schema(example = "laraj-1234", requiredMode = Schema.RequiredMode.REQUIRED,
+    @Schema(example = "laraj-1234", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
             description = "sku of product, sku is an alphanumeric code, used to identify the product for stock control, " +
                     "logistics and inventories. ")
     private String sku;
 
-    //@NotNull(message = "price cannot be null")
-    @NotNull(message = "[price] is not provided")
-    @Schema(example = "12.00", requiredMode = Schema.RequiredMode.REQUIRED, description = "price of product")
-    private BigDecimal price = BigDecimal.valueOf(0.00);
+    @Schema(example = "12.00", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "price of product")
+    private BigDecimal price;
 
-    @NotNull(message = "[stock_quantity] is not provided")
-    @Schema(example = "1000", requiredMode = Schema.RequiredMode.REQUIRED, description = "stock quantity of product")
-    private Long stock_quantity = 0L;
+    @Schema(example = "1000", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "stock quantity of product")
+    private Long stock_quantity;
 
     @Column(nullable = false, columnDefinition = "numeric(1000,3) default '0.00'")
     @Schema(example = "0.00", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "weight in KG of product")
-    private BigDecimal weight = BigDecimal.valueOf(0.00);
+    private BigDecimal weight;
+
+    @Schema(example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "ID of the product category")
+    private Long categoryId;
 
 }

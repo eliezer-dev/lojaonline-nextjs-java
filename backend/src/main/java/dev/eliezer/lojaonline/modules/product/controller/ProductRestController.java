@@ -1,12 +1,8 @@
 package dev.eliezer.lojaonline.modules.product.controller;
 
-import dev.eliezer.lojaonline.modules.product.dtos.CreateProductRequestDTO;
-import dev.eliezer.lojaonline.modules.product.dtos.UpdateProductRequestDTO;
+import dev.eliezer.lojaonline.modules.product.dtos.*;
 import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;
-import dev.eliezer.lojaonline.modules.product.useCases.CreateProductUseCase;
-import dev.eliezer.lojaonline.modules.product.useCases.GetProductUseCase;
-import dev.eliezer.lojaonline.modules.product.useCases.InactivateProductUseCase;
-import dev.eliezer.lojaonline.modules.product.useCases.UpdateProductUseCase;
+import dev.eliezer.lojaonline.modules.product.useCases.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -37,14 +33,18 @@ public class ProductRestController {
     @Autowired
     private UpdateProductUseCase updateProductUseCase;
 
+    @Autowired
+    private GetCategoryWithProductsUseCase getCategoryWithProductsUseCase;
+
+
     @PostMapping
     @Operation(summary = "Create a new product", description = "Create a new product and return the created product data")
     @ApiResponse(responseCode = "201", description = "Product created successfully", content = {
             @Content(schema = @Schema(implementation = ProductEntity.class))})
     @ApiResponse(responseCode = "422", description = "Invalid product data provided", content = {
             @Content(schema = @Schema(implementation = Object.class))})
-    public ResponseEntity<ProductEntity> execute(@Valid @RequestBody CreateProductRequestDTO product) {
-        ProductEntity productSaved = createProductUseCase.execute(product);
+    public ResponseEntity<ProductResponseDTO> create(@Valid @RequestBody ProductCreateRequestDTO product) {
+        ProductResponseDTO productSaved = createProductUseCase.execute(product);
         return ResponseEntity.ok().body(productSaved);
     }
 
@@ -55,14 +55,17 @@ public class ProductRestController {
     @ApiResponse(responseCode = "422", description = "Invalid product data provided", content = {
             @Content(mediaType = "text/plain", schema = @Schema(example = "Resource id not found."))})
     @SecurityRequirement(name = "jwt_auth")
-    public ResponseEntity<List<ProductEntity>> index(@RequestParam(value = "id", defaultValue = "0") Long productId,
-                                                     @RequestParam(value = "name", defaultValue = "") String productName,
-                                                     @RequestParam(value = "sku", defaultValue = "") String productSku,
-                                                     @RequestParam(value = "type", defaultValue = "") String productType,
-                                                     @RequestParam(value = "orderBy", defaultValue = "id") String fieldOrder,
-                                                     @RequestParam(value = "sort", defaultValue = "asc") String sortDirection
+    public ResponseEntity<List<ProductResponseDTO>> index(@RequestParam(value = "id", defaultValue = "0") Long productId,
+                                                          @RequestParam(value = "name", defaultValue = "") String productName,
+                                                          @RequestParam(value = "sku", defaultValue = "") String productSku,
+                                                          @RequestParam(value = "type", defaultValue = "") String productType,
+                                                          @RequestParam(value = "categoryId", defaultValue = "0") Long categoryId,
+                                                          @RequestParam(value = "otherCategories", defaultValue = "false") Boolean otherCategories,
+
+                                                          @RequestParam(value = "orderBy", defaultValue = "id") String fieldOrder,
+                                                          @RequestParam(value = "sort", defaultValue = "asc") String sortDirection
                                                      ) {
-        var result = getProductUseCase.execute(productId, productName, productSku, productType, fieldOrder, sortDirection);
+        var result = getProductUseCase.execute(productId, productName, productSku, productType, categoryId, otherCategories, fieldOrder, sortDirection);
         return ResponseEntity.ok().body(result);
     }
 
@@ -72,8 +75,8 @@ public class ProductRestController {
             @Content(schema = @Schema(implementation = ProductEntity.class))})
     @ApiResponse(responseCode = "422", description = "Invalid product data provided", content = {
             @Content(schema = @Schema(implementation = Object.class))})
-    public ResponseEntity<ProductEntity> execute(@Valid @PathVariable Long id, @RequestBody UpdateProductRequestDTO product) {
-        ProductEntity productUpdated = updateProductUseCase.execute(id, product);
+    public ResponseEntity<ProductResponseDTO> update(@Valid @PathVariable Long id, @RequestBody ProductUpdateRequestDTO product) {
+        ProductResponseDTO productUpdated = updateProductUseCase.execute(id, product);
         return ResponseEntity.ok().body(productUpdated);
     }
 
@@ -87,6 +90,19 @@ public class ProductRestController {
     public ResponseEntity<ProductEntity> inactivate(@PathVariable Long id) {
         var result = inactivateProductUseCase.execute(id);
         return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/category")
+    @Operation(summary = "Get all products grouped by categories", description = "Retrieve a list of all products grouped by categories")
+    @ApiResponse(responseCode = "200", description = "Operation sucessfully", content = {
+            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = CategoryResponseDTO.class)))})
+    @ApiResponse(responseCode = "422", description = "Invalid category data provided", content = {
+            @Content(mediaType = "text/plain", schema = @Schema(example = "Resource id not found."))})
+    @SecurityRequirement(name = "jwt_auth")
+    public ResponseEntity<List<CategoryWithProductsResponseDTO>> getProductGroupByCategories(
+    ) {
+        List<CategoryWithProductsResponseDTO>categoryWithProductsResponseDTOS = getCategoryWithProductsUseCase.execute();
+        return ResponseEntity.ok().body(categoryWithProductsResponseDTOS);
     }
 
 }

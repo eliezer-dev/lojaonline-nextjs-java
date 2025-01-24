@@ -5,13 +5,14 @@ import dev.eliezer.lojaonline.modules.compositeProduct.dtos.CompositeItemDTO;
 import dev.eliezer.lojaonline.modules.compositeProduct.entities.CompositeProductEntity;
 import dev.eliezer.lojaonline.modules.image.entities.ImageEntity;
 import dev.eliezer.lojaonline.modules.order.entities.OrderEntity;
-import dev.eliezer.lojaonline.modules.product.dtos.CreateProductRequestDTO;
+import dev.eliezer.lojaonline.modules.product.dtos.ProductCreateRequestDTO;
 import dev.eliezer.lojaonline.modules.image.dtos.ImageLinkDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -74,83 +75,22 @@ public class ProductEntity {
     @Schema(example = "true", description = "product active")
     private Boolean active = true;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JsonIgnore
+    @ToString.Exclude
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ImageEntity> imageEntities = new ArrayList<>();
 
-    @Transient
-    private List<ImageLinkDTO> images = new ArrayList<>();
-
-    @Transient
-    @Schema(example = "simple, composite", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "product type")
-    private String productType;
-
-    @OneToMany(mappedBy = "compositeProductId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JsonIgnore
+    @ToString.Exclude
+    @OneToMany(mappedBy = "compositeProductId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<CompositeProductEntity> compositeProductEntities = new ArrayList<>();
 
-    @Transient
-    private List<CompositeItemDTO> compositeItems = new ArrayList<>();
-
+    @ToString.Exclude
     @ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
-    @JsonIgnore
     private Set<OrderEntity> orders;
 
     @ManyToOne()
+    @ToString.Exclude
     @JoinColumn(name = "category_id", nullable = true)
     private CategoryEntity category;
-
-
-    public List<ImageLinkDTO> getImages() {
-        if (!imageEntities.isEmpty()) {
-            imageEntities.forEach(imageEntity -> {
-                images.add(ImageLinkDTO.parseImagesLinkDTO(imageEntity));
-            });
-        }
-
-        return images;
-    }
-
-    public void setImages(List<ImageLinkDTO> images) {
-
-    }
-
-    public String getProductType() {
-        if (!compositeProductEntities.isEmpty()) {
-            return "composite";
-        }
-
-        return "simple";
-    }
-
-    public void setProductType(String productType) {
-
-    }
-
-    public List<CompositeItemDTO> getCompositeItems() {
-        List<CompositeItemDTO> compositeItemsFormated = new ArrayList<>();
-        compositeProductEntities.forEach(compositeItemEntity -> {
-            compositeItemsFormated.add(CompositeItemDTO.parseCompositeItemDTO(compositeItemEntity, name));
-        });
-        return compositeItemsFormated;
-    }
-
-    public void setCompositeItems(List<CompositeProductEntity> compositeItems) {
-
-    }
-
-    public static ProductEntity parseProductEntity (CreateProductRequestDTO product){
-        ProductEntity productEntity = new ProductEntity();
-        productEntity.setSku(product.getSku());
-        productEntity.setName(product.getName());
-        productEntity.setPrice(product.getPrice());
-        productEntity.setDescription(product.getDescription());
-        productEntity.setStock_quantity(product.getStock_quantity());
-        productEntity.setWeight(product.getWeight() != null ? product.getWeight() : BigDecimal.valueOf(0));
-
-        return productEntity;
-    }
-
 
 
 }
