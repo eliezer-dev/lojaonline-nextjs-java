@@ -88,4 +88,11 @@ public class GlobalExceptionHandler {
         e.printStackTrace();
         return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
+
+    @ExceptionHandler(ItemFoundException.class)
+    public ResponseEntity<String> handleItemFoundException(ItemFoundException e) {
+        e.printStackTrace();
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
 }

@@ -1,9 +1,11 @@
 package dev.eliezer.lojaonline.modules.product.entities;
 
+import dev.eliezer.lojaonline.modules.config.headerMenu.entities.CategoryItemEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -28,12 +30,9 @@ public class CategoryEntity {
     @JoinColumn(name = "parent_category_id")
     private CategoryEntity parentCategory;
 
-//    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
-//    private List<CategoryEntity> subcategories = new ArrayList<>();
-
+    @ToString.Exclude
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductEntity> products = new ArrayList<>();
-
 
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean visibleHome = false;
