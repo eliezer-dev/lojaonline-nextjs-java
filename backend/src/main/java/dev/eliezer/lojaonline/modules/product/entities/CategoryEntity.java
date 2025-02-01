@@ -32,6 +32,7 @@ public class CategoryEntity {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OrderBy("name ASC")
     private List<ProductEntity> products = new ArrayList<>();
 
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
