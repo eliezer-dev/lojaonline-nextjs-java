@@ -23,6 +23,9 @@ public class UpdateUserUseCase {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private ObjectUtils objectUtils;
+
     public UserResponseDTO execute (UpdateUserRequestDTO userUpdateData, Long userId) {
 
         UserEntity userTarget = userRepository.findById(userId)
@@ -33,7 +36,7 @@ public class UpdateUserUseCase {
             userUpdateData.setPassword(password);
         }
 
-        ObjectUtils.objectUpdate(userTarget, userUpdateData);
+        objectUtils.objectUpdate(userTarget, userUpdateData);
 
         return UserResponseDTO.parseUserResponseDTO(userRepository.save(userTarget));
     }

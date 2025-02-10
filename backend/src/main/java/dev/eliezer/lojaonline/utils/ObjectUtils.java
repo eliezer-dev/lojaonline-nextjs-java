@@ -1,15 +1,26 @@
 package dev.eliezer.lojaonline.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
 import java.util.Map;
 
+@Component
 public class ObjectUtils {
 
+    private final ObjectMapper objectMapper;
+
+    @Autowired
+    public ObjectUtils(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper; // Injeta o ObjectMapper configurado no JacksonConfig
+    }
+
+
+
     //A ideia dessa função é ser algo parecido com Oject.assign(objetoAtual, atualizacao) do Javascript
-    public static Object objectUpdate (Object actual, Object update) {
-        ObjectMapper objectMapper = new ObjectMapper();
+    public Object objectUpdate (Object actual, Object update) {
         Map<String, Object> updatedValues = objectMapper.convertValue(update, Map.class);
 
         for (Map.Entry<String, Object> entry : updatedValues.entrySet()) {
@@ -24,5 +35,14 @@ public class ObjectUtils {
             }
         }
         return actual;
+    }
+
+    public <T> T parseObject (Class<T> targetClass, String json) {
+        try {
+            return objectMapper.readValue(json, targetClass);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

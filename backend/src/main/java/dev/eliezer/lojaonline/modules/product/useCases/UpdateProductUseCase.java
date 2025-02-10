@@ -21,6 +21,10 @@ public class UpdateProductUseCase {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private ObjectUtils objectUtils;
+
+
     public ProductResponseDTO execute(Long id, ProductUpdateRequestDTO productUpdateRequestDTO) {
 
         ProductEntity productToUpdate = productRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
@@ -32,7 +36,7 @@ public class UpdateProductUseCase {
             productToUpdate.setCategory(categoryEntity);
         }
 
-        ObjectUtils.objectUpdate(productToUpdate, productUpdateRequestDTO);
+        objectUtils.objectUpdate(productToUpdate, productUpdateRequestDTO);
 
             return ProductMapper.toProductResponseDTO(productRepository.save(productToUpdate));
 

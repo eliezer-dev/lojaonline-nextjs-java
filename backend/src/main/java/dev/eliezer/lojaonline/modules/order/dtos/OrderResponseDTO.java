@@ -37,27 +37,4 @@ public class OrderResponseDTO {
 
     private String cancellationReason;
 
-    public OrderResponseDTO (OrderEntity orderEntity, List<OrderItemResponseDTO> orderItemResponseDTOList,
-                             List<OrderInstallmentsResponseDTO> orderInstallmentsResponseDTOList) {
-
-        this.id = orderEntity.getId();
-
-        if (orderEntity.getUser() != null && orderEntity.getUser().getId() != null ) {
-            this.userId = orderEntity.getUser().getId();
-        }
-
-        this.orderItems = orderItemResponseDTOList ;
-        this.invoiceNumber = orderEntity.getInvoiceNumber();
-        this.createAt = orderEntity.getCreateAt();
-        this.updateAt = orderEntity.getUpdateAt();
-        this.totalValue = orderEntity.getTotalValue();
-        this.canceled = orderEntity.getCanceled();
-        this.canceledAt = orderEntity.getCanceledAt();
-        this.canceledBy = orderEntity.getCanceledBy();
-        this.cancellationReason = orderEntity.getCancellationReason();
-        this.orderInstallments = orderInstallmentsResponseDTOList;
-
-
-    }
-
 }

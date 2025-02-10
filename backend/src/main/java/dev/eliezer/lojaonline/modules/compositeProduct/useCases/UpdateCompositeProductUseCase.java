@@ -20,6 +20,9 @@ public class UpdateCompositeProductUseCase {
     @Autowired
     ProductRepository productRepository;
 
+    @Autowired
+    ObjectUtils objectUtils;
+
 
     public CompositeProductEntity execute (Long compositeProductId, CompositeProductUpdateDTO CompositeProductSource) {
 
@@ -29,7 +32,7 @@ public class UpdateCompositeProductUseCase {
 
         CompositeProductEntity compositeProductEntitySource = parseCompositeProductEntity(compositeProductId, CompositeProductSource);
 
-        ObjectUtils.objectUpdate(compositeProductTarget, compositeProductEntitySource);
+        objectUtils.objectUpdate(compositeProductTarget, compositeProductEntitySource);
 
         return compositeProductRepository.save(compositeProductTarget);
     }

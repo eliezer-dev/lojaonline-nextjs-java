@@ -4,6 +4,7 @@ import dev.eliezer.lojaonline.modules.order.dtos.OrderInstallmentsResponseDTO;
 import dev.eliezer.lojaonline.modules.order.dtos.OrderItemResponseDTO;
 import dev.eliezer.lojaonline.modules.order.dtos.OrderResponseDTO;
 import dev.eliezer.lojaonline.modules.order.entities.OrderEntity;
+import dev.eliezer.lojaonline.modules.order.mappers.OrderMapper;
 import dev.eliezer.lojaonline.modules.order.repositories.OrderInstallmentsRepository;
 import dev.eliezer.lojaonline.modules.order.repositories.OrderItemRepository;
 import dev.eliezer.lojaonline.modules.order.repositories.OrderRepository;
@@ -25,6 +26,9 @@ public class GetOrderUseCase {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
+    @Autowired
+    private OrderMapper orderMapper;
+
     private List<OrderEntity> orderEntityList;
 
     private List<OrderInstallmentsResponseDTO> orderInstallmentsList;
@@ -35,7 +39,7 @@ public class GetOrderUseCase {
         orderRepository.findAll().forEach(order -> {
             List<OrderInstallmentsResponseDTO> orderInstallments = getOrderInstallments(order.getId());
             List<OrderItemResponseDTO> orderItem = getOrderItems(order.getId());
-            orderResponse.add(new OrderResponseDTO(order, orderItem, orderInstallments));
+            orderResponse.add(orderMapper.toOrderResponseDTO(order, orderItem, orderInstallments));
         });
 
         return orderResponse;

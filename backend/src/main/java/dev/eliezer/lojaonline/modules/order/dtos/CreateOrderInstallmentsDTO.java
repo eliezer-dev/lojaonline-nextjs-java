@@ -3,6 +3,8 @@ package dev.eliezer.lojaonline.modules.order.dtos;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 
 @Data
 public class CreateOrderInstallmentsDTO {
@@ -15,4 +17,8 @@ public class CreateOrderInstallmentsDTO {
 
     @NotNull(message = "[numberOfInstallments] is not provided")
     private Long numberOfInstallments;
+
+    @NotNull(message = "[installmentValue] is not provided")
+    private BigDecimal installmentValue;
+
 }

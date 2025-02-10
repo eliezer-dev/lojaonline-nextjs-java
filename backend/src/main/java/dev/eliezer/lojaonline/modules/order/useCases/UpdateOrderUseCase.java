@@ -3,6 +3,7 @@ package dev.eliezer.lojaonline.modules.order.useCases;
 import dev.eliezer.lojaonline.exceptions.NotFoundException;
 import dev.eliezer.lojaonline.modules.order.dtos.*;
 import dev.eliezer.lojaonline.modules.order.entities.OrderEntity;
+import dev.eliezer.lojaonline.modules.order.mappers.OrderMapper;
 import dev.eliezer.lojaonline.modules.order.repositories.OrderInstallmentsRepository;
 import dev.eliezer.lojaonline.modules.order.repositories.OrderItemRepository;
 import dev.eliezer.lojaonline.modules.order.repositories.OrderRepository;
@@ -24,6 +25,9 @@ public class UpdateOrderUseCase {
     @Autowired
     private OrderInstallmentsRepository orderInstallmentsRepository;
 
+    @Autowired
+    private OrderMapper orderMapper;
+
     private OrderEntity orderTarget;
 
     private List<OrderItemResponseDTO> orderItemResponseDTOList;
@@ -38,12 +42,14 @@ public class UpdateOrderUseCase {
         if (dataReq.getInvoiceNumber() != null && !dataReq.getInvoiceNumber().isEmpty()) {
             this.orderTarget.setInvoiceNumber(dataReq.getInvoiceNumber());
         }
+
         getOrderItems();
 
         getOrderInstallments ();
 
         OrderEntity orderUpdated = orderRepository.save(orderTarget);
-        return new OrderResponseDTO(orderUpdated, orderItemResponseDTOList, orderInstallmentsResponseDTOList);
+
+        return  orderMapper.toOrderResponseDTO(orderUpdated, orderItemResponseDTOList, orderInstallmentsResponseDTOList);
 
     }
 

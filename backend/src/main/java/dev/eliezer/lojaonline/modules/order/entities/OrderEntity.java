@@ -1,6 +1,7 @@
 package dev.eliezer.lojaonline.modules.order.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import dev.eliezer.lojaonline.integrations.pagarMe.Entity.PagarMeInvoicesEntity;
 import dev.eliezer.lojaonline.modules.order.dtos.CreateOrderDTO;
 import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;
 import dev.eliezer.lojaonline.modules.user.entities.UserEntity;
@@ -65,11 +66,11 @@ public class OrderEntity {
 
     private String cancellationReason;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "fatura_id", referencedColumnName = "id", nullable = false)
+    private PagarMeInvoicesEntity pagarMeInvoice;
 
-    public OrderEntity (UserEntity user, CreateOrderDTO createOrderDTO) {
-        this.user = user;
-        this.invoiceNumber = createOrderDTO.getInvoiceNumber();
-        this.totalValue = createOrderDTO.getTotalValue();
-    }
+
+
 
 }

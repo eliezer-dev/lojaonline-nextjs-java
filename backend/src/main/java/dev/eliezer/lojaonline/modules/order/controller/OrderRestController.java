@@ -84,8 +84,9 @@ public class OrderRestController {
             throw new UnauthorizedAccessException();
         }
 
-       OrderResponseDTO orderSaved =  createOrderUseCase.execute(orderDTO);
-        return ResponseEntity.ok().body(orderSaved);
+        OrderResponseDTO response = createOrderUseCase.execute(orderDTO);
+
+        return ResponseEntity.ok().body(response);
     }
 
 

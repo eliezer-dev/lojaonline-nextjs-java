@@ -8,6 +8,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @Entity(name = "tb_order_installments")
 @NoArgsConstructor
@@ -32,11 +34,14 @@ public class OrderInstallmentsEntity {
     @NotNull(message = "[numberOfInstallments] is not provided")
     private Long numberOfInstallments;
 
+    private BigDecimal installmentValue;
+
     public OrderInstallmentsEntity (OrderEntity order, CreateOrderInstallmentsDTO createOrderInstallmentsDTO) {
         this.order = order;
         this.installment = createOrderInstallmentsDTO.getInstallment();
         this.numberOfInstallments = createOrderInstallmentsDTO.getNumberOfInstallments();
         this.paymentMethod = createOrderInstallmentsDTO.getPaymentMethod();
+        this.installmentValue = createOrderInstallmentsDTO.getInstallmentValue();
 
     }
 
