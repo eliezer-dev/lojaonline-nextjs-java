@@ -3,6 +3,7 @@ package dev.eliezer.lojaonline.modules.order.useCases;
 import dev.eliezer.lojaonline.exceptions.BusinessException;
 import dev.eliezer.lojaonline.exceptions.NotFoundException;
 import dev.eliezer.lojaonline.integrations.pagarMe.Entity.PagarMeInvoicesEntity;
+import dev.eliezer.lojaonline.integrations.pagarMe.dtos.PagarMeResponseDTO;
 import dev.eliezer.lojaonline.integrations.pagarMe.infra.PagarMeClient.ApiResponse;
 import dev.eliezer.lojaonline.integrations.pagarMe.payloads.FaturaPagarMeResponsePayload;
 import dev.eliezer.lojaonline.integrations.pagarMe.repositories.PagarMeInvoicesRepository;
@@ -71,6 +72,8 @@ public class CreateOrderUseCase {
 
     private PagarMeInvoicesEntity pagarMeInvoice;
 
+    private PagarMeResponseDTO pagarMeResponseDTO;
+
 
     public OrderResponseDTO execute (CreateOrderDTO dataReq) {
 
@@ -87,7 +90,8 @@ public class CreateOrderUseCase {
 
         saveOrderInstallments ();
 
-        return orderMapper.toOrderResponseDTO(order, orderItemResponseDTOList, orderInstallmentsResponseDTOList);
+        return orderMapper.toOrderResponseDTO(order,
+                orderItemResponseDTOList, orderInstallmentsResponseDTOList, pagarMeResponseDTO);
 
     }
 
@@ -115,6 +119,8 @@ public class CreateOrderUseCase {
 
         pagarMeInvoice = pagarMeInvoicesRepository
                 .save(FaturaPagarMeRequestMapper.toPagarMeInvoicesEntity(faturaPagarMeResponse));
+
+        pagarMeResponseDTO = FaturaPagarMeRequestMapper.toPagarMeResponseDTO(pagarMeInvoice);
 
     }
 

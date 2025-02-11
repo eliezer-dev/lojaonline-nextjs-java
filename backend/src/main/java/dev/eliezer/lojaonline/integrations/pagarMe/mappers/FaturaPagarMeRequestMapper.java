@@ -1,6 +1,7 @@
 package dev.eliezer.lojaonline.integrations.pagarMe.mappers;
 
 import dev.eliezer.lojaonline.integrations.pagarMe.Entity.PagarMeInvoicesEntity;
+import dev.eliezer.lojaonline.integrations.pagarMe.dtos.PagarMeResponseDTO;
 import dev.eliezer.lojaonline.integrations.pagarMe.payloads.FaturaPagarMeRequestPayload;
 import dev.eliezer.lojaonline.integrations.pagarMe.payloads.FaturaPagarMeRequestPayload.PaymentSettingsDTO.CreditCardSettingsDTO.InstallmentDTO;
 import dev.eliezer.lojaonline.integrations.pagarMe.payloads.FaturaPagarMeRequestPayload.CartSettingsDTO.Item;
@@ -52,6 +53,14 @@ public class FaturaPagarMeRequestMapper {
         pagarMeInvoice.setExpireIn(faturaPagarMeResponsePayload.getExpireIn());
 
         return pagarMeInvoice;
+    }
+
+    public static PagarMeResponseDTO toPagarMeResponseDTO (PagarMeInvoicesEntity pagarMeInvoice) {
+        PagarMeResponseDTO pagarMeResponseDTO = new PagarMeResponseDTO();
+        pagarMeResponseDTO.setIdFatura(pagarMeInvoice.getIdFatura());
+        pagarMeResponseDTO.setUrl(pagarMeInvoice.getPagarMeUrl());
+
+        return pagarMeResponseDTO;
     }
 
 }

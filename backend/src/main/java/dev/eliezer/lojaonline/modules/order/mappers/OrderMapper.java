@@ -1,5 +1,7 @@
 package dev.eliezer.lojaonline.modules.order.mappers;
 
+import dev.eliezer.lojaonline.integrations.pagarMe.Entity.PagarMeInvoicesEntity;
+import dev.eliezer.lojaonline.integrations.pagarMe.dtos.PagarMeResponseDTO;
 import dev.eliezer.lojaonline.modules.order.dtos.OrderInstallmentsResponseDTO;
 import dev.eliezer.lojaonline.modules.order.dtos.OrderItemResponseDTO;
 import dev.eliezer.lojaonline.modules.order.dtos.OrderResponseDTO;
@@ -11,7 +13,7 @@ import java.util.List;
 @Component
 public class OrderMapper {
     
-    public OrderResponseDTO toOrderResponseDTO(OrderEntity orderEntity, List<OrderItemResponseDTO> orderItemResponseDTOList, 
+    public OrderResponseDTO toOrderResponseDTO(OrderEntity orderEntity, List<OrderItemResponseDTO> orderItemResponseDTOList,
                                                List<OrderInstallmentsResponseDTO> orderInstallmentsResponseDTOList) {
        
         OrderResponseDTO orderResponseDTO = new OrderResponseDTO();
@@ -46,4 +48,15 @@ public class OrderMapper {
         
         
     }
+
+    public OrderResponseDTO toOrderResponseDTO (OrderEntity orderEntity, List<OrderItemResponseDTO> orderItemResponseDTOList,
+                                                List<OrderInstallmentsResponseDTO> orderInstallmentsResponseDTOList, PagarMeResponseDTO pagarMeResponseDTO) {
+
+        OrderResponseDTO orderResponseDTO = new OrderResponseDTO();
+        orderResponseDTO = toOrderResponseDTO(orderEntity, orderItemResponseDTOList, orderInstallmentsResponseDTOList);
+        orderResponseDTO.setPagarMe(pagarMeResponseDTO);
+
+        return orderResponseDTO;
+    }
+
 }
