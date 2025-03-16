@@ -1,19 +1,15 @@
 package dev.eliezer.lojaonline.modules.user.useCases;
 
 
-import dev.eliezer.lojaonline.exceptions.EmailFoundException;
 import dev.eliezer.lojaonline.exceptions.NotFoundException;
 import dev.eliezer.lojaonline.modules.user.dtos.UpdateUserRequestDTO;
 import dev.eliezer.lojaonline.modules.user.dtos.UserResponseDTO;
-import dev.eliezer.lojaonline.modules.user.dtos.CreateUserRequestDTO;
 import dev.eliezer.lojaonline.modules.user.entities.UserEntity;
 import dev.eliezer.lojaonline.modules.user.repositories.UserRepository;
 import dev.eliezer.lojaonline.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class UpdateUserUseCase {

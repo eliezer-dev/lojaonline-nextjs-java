@@ -46,6 +46,8 @@ public class SecurityConfig {
                             .requestMatchers("/categories/*").permitAll()
                             .requestMatchers("/config/header/menu/categories").permitAll()
                             .requestMatchers("/config/header/menu/categories/*").permitAll()
+                            .requestMatchers("/orders").permitAll()
+                            .requestMatchers("/orders/").permitAll()
                             .requestMatchers("/products/*").permitAll()
                             .requestMatchers("/images/*").permitAll()
                             .requestMatchers(SWAGGER_LIST).permitAll()

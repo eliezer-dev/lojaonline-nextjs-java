@@ -3,8 +3,7 @@ package dev.eliezer.lojaonline.integrations.pagarMe.mappers;
 import dev.eliezer.lojaonline.integrations.pagarMe.Entity.PagarMeInvoicesEntity;
 import dev.eliezer.lojaonline.integrations.pagarMe.dtos.PagarMeResponseDTO;
 import dev.eliezer.lojaonline.integrations.pagarMe.payloads.FaturaPagarMeRequestPayload;
-import dev.eliezer.lojaonline.integrations.pagarMe.payloads.FaturaPagarMeRequestPayload.PaymentSettingsDTO.CreditCardSettingsDTO.InstallmentDTO;
-import dev.eliezer.lojaonline.integrations.pagarMe.payloads.FaturaPagarMeRequestPayload.CartSettingsDTO.Item;
+import dev.eliezer.lojaonline.integrations.pagarMe.payloads.FaturaPagarMeRequestPayload.Item;
 import dev.eliezer.lojaonline.integrations.pagarMe.payloads.FaturaPagarMeResponsePayload;
 import dev.eliezer.lojaonline.modules.order.dtos.CreateOrderDTO;
 
@@ -16,30 +15,19 @@ public class FaturaPagarMeRequestMapper {
 
     public static FaturaPagarMeRequestPayload toFaturaPagarMeRequestPayload(CreateOrderDTO createOrderDTO) {
         FaturaPagarMeRequestPayload faturaPagarMeRequestPayload = new FaturaPagarMeRequestPayload();
+
+        List<Item> items = new ArrayList<>();
+
         Integer pagarMeAmmount = createOrderDTO.getTotalValue().multiply(BigDecimal.valueOf(100)).intValue();
-
-        List<InstallmentDTO> pagarMeInstallments = new ArrayList<>();
-
-        faturaPagarMeRequestPayload.setName("Fatura Vegan Natu");
-
-        if (createOrderDTO.getOrderInstallments() != null) {
-            createOrderDTO.getOrderInstallments().forEach(installment -> {
-                InstallmentDTO pagarMeInstallment = new InstallmentDTO(installment.getInstallment(),
-                        installment.getInstallmentValue().multiply(BigDecimal.valueOf(100)).longValue());
-                pagarMeInstallments.add(pagarMeInstallment);
-            });
-
-            faturaPagarMeRequestPayload.getPaymentSettings()
-                    .getCreditCardSettings()
-                    .setInstallments(pagarMeInstallments);
-
-
-        }
-
-        faturaPagarMeRequestPayload.getCartSettings()
-                .setItems(List.of(new Item(pagarMeAmmount, "Pedido Vegan Natu", 1)));
-
-
+        createOrderDTO.getOrderItems().forEach(orderItem -> {
+            Item item = new Item();
+            item.setAmount(orderItem.getPrice().multiply(BigDecimal.valueOf(100)).intValue());
+            item.setQuantity(orderItem.getQuantity().intValue());
+            item.setCode(orderItem.getProductId().toString());
+            item.setDescription("teste");
+            items.add(item);
+        });
+        faturaPagarMeRequestPayload.setItems(items);
         return faturaPagarMeRequestPayload;
     }
 

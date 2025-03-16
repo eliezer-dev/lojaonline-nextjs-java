@@ -2,11 +2,8 @@ package dev.eliezer.lojaonline.modules.user.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.eliezer.lojaonline.exceptions.BusinessException;
-import dev.eliezer.lojaonline.modules.client.dtos.CreateUserClientTypeDTO;
 import dev.eliezer.lojaonline.modules.image.entities.ImageEntity;
 import dev.eliezer.lojaonline.modules.order.entities.OrderEntity;
-import dev.eliezer.lojaonline.modules.user.dtos.CreateUserRequestDTO;
-import dev.eliezer.lojaonline.modules.user.dtos.UpdateUserRequestDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -91,24 +88,6 @@ public class UserEntity {
             default -> throw new BusinessException("User role is invalid");
         };
     }
-
-    public static UserEntity parseUserEntity (CreateUserRequestDTO createUserRequestDTO) {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setEmail(createUserRequestDTO.getEmail());
-        userEntity.setPassword(createUserRequestDTO.getPassword());
-        userEntity.setFullname(createUserRequestDTO.getFullname());
-        return userEntity;
-    }
-
-    public static UserEntity parseUserEntity (CreateUserClientTypeDTO createUserClientTypeDTO) {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setEmail(createUserClientTypeDTO.getEmail());
-        userEntity.setPassword(createUserClientTypeDTO.getPassword());
-        userEntity.setFullname(createUserClientTypeDTO.getFullname());
-        userEntity.setUserRole(createUserClientTypeDTO.getUserRole());
-        return userEntity;
-    }
-
 
 
 

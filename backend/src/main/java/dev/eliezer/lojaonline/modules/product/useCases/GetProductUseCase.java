@@ -2,10 +2,6 @@ package dev.eliezer.lojaonline.modules.product.useCases;
 
 import dev.eliezer.lojaonline.exceptions.BusinessException;
 import dev.eliezer.lojaonline.exceptions.NotFoundException;
-import dev.eliezer.lojaonline.modules.compositeProduct.dtos.CompositeItemDTO;
-import dev.eliezer.lojaonline.modules.compositeProduct.mappers.CompositeProductMapper;
-import dev.eliezer.lojaonline.modules.image.dtos.ImageLinkDTO;
-import dev.eliezer.lojaonline.modules.image.mappers.ImageMapper;
 import dev.eliezer.lojaonline.modules.product.dtos.ProductResponseDTO;
 import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;
 import dev.eliezer.lojaonline.modules.product.mappers.ProductMapper;

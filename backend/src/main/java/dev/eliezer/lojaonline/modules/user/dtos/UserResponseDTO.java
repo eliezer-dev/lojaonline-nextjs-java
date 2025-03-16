@@ -1,7 +1,6 @@
 package dev.eliezer.lojaonline.modules.user.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import dev.eliezer.lojaonline.exceptions.BusinessException;
 import dev.eliezer.lojaonline.modules.image.dtos.ImageLinkDTO;
 import dev.eliezer.lojaonline.modules.user.entities.UserEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -9,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import java.awt.*;
 import java.time.LocalDateTime;
 
 @Data

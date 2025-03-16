@@ -14,7 +14,7 @@ public class PagarMeInvoiceService {
 
     public ApiResponse createInvoice (FaturaPagarMeRequestPayload faturaPagarMeRequestPayload) {
 
-        final String URI = "/paymentlinks";
+        final String URI = "/orders";
 
         ApiResponse response = pagarMeClient.postResource(URI, faturaPagarMeRequestPayload);
 

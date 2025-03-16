@@ -80,9 +80,9 @@ public class OrderRestController {
             @Content(schema = @Schema(implementation = Object.class))})
     public ResponseEntity<OrderResponseDTO> create(@Valid @RequestBody CreateOrderDTO orderDTO, HttpServletRequest request) {
 
-        if (!isClientUser(request)) {
-            throw new UnauthorizedAccessException();
-        }
+//        if (!isClientUser(request)) {
+//            throw new UnauthorizedAccessException();
+//        }
 
         OrderResponseDTO response = createOrderUseCase.execute(orderDTO);
 

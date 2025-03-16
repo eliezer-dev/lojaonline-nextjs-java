@@ -10,7 +10,6 @@ import dev.eliezer.lojaonline.modules.product.dtos.ProductResponseDTO;
 import dev.eliezer.lojaonline.modules.product.entities.CategoryEntity;
 import dev.eliezer.lojaonline.modules.product.entities.ProductEntity;
 import dev.eliezer.lojaonline.modules.product.repositories.CategoryRepository;
-import dev.eliezer.lojaonline.modules.product.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

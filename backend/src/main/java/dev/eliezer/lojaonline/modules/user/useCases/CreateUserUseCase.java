@@ -1,9 +1,10 @@
 package dev.eliezer.lojaonline.modules.user.useCases;
 
 import dev.eliezer.lojaonline.exceptions.EmailFoundException;
-import dev.eliezer.lojaonline.modules.user.dtos.UserResponseDTO;
 import dev.eliezer.lojaonline.modules.user.dtos.CreateUserRequestDTO;
+import dev.eliezer.lojaonline.modules.user.dtos.UserResponseDTO;
 import dev.eliezer.lojaonline.modules.user.entities.UserEntity;
+import dev.eliezer.lojaonline.modules.user.mappers.UserMapper;
 import dev.eliezer.lojaonline.modules.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,7 +28,7 @@ public class CreateUserUseCase {
         var password = passwordEncoder.encode(user.getPassword());
         user.setPassword(password);
 
-        UserEntity UserSaved = userRepository.save(UserEntity.parseUserEntity(user));
+        UserEntity UserSaved = userRepository.save(UserMapper.parseUserEntity(user));
 
         return UserResponseDTO.parseUserResponseDTO(UserSaved);
     }

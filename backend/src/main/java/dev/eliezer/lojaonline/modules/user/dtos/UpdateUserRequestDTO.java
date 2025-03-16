@@ -1,7 +1,6 @@
 package dev.eliezer.lojaonline.modules.user.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

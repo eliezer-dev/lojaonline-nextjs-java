@@ -1,7 +1,7 @@
 package dev.eliezer.lojaonline.modules.client.entities;
 
-import dev.eliezer.lojaonline.modules.shared.entities.AddressEntity;
-import dev.eliezer.lojaonline.modules.shared.entities.PhoneEntity;
+import dev.eliezer.lojaonline.modules.shared.entities.Address;
+import dev.eliezer.lojaonline.modules.shared.entities.Phone;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -33,12 +33,12 @@ public class ClientEntity {
     @Column(nullable = false)
     private String password;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "address_id", nullable = false)
-    private AddressEntity address;
+    private ClientAddressEntity address;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PhoneEntity> phones;
+    private List<ClientPhoneEntity> phones;
 
 
  }

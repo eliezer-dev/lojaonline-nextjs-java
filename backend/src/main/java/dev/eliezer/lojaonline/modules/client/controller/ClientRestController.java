@@ -1,9 +1,8 @@
 package dev.eliezer.lojaonline.modules.client.controller;
 
-import dev.eliezer.lojaonline.exceptions.UnauthorizedAccessException;
-import dev.eliezer.lojaonline.modules.client.dtos.CreateUserClientTypeDTO;
-import dev.eliezer.lojaonline.modules.client.useCases.CreateUserClientTypeUseCase;
-import dev.eliezer.lojaonline.modules.user.dtos.CreateUserRequestDTO;
+import dev.eliezer.lojaonline.modules.client.dtos.CreateClientDTO;
+import dev.eliezer.lojaonline.modules.client.dtos.ResponseClientDTO;
+import dev.eliezer.lojaonline.modules.client.useCases.CreateClientUseCase;
 import dev.eliezer.lojaonline.modules.user.dtos.UserResponseDTO;
 import dev.eliezer.lojaonline.modules.user.useCases.CreateUserUseCase;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,13 +23,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/clients")
-@Tag(name = "Users", description = "RESTful API for managing clients.")
+@Tag(name = "Clients", description = "RESTful API for managing clients.")
 public class ClientRestController {
     @Autowired
     private CreateUserUseCase createUserUseCase;
 
     @Autowired
-    private CreateUserClientTypeUseCase createUserClientTypeUseCase;
+    private CreateClientUseCase createClientUseCase;
 
     @PostMapping("/create")
     @Operation(summary = "Create a new user of the client type", description = "Create a new user of the client type and return the created user data")
@@ -39,7 +38,7 @@ public class ClientRestController {
     @ApiResponse(responseCode = "422", description = "Invalid user data provided", content =
     @Content(
             mediaType = "text/plain",
-            array = @ArraySchema(schema = @Schema(implementation = CreateUserClientTypeDTO.class)),
+            array = @ArraySchema(schema = @Schema(implementation = CreateClientDTO.class)),
 
             examples = {
                     @ExampleObject(
@@ -52,9 +51,11 @@ public class ClientRestController {
                     )
             }
     ))
-    public ResponseEntity<UserResponseDTO> create(@Valid @RequestBody CreateUserClientTypeDTO createUserData, HttpServletRequest request) {
+    public ResponseEntity<ResponseClientDTO> create(@Valid @RequestBody CreateClientDTO requestData, HttpServletRequest request) {
 
-        var result = createUserClientTypeUseCase.execute(createUserData);
+        var result = createClientUseCase.execute(requestData);
         return ResponseEntity.ok().body(result);
     }
+
+
 }

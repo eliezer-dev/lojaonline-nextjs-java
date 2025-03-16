@@ -1,7 +1,6 @@
 package dev.eliezer.lojaonline.integrations.pagarMe.payloads;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -11,80 +10,122 @@ import java.util.List;
 @Data
 public class FaturaPagarMeRequestPayload {
 
-    @JsonProperty("is_building")
-    private Boolean isBuilding = false;
+    private Customer customer = new Customer();
 
-    private String name = "Pedido Vegan Natu";
+    private Shipping shipping = new Shipping();
 
-    private String type = "order";
+    private List<Item> items;
 
-    @JsonProperty("payment_settings")
-    private PaymentSettingsDTO paymentSettings = new PaymentSettingsDTO();
+    private Antifraud antifraud = new Antifraud();
 
-    @JsonProperty("cart_settings")
-    private CartSettingsDTO cartSettings = new CartSettingsDTO();
-
+    private List<Payment> payments = new ArrayList<>(List.of(new Payment()));
 
     @Data
-    public static class PaymentSettingsDTO {
+    public static class Customer {
+        private String name = "Eliezer Ramos Palhão";
 
-        @JsonProperty("credit_card_settings")
-        private CreditCardSettingsDTO creditCardSettings = new CreditCardSettingsDTO();
+        private String email = "eliezer.ramosp@gmail.com";
 
-        @JsonProperty("accepted_payment_methods")
-        private List<String> acceptedPaymentMethods = List.of("credit_card");
+        private String document = "42828799808";
+
+        private String type = "individual";
+
+        private Phones phones = new Phones();
 
         @Data
-        public static class CreditCardSettingsDTO {
-            @JsonProperty("operation_type")
-            private String operationType = "auth_and_capture";
-
-            private List<InstallmentDTO> installments;
+        public static class Phones {
+            @JsonProperty("mobile_phone")
+            private MobilePhone mobilePhone = new MobilePhone();
 
             @Data
-            public static class InstallmentDTO {
-                private Long number;
+            public static class MobilePhone {
+                @JsonProperty("country_code")
+                private String countryCode = "55";
 
-                private Long total;
+                @JsonProperty("area_code")
+                private String areaCode = "19";
 
-                public InstallmentDTO(Long number, Long total) {
-                    this.number = number;
-                    this.total = total;
-                }
+                private String number = "992591066";
             }
         }
-
     }
 
     @Data
-    public static class CartSettingsDTO {
+    public static class Shipping {
+        private Address address = new Address();
 
-        // Campos fixos
-        private String name = "Pedido Vegan Natu";
-        private String type = "order";
+        private Integer amount = 0;
 
-        // Array de objetos fixos
-//        private List<Item> items = List.of(
-//                new Item(12000, "Pedido Vegan Natu", 1)
-//        );
+        private String description = "Home";
 
-        private List<Item> items = new ArrayList<>();
-        // Classe interna para representar um item
+        @JsonProperty("recipient_name")
+        private String recipientName = "Eliezer";
+
+        @JsonProperty("recipient_phone")
+        private String recipientPhone = "5519992591066";
+
         @Data
-        public static class Item {
-            private Integer amount;
-            private String name;
+        public static class Address {
+            private String line1 = "124, Avenida Pascoal Piconi, Jardim São Manoel ";
 
-            @JsonProperty("default_quantity")
-            private Integer defaultQuantity;
+            @JsonProperty("zip_code")
+            private String zipCode = "13386036";
 
-            public Item(Integer amount, String name, Integer defaultQuantity) {
-                this.amount = amount;
-                this.name = name;
-                this.defaultQuantity = defaultQuantity;
+            private String city = "Nova Odessa";
+
+            private String state = "SP";
+
+            private String country = "BR";
+
+            @JsonProperty("line_1")
+            public void setLine1(String line1) {
+                this.line1 = line1;
             }
         }
     }
 
+    @Data
+    public static class Item {
+        private Integer amount;
 
+        private String description;
+
+        private Integer quantity;
+
+        private String code;
+    }
+
+    @Data
+    public static class Antifraud {
+        private String type = "clearsale";
+
+        private Clearsale clearsale = new Clearsale();
+
+        @Data
+        public static class Clearsale {
+            @JsonProperty("custom_sla")
+            private String customSla = "90";
+        }
+    }
+
+
+    @Data
+    public static class Payment {
+        @JsonProperty("payment_method")
+        private String paymentMethod = "checkout";
+
+        private Checkout checkout = new Checkout();
+
+        @Data
+        public static class Checkout {
+            @JsonProperty("default_payment_method")
+            private String defaultPaymentMethod = "credit_card";
+
+            @JsonProperty("accepted_payment_methods")
+            private List<String> acceptedPaymentMethods = List.of("credit_card");
+
+            @JsonProperty("success_url")
+            private String successUrl = "http://localhost:3000";
+        }
+    }
 }

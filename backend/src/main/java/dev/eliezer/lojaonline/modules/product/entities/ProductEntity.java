@@ -1,12 +1,8 @@
 package dev.eliezer.lojaonline.modules.product.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import dev.eliezer.lojaonline.modules.compositeProduct.dtos.CompositeItemDTO;
 import dev.eliezer.lojaonline.modules.compositeProduct.entities.CompositeProductEntity;
 import dev.eliezer.lojaonline.modules.image.entities.ImageEntity;
 import dev.eliezer.lojaonline.modules.order.entities.OrderEntity;
-import dev.eliezer.lojaonline.modules.product.dtos.ProductCreateRequestDTO;
-import dev.eliezer.lojaonline.modules.image.dtos.ImageLinkDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

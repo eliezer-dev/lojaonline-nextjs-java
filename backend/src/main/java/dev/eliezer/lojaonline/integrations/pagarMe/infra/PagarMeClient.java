@@ -6,7 +6,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Component
 public class PagarMeClient {
-    private static final String PAGAR_ME_BASE_URL = "https://sdx-api.pagar.me/core/v5";
+    private static final String PAGAR_ME_BASE_URL = "https://api.pagar.me/core/v5";
 
     private static final String PAGAR_ME_TOKEN = "c2tfdGVzdF83ZTQ2ZjgzNTU3NGY0MzNmOGE4NjExN2JmZDZkN2E1MTo=";
 

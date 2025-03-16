@@ -7,12 +7,7 @@ import jakarta.persistence.Id;
 import lombok.Data;
 
 @Data
-@Entity(name = "tb_address")
-public class AddressEntity {
-    @Id
-    @GeneratedValue
-    private Long id;
-
+public class Address {
     @Column(nullable = false)
     private String country;
 

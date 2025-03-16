@@ -1,6 +1,5 @@
 package dev.eliezer.lojaonline.modules.image.dtos;
 
-import dev.eliezer.lojaonline.modules.image.entities.ImageEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,16 +1,10 @@
 package dev.eliezer.lojaonline.modules.shared.entities;
 
-import dev.eliezer.lojaonline.modules.client.entities.ClientEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
-@Entity(name = "tb_phone")
-public class PhoneEntity {
-
-    @Id
-    @GeneratedValue
-    private Long id;
+public class Phone {
 
     @Column(nullable = false)
     private String countryCode = "+55";
@@ -20,10 +14,6 @@ public class PhoneEntity {
 
     @Column(nullable = false)
     private String number;
-
-    @ManyToOne
-    @JoinColumn(name = "client_id", nullable = true)
-    private ClientEntity client;
 
 
 }
