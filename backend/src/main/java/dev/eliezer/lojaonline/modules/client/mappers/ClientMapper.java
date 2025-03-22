@@ -24,7 +24,7 @@ public class ClientMapper {
     public ClientEntity toEntity(CreateClientDTO createClientDTO) {
         ClientEntity clientEntity = new ClientEntity();
 
-        clientEntity.setName(createClientDTO.getName());
+        clientEntity.setName(createClientDTO.getFullname());
         clientEntity.setDocument(createClientDTO.getDocument());
         clientEntity.setGender(createClientDTO.getGender());
         clientEntity.setBirthDate(createClientDTO.getBirthDate());
@@ -105,7 +105,7 @@ public class ClientMapper {
         ResponseClientDTO responseClientDTO = new ResponseClientDTO();
 
         responseClientDTO.setId(clientEntity.getId());
-        responseClientDTO.setName(clientEntity.getName());
+        responseClientDTO.setFullname(clientEntity.getName());
         responseClientDTO.setEmail(clientEntity.getEmail());
         responseClientDTO.setDocument(clientEntity.getDocument());
         responseClientDTO.setGender(clientEntity.getGender());

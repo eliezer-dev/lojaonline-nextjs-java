@@ -2,6 +2,7 @@ package dev.eliezer.lojaonline.modules.client.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -15,7 +16,7 @@ import java.util.List;
 public class ClientDTO {
     @NotBlank(message = "fullname not provided")
     @Schema(example = "Jose da Silva", requiredMode = Schema.RequiredMode.REQUIRED, description = "client full name")
-    private String name;
+    private String fullname;
 
     @NotBlank (message = "email not provided")
     @Email(message = "invalid email")
@@ -36,15 +37,17 @@ public class ClientDTO {
     private LocalDate birthDate;
 
     @NotEmpty(message = "phone not provided")
+    @Valid
     private List<PhoneDTO> phone;
 
     @NotNull(message = "address not provided")
+    @Valid
     private AddressDTO address;
 
     @Data
     public static class PhoneDTO {
 
-        @Schema(example = "+55", requiredMode = Schema.RequiredMode.REQUIRED, description = "client country code")
+        @Schema(example = "+55", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "client country code")
         private String countryCode = "+55";
 
         @Schema(example = "19", requiredMode = Schema.RequiredMode.REQUIRED, description = "client area code")
@@ -59,10 +62,9 @@ public class ClientDTO {
     @Data
     public static class AddressDTO {
 
-        @Schema(example = "BR", requiredMode = Schema.RequiredMode.REQUIRED, description = "country name")
-        @NotBlank(message = "country not provided")
+        @Schema(example = "BR", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "country name")
         @jakarta.validation.constraints.Pattern(regexp = "^[A-Z]{2}$", message = "country must be a valid two-letter code")
-        private String country;
+        private String country = "BR";
 
         @Schema(example = "SP", requiredMode = Schema.RequiredMode.REQUIRED, description = "state name")
         @NotBlank(message = "state not provided")
@@ -91,7 +93,6 @@ public class ClientDTO {
         private String number;
 
         @Schema(example = "Apartment 45B", description = "optional complement information")
-        @NotBlank(message = "complement not provided")
         private String complement;
 
     }
