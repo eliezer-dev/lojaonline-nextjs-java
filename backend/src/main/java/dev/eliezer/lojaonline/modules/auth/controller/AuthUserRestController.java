@@ -3,6 +3,7 @@ package dev.eliezer.lojaonline.modules.auth.controller;
 import dev.eliezer.lojaonline.modules.auth.dto.AuthUserRequestDTO;
 import dev.eliezer.lojaonline.modules.auth.dto.AuthUserResponseDTO;
 import dev.eliezer.lojaonline.modules.auth.useCases.AuthUserUseCase;
+import dev.eliezer.lojaonline.modules.shared.entities.UserToken;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -23,7 +24,7 @@ public class AuthUserRestController {
 
     @PostMapping
     @SecurityRequirement(name = "jwt_auth")
-    public ResponseEntity<AuthUserResponseDTO> auth (@Valid @RequestBody AuthUserRequestDTO userAuth) {
+    public ResponseEntity<UserToken> auth (@Valid @RequestBody AuthUserRequestDTO userAuth) {
         var authenticatedUser = authUserUseCase.execute(userAuth);
         return ResponseEntity.ok().body(authenticatedUser);
     }

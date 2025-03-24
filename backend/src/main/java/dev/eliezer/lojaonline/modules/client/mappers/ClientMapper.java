@@ -1,10 +1,9 @@
 package dev.eliezer.lojaonline.modules.client.mappers;
 
-import dev.eliezer.lojaonline.modules.client.dtos.ClientDTO;
 import dev.eliezer.lojaonline.modules.client.dtos.CreateClientDTO;
 import dev.eliezer.lojaonline.modules.client.dtos.ClientDTO.PhoneDTO;
 import dev.eliezer.lojaonline.modules.client.dtos.ClientDTO.AddressDTO;
-import dev.eliezer.lojaonline.modules.client.dtos.ResponseClientDTO;
+import dev.eliezer.lojaonline.modules.client.dtos.CreateResponseClientDTO;
 import dev.eliezer.lojaonline.modules.client.entities.ClientAddressEntity;
 import dev.eliezer.lojaonline.modules.client.entities.ClientEntity;
 import dev.eliezer.lojaonline.modules.client.entities.ClientPhoneEntity;
@@ -101,25 +100,25 @@ public class ClientMapper {
         return phoneDTOList;
     }
 
-    public ResponseClientDTO toResponseClientDTO(ClientEntity clientEntity) {
-        ResponseClientDTO responseClientDTO = new ResponseClientDTO();
+    public CreateResponseClientDTO toResponseClientDTO(ClientEntity clientEntity) {
+        CreateResponseClientDTO createResponseClientDTO = new CreateResponseClientDTO();
 
-        responseClientDTO.setId(clientEntity.getId());
-        responseClientDTO.setFullname(clientEntity.getName());
-        responseClientDTO.setEmail(clientEntity.getEmail());
-        responseClientDTO.setDocument(clientEntity.getDocument());
-        responseClientDTO.setGender(clientEntity.getGender());
-        responseClientDTO.setBirthDate(clientEntity.getBirthDate());
+        createResponseClientDTO.setId(clientEntity.getId());
+        createResponseClientDTO.setFullname(clientEntity.getName());
+        createResponseClientDTO.setEmail(clientEntity.getEmail());
+        createResponseClientDTO.setDocument(clientEntity.getDocument());
+        createResponseClientDTO.setGender(clientEntity.getGender());
+        createResponseClientDTO.setBirthDate(clientEntity.getBirthDate());
 
         if (clientEntity.getPhones() != null && !clientEntity.getPhones().isEmpty()) {
-            responseClientDTO.setPhone(toResponsePhoneDTOs(clientEntity.getPhones()));
+            createResponseClientDTO.setPhone(toResponsePhoneDTOs(clientEntity.getPhones()));
         }
 
         if (clientEntity.getAddress() != null) {
-            responseClientDTO.setAddress(toResponseAddressDTO(clientEntity.getAddress()));
+            createResponseClientDTO.setAddress(toResponseAddressDTO(clientEntity.getAddress()));
         }
 
-        return responseClientDTO;
+        return createResponseClientDTO;
     }
 
 

@@ -1,7 +1,7 @@
 package dev.eliezer.lojaonline.modules.client.controller;
 
 import dev.eliezer.lojaonline.modules.client.dtos.CreateClientDTO;
-import dev.eliezer.lojaonline.modules.client.dtos.ResponseClientDTO;
+import dev.eliezer.lojaonline.modules.client.dtos.CreateResponseClientDTO;
 import dev.eliezer.lojaonline.modules.client.useCases.CreateClientUseCase;
 import dev.eliezer.lojaonline.modules.user.dtos.UserResponseDTO;
 import dev.eliezer.lojaonline.modules.user.useCases.CreateUserUseCase;
@@ -51,7 +51,7 @@ public class ClientRestController {
                     )
             }
     ))
-    public ResponseEntity<ResponseClientDTO> create(@Valid @RequestBody CreateClientDTO requestData, HttpServletRequest request) {
+    public ResponseEntity<CreateResponseClientDTO> create(@Valid @RequestBody CreateClientDTO requestData, HttpServletRequest request) {
 
         var result = createClientUseCase.execute(requestData);
         return ResponseEntity.ok().body(result);
