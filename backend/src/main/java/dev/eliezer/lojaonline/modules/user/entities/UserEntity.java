@@ -61,9 +61,8 @@ public class UserEntity {
     @Column(name = "user_role", columnDefinition = "bigint default 1")
     @Schema(example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED, description =
             """
-            0 - user admin.
-            1 - client.
-            2 - normal user.
+            0 - normal user
+            1 - user admin.
             """)
     private Long userRole = 1L;
 

@@ -40,6 +40,7 @@ public class SecurityConfig {
                     auth
                             .requestMatchers("/users").permitAll()
                             .requestMatchers("/users/auth").permitAll()
+                            .requestMatchers("/clients/auth").permitAll()
 
                             .requestMatchers("/products").permitAll()
                             .requestMatchers("/categories").permitAll()

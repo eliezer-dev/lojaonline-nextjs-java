@@ -1,7 +1,6 @@
 package dev.eliezer.lojaonline.modules.auth.controller;
 
 import dev.eliezer.lojaonline.modules.auth.dto.AuthUserRequestDTO;
-import dev.eliezer.lojaonline.modules.auth.dto.AuthUserResponseDTO;
 import dev.eliezer.lojaonline.modules.auth.useCases.AuthUserUseCase;
 import dev.eliezer.lojaonline.modules.shared.entities.UserToken;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -15,17 +14,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/users/auth")
-@Tag(name = "Users Auth", description = "RESTful API for authenticating users")
-public class AuthUserRestController {
-
+@RequestMapping("/clients/auth")
+@Tag(name = "Clients Auth", description = "RESTful API for authenticating clients")
+public class AuthClientRestController {
     @Autowired
     private AuthUserUseCase authUserUseCase;
 
     @PostMapping
     @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<UserToken> auth (@Valid @RequestBody AuthUserRequestDTO userAuth) {
-        var authenticatedUser = authUserUseCase.execute(userAuth, 0L);
+        var authenticatedUser = authUserUseCase.execute(userAuth, 3L);
         return ResponseEntity.ok().body(authenticatedUser);
     }
 }
