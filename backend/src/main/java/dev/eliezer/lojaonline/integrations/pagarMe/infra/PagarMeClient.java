@@ -32,20 +32,23 @@ public class PagarMeClient {
 
         WebClient webClient = apiClientProvider.createClient(PAGAR_ME_BASE_URL);
 
-        return webClient.post()
-                .uri(uri)
-                .header("Authorization", "Basic " + PAGAR_ME_TOKEN)
-                .bodyValue(requestBody)
-                .retrieve()
-                .onStatus(
-                        status -> status.isError(),
-                        response -> response.bodyToMono(String.class)
-                                .map(body -> new RuntimeException("Erro na requisição: " + body))
-                )
-                .bodyToMono(String.class)
-                .map(body -> new ApiResponse(true, body))
-                .block();
-
+        try {
+            return webClient.post()
+                    .uri(uri)
+                    .header("Authorization", "Basic " + PAGAR_ME_TOKEN)
+                    .bodyValue(requestBody)
+                    .retrieve()
+                    .onStatus(
+                            status -> status.isError(),
+                            response -> response.bodyToMono(String.class)
+                                    .map(body -> new RuntimeException("Erro na requisição: " + body))
+                    )
+                    .bodyToMono(String.class)
+                    .map(body -> new ApiResponse(true, body))
+                    .block();
+        } catch (Exception e) {
+            return new ApiResponse(false, "Erro ao realizar a requisição: " + e.getMessage());
+        }
     }
 
     public class ApiResponse {

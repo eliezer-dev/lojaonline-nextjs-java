@@ -72,11 +72,11 @@ public class ProductEntity {
     private Boolean active = true;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ImageEntity> imageEntities = new ArrayList<>();
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "compositeProductId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "compositeProductId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<CompositeProductEntity> compositeProductEntities = new ArrayList<>();
 
     @ToString.Exclude

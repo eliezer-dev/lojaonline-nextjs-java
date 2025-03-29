@@ -37,8 +37,7 @@ public class FaturaPagarMeRequestMapper {
 
         pagarMeInvoice.setIdFatura(faturaPagarMeResponsePayload.getIdFatura());
         pagarMeInvoice.setCreatedAt(faturaPagarMeResponsePayload.getCreatedAt());
-        pagarMeInvoice.setPagarMeUrl(faturaPagarMeResponsePayload.getPagarMeUrl());
-        pagarMeInvoice.setExpireIn(faturaPagarMeResponsePayload.getExpireIn());
+        pagarMeInvoice.setPagarMeUrl(faturaPagarMeResponsePayload.getCheckouts().getFirst().getPaymentUrl());
 
         return pagarMeInvoice;
     }

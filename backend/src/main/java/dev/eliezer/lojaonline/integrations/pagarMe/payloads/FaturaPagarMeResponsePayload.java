@@ -5,20 +5,33 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FaturaPagarMeResponsePayload {
-    @JsonProperty("order_code")
+    @JsonProperty("id")
     String idFatura;
 
-    @JsonProperty("expires_in")
-    Integer expireIn;
 
     @JsonProperty("created_at")
     LocalDateTime createdAt;
 
-    @JsonProperty("url")
-    String pagarMeUrl;
+
+    @JsonProperty("checkouts")
+    List<CheckoutsPayload> checkouts;
+
+
+    @Data
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class CheckoutsPayload {
+
+        @JsonProperty("id")
+        String idCheckout;
+
+        @JsonProperty("payment_url")
+        String paymentUrl;
+
+    }
 
 }

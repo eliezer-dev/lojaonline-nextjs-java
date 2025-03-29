@@ -41,8 +41,12 @@ public class SecurityConfig {
                             .requestMatchers("/users").permitAll()
                             .requestMatchers("/users/auth").permitAll()
                             .requestMatchers("/clients/auth").permitAll()
-
+                            .requestMatchers("/clients").permitAll()
+                            .requestMatchers("/clients/*").permitAll()
                             .requestMatchers("/products").permitAll()
+                            .requestMatchers("/products/*").permitAll()
+                            .requestMatchers("/products/images").permitAll()
+                            .requestMatchers("/products/images/*").permitAll()
                             .requestMatchers("/categories").permitAll()
                             .requestMatchers("/categories/*").permitAll()
                             .requestMatchers("/config/header/menu/categories").permitAll()

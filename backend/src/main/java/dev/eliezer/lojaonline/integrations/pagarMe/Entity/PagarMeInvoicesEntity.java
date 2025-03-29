@@ -21,7 +21,7 @@ public class PagarMeInvoicesEntity {
     @Column(nullable = false, unique = true)
     String idFatura;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     Integer expireIn = 0;
 
     @Column(nullable = false)
