@@ -24,7 +24,7 @@ public class FaturaPagarMeRequestMapper {
             item.setAmount(orderItem.getPrice().multiply(BigDecimal.valueOf(100)).intValue());
             item.setQuantity(orderItem.getQuantity().intValue());
             item.setCode(orderItem.getProductId().toString());
-            item.setDescription("teste");
+            item.setDescription(orderItem.getName());
             items.add(item);
         });
         faturaPagarMeRequestPayload.setItems(items);
