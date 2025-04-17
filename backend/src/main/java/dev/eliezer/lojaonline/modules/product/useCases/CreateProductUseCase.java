@@ -21,7 +21,7 @@ public class CreateProductUseCase {
 
         var productEntity = productRepository.save(productMapper.toProductEntity(productCreateRequestDTO));
 
-        return ProductMapper.toProductResponseDTO(productEntity);
+        return productMapper.toProductResponseDTO(productEntity);
 
     }
 }

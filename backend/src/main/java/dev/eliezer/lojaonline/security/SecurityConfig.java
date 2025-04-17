@@ -56,7 +56,8 @@ public class SecurityConfig {
                             .requestMatchers("/products/*").permitAll()
                             .requestMatchers("/images/*").permitAll()
                             .requestMatchers(SWAGGER_LIST).permitAll()
-                            .requestMatchers("/clients/create").permitAll();
+                            .requestMatchers("/clients/create").permitAll()
+                            .requestMatchers("/system/status").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .addFilterBefore(securityUserFilter, BasicAuthenticationFilter.class);

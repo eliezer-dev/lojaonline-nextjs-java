@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 
 @Data
 @AllArgsConstructor
@@ -12,20 +15,5 @@ import lombok.NoArgsConstructor;
 public class ImageLinkDTO {
         private Long id;
         private String link;
-
-        public void setLink(String link) {
-        }
-
-        public String getLink() {
-                return "http://localhost:8080/images/" + this.id ;
-        }
-
-//        public static ImageLinkDTO parseImagesLinkDTO(ImageEntity imageEntity){
-//                ImageLinkDTO imageLinkDTO = ImageLinkDTO.builder()
-//                                .id(imageEntity.getId())
-//                                .build();
-//
-//                return imageLinkDTO;
-//        }
 
 }

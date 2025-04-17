@@ -24,6 +24,12 @@ public class GetCategoryWithProductsUseCase {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private ProductMapper productMapper;
+
+    @Autowired
+    private CategoryMapper categoryMapper;
+
 
     @Transactional
     public List<CategoryWithProductsResponseDTO> execute (){
@@ -38,7 +44,7 @@ public class GetCategoryWithProductsUseCase {
         categoryEntityList = categoryRepository.findByVisibleHome(true, sortByAndDirectionCategories);
 
         if (!categoryEntityList.isEmpty()){
-            categoriesWithProductsResponseDTOs = CategoryMapper.toCategoryWithProductsToResponseDTOs(categoryEntityList);
+            categoriesWithProductsResponseDTOs = categoryMapper.toCategoryWithProductsToResponseDTOs(categoryEntityList);
         }
 
         List<ProductEntity> productWithCategoryNotVisibleHome = productRepository
@@ -50,7 +56,7 @@ public class GetCategoryWithProductsUseCase {
             categoryWithOtherProducts.setDescription("Outros Produtos S/Glutém e S/Lactose");
 
             categoryWithOtherProducts
-                    .setProducts(ProductMapper.toProductResponseDTOS(productWithCategoryNotVisibleHome));
+                    .setProducts(productMapper.toProductResponseDTOS(productWithCategoryNotVisibleHome));
             categoriesWithProductsResponseDTOs.add(categoryWithOtherProducts);
         }
 

@@ -16,6 +16,9 @@ public class UpdateCategoryUseCase {
     @Autowired
     CategoryRepository categoryRepository;
 
+    @Autowired
+    private CategoryMapper categoryMapper;
+
     public CategoryResponseDTO execute (Long categoryId, CategoryUpdateRequestDTO categoryUpdateRequestDTO) {
 
         CategoryEntity parentCategory = null;
@@ -49,7 +52,7 @@ public class UpdateCategoryUseCase {
             categoryToUpdate.setOrderHomePage(null);
         }
 
-        return CategoryMapper.toCategoryToResponseDTO(categoryRepository.save(categoryToUpdate));
+        return categoryMapper.toCategoryToResponseDTO(categoryRepository.save(categoryToUpdate));
 
 
     }

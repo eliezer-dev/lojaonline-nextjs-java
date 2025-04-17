@@ -26,6 +26,9 @@ public class UploadProductImageUseCase {
     @Autowired
     private ImageRepository imageRepository;
 
+    @Autowired
+    private ProductMapper productMapper;
+
     public ProductResponseDTO execute (MultipartFile file, Long productId) throws IOException {
         List<ImageLinkDTO> imagesLinkDTO = new ArrayList<>();
 
@@ -46,7 +49,7 @@ public class UploadProductImageUseCase {
 
         productEntity.getImageEntities().add(imageSaved);
 
-        return ProductMapper.toProductResponseDTO(productEntity);
+        return productMapper.toProductResponseDTO(productEntity);
 
     }
 }

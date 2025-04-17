@@ -24,6 +24,9 @@ public class UpdateProductUseCase {
     @Autowired
     private ObjectUtils objectUtils;
 
+    @Autowired
+    private ProductMapper productMapper;
+
 
     public ProductResponseDTO execute(Long id, ProductUpdateRequestDTO productUpdateRequestDTO) {
 
@@ -38,7 +41,7 @@ public class UpdateProductUseCase {
 
         objectUtils.objectUpdate(productToUpdate, productUpdateRequestDTO);
 
-            return ProductMapper.toProductResponseDTO(productRepository.save(productToUpdate));
+            return productMapper.toProductResponseDTO(productRepository.save(productToUpdate));
 
 
     }

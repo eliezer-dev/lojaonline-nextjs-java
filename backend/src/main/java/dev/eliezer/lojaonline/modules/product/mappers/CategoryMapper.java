@@ -4,12 +4,22 @@ import dev.eliezer.lojaonline.modules.product.dtos.CategoryResponseDTO;
 import dev.eliezer.lojaonline.modules.product.dtos.CategoryWithProductsResponseDTO;
 import dev.eliezer.lojaonline.modules.product.dtos.ProductResponseDTO;
 import dev.eliezer.lojaonline.modules.product.entities.CategoryEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class CategoryMapper {
-    public static CategoryResponseDTO toCategoryToResponseDTO(CategoryEntity categoryEntity) {
+
+    @Autowired
+    private ProductMapper productMapper;
+
+
+
+    public CategoryResponseDTO toCategoryToResponseDTO(CategoryEntity categoryEntity) {
 
         CategoryResponseDTO categoryResponseDTO = new CategoryResponseDTO();
         categoryResponseDTO.setId(categoryEntity.getId());
@@ -25,7 +35,7 @@ public class CategoryMapper {
         return categoryResponseDTO;
     }
 
-    public static CategoryWithProductsResponseDTO toCategoryWithProductsToResponseDTO(CategoryEntity categoryEntity) {
+    public CategoryWithProductsResponseDTO toCategoryWithProductsToResponseDTO(CategoryEntity categoryEntity) {
 
         List<ProductResponseDTO> productResponseDTOS = new ArrayList<>();
         CategoryWithProductsResponseDTO categoryWithProductsResponseDTO = new CategoryWithProductsResponseDTO();
@@ -37,7 +47,7 @@ public class CategoryMapper {
         }
 
         if (!categoryEntity.getProducts().isEmpty()) {
-            productResponseDTOS = ProductMapper.toProductResponseDTOS(categoryEntity.getProducts());
+            productResponseDTOS = productMapper.toProductResponseDTOS(categoryEntity.getProducts());
             categoryWithProductsResponseDTO.setProducts(productResponseDTOS);
         }
 
@@ -45,7 +55,7 @@ public class CategoryMapper {
 
     }
 
-    public static List<CategoryWithProductsResponseDTO> toCategoryWithProductsToResponseDTOs(List<CategoryEntity> categoryEntities) {
+    public List<CategoryWithProductsResponseDTO> toCategoryWithProductsToResponseDTOs(List<CategoryEntity> categoryEntities) {
         List<CategoryWithProductsResponseDTO> categoryWithProductsResponseDTOS = new ArrayList<>();
 
         categoryEntities.forEach(categoryEntity -> {

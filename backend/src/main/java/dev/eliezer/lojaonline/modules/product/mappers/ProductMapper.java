@@ -24,6 +24,9 @@ public class ProductMapper {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private ImageMapper imageMapper;
+
 
     public ProductEntity toProductEntity (ProductCreateRequestDTO productCreateRequestDTO){
         ProductEntity productEntity = new ProductEntity();
@@ -44,7 +47,7 @@ public class ProductMapper {
         return productEntity;
     }
 
-    public static ProductResponseDTO toProductResponseDTO (ProductEntity productEntity) {
+    public ProductResponseDTO toProductResponseDTO (ProductEntity productEntity) {
 
         ProductResponseDTO productResponseDTO = new ProductResponseDTO();
 
@@ -69,7 +72,7 @@ public class ProductMapper {
         if (!productEntity.getImageEntities().isEmpty()) {
             List<ImageLinkDTO> imageLinkDTOList = new ArrayList<>();
             productEntity.getImageEntities().forEach(imageEntity -> {
-                imageLinkDTOList.add(ImageMapper.toImageLinkDTO(imageEntity));
+                imageLinkDTOList.add(imageMapper.toImageLinkDTO(imageEntity));
             });
             productResponseDTO.setImages(imageLinkDTOList);
         }
@@ -86,7 +89,7 @@ public class ProductMapper {
 
     }
 
-    public static List<ProductResponseDTO> toProductResponseDTOS (List<ProductEntity> productEntityList) {
+    public List<ProductResponseDTO> toProductResponseDTOS (List<ProductEntity> productEntityList) {
         List<ProductResponseDTO> productResponseDTOS = new ArrayList<>();
         productEntityList.forEach(product -> {
             productResponseDTOS.add(toProductResponseDTO(product));

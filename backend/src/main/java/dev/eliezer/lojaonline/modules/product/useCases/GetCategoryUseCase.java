@@ -17,12 +17,15 @@ public class GetCategoryUseCase {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private CategoryMapper categoryMapper;
+
     @Transactional
     public List<CategoryResponseDTO> execute () {
         List<CategoryResponseDTO> categoryResponseDTOList = new ArrayList<>();
 
         categoryRepository.findAll().forEach(category -> {
-            categoryResponseDTOList.add(CategoryMapper.toCategoryToResponseDTO(category));
+            categoryResponseDTOList.add(categoryMapper.toCategoryToResponseDTO(category));
         });
 
         return categoryResponseDTOList;

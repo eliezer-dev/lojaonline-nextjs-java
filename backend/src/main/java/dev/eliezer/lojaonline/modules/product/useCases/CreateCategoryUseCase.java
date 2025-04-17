@@ -14,6 +14,9 @@ public class CreateCategoryUseCase {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private CategoryMapper categoryMapper;
+
     public CategoryResponseDTO execute(CategoryCreateRequestDTO categoryCreateRequestDTO) {
 
         CategoryEntity categoryEntity = new CategoryEntity();
@@ -30,7 +33,7 @@ public class CreateCategoryUseCase {
         }
 
 
-        return CategoryMapper.toCategoryToResponseDTO(categoryRepository.save(categoryEntity));
+        return categoryMapper.toCategoryToResponseDTO(categoryRepository.save(categoryEntity));
 
 
     }
